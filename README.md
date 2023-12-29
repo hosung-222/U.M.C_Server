@@ -7,10 +7,20 @@ UMC Matching Center Server (Spring Boot)
 UMC(University MakeUs Challenge) 동아리 매칭 서비스 구축 프로젝트 백엔드입니다.
 
 ### 👥 맴버구성
-- 캐슬/이호성 
-- 찬/김찬솔
-- 코코아/김나현
-- 준/김동준
+<table>
+ <tr>
+    <td align="center"><a href="https://github.com/hosung-222"><img src="https://avatars.githubusercontent.com/hosung-222" width="140px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/zzansol"><img src="https://avatars.githubusercontent.com/zzansol" width="140px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/nahy-512"><img src="https://avatars.githubusercontent.com/nahy-512" width="140px;" alt=""></a></td>
+    <td align="center"><a href="https://github.com/DongJun1110"><img src="https://avatars.githubusercontent.com/DongJun1110" width="140px;" alt=""></a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/hosung-222"><b>캐슬/이호성</b></a></td>
+    <td align="center"><a href="https://github.com/zzansol"><b>찬/김찬솔</b></a></td>
+    <td align="center"><a href="https://github.com/nahy-512"><b>코코아/김나현</b></a></td>
+    <td align="center"><a href="https://github.com/DongJun1110"><b>준/김동준</b></a></td>
+  </tr>
+</table>
 
 <br>
 
