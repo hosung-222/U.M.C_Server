@@ -20,12 +20,12 @@ public class Alarm extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean is_confirmed;
+    private Boolean isConfirmed;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
