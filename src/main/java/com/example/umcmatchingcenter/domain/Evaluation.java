@@ -19,16 +19,16 @@ public class Evaluation extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
     private Project project;
 
-    @OneToOne
-    @JoinColumn(name = "evaluator_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evaluatorId")
     private Member evaluator;
 
-    @OneToOne
-    @JoinColumn(name = "evaluatee_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evaluateeId")
     private Member evaluatee;
 
     @Column(nullable = false)
