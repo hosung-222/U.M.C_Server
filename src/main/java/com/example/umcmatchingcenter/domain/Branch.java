@@ -35,4 +35,5 @@ public class Branch extends BaseEntity {
 
     @OneToMany(mappedBy = "branch")
     private List<MatchingSchedule> schedules = new ArrayList<>();
+
 }
