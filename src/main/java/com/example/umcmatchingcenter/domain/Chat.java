@@ -19,18 +19,18 @@ public class Chat extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "pm_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pmId")
     private Member pm;
 
-    @ManyToOne
-    @JoinColumn(name = "inquirer_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "inquirerId")
     private Member inquirer;
 
     @Column(nullable = false)
     private String body;
 
     @Column(columnDefinition = "boolean default false")
-    private Boolean is_confirmed;
+    private Boolean isConfirmed;
 
 }
