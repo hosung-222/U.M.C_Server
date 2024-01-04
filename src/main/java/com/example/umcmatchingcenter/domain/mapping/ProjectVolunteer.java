@@ -1,5 +1,7 @@
-package com.example.umcmatchingcenter.domain;
+package com.example.umcmatchingcenter.domain.mapping;
 
+import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,14 +21,15 @@ public class ProjectVolunteer extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(targetEntity = Member.class)
-    @JoinColumn(name = "member_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId")
     private Member member;
 
-    @OneToOne(targetEntity = Project.class)
-    @JoinColumn(name = "project_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
     private Project project;
 
     @Column(nullable = false)
     private int round;
+
 }
