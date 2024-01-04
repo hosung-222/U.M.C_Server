@@ -34,10 +34,10 @@ public class Member extends BaseEntity {
     private String password;
 
     @Column(nullable = false)
-    private String name_nickname;
+    private String nameNickname;
 
-    @ManyToOne
-    @JoinColumn(name = "university_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "universityId")
     private University university;
 
     @Column(nullable = false)
@@ -51,7 +51,7 @@ public class Member extends BaseEntity {
     private int generation;
 
     @Column(nullable = false)
-    private String username;
+    private String memberName;
 
     @Enumerated(EnumType.STRING)
     private MemberStatus memberStatus;
@@ -66,7 +66,7 @@ public class Member extends BaseEntity {
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberMatchingStatus matchingStatus;
 
-    @OneToMany(mappedBy = "member_id", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Alarm> alarms = new ArrayList<>();
 
     @OneToMany(mappedBy = "pm", cascade = CascadeType.ALL)
@@ -75,8 +75,8 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "inquirer", cascade = CascadeType.ALL)
     private List<Chat> inquirerChats = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
     private Project project;
 
 }
