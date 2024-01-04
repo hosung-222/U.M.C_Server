@@ -1,7 +1,9 @@
-package com.example.umcmatchingcenter.domain;
+package com.example.umcmatchingcenter.domain.mapping;
 
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,16 +24,20 @@ public class Recruitment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "project_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "projectId")
     private Project project;
 
     @Enumerated(EnumType.STRING)
     private MemberPart part;
 
-    @Column(nullable = false)
-    private int now_recruitment;
+    @Enumerated(EnumType.STRING)
+    private RecruitmentStatus recruitmentStatus;
 
     @Column(nullable = false)
-    private int total_recruitment;
+    private int nowRecruitment;
+
+    @Column(nullable = false)
+    private int totalRecruitment;
+
 }
