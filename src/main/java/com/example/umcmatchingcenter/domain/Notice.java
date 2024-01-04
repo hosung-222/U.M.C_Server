@@ -10,14 +10,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class Announcement extends BaseEntity {
+public class Notice extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branchId")
     private Branch branch;
 
     @Column(nullable = false)
