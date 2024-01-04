@@ -1,14 +1,13 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
-import com.example.umcmatchingcenter.domain.enums.AlarmColor;
+import com.example.umcmatchingcenter.domain.enums.MatchingColor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.awt.*;
 
 @Entity
 @NoArgsConstructor
@@ -21,18 +20,18 @@ public class MatchingSchedule extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branchId")
     private Branch branch;
 
     @Enumerated(EnumType.STRING)
-    private AlarmColor alarmColor;
+    private MatchingColor alarmColor;
 
     @Column(nullable = false)
-    private String start_date;
+    private String startDate;
 
     @Column(nullable = false)
-    private String end_date;
+    private String endDate;
 
     @Column(nullable = false)
     private String name;
