@@ -31,7 +31,7 @@ public class Branch extends BaseEntity {
     private List<Project> projects = new ArrayList<>();
 
     @OneToMany(mappedBy = "branch")
-    private List<Announcement> announcements = new ArrayList<>();
+    private List<Notice> notices = new ArrayList<>();
 
     @OneToMany(mappedBy = "branch")
     private List<MatchingSchedule> schedules = new ArrayList<>();
