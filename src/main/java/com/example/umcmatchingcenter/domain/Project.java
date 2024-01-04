@@ -21,12 +21,12 @@ public class Project extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "branch_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "branchId")
     private Branch branch;
 
-    @OneToOne
-    @JoinColumn(name = "pm_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pmId")
     private Member member;
 
     private String name;
