@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
-import com.example.umcmatchingcenter.domain.enums.MatchingColor;
+import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class MatchingSchedule extends BaseEntity {
     private Branch branch;
 
     @Enumerated(EnumType.STRING)
-    private MatchingColor alarmColor;
+    private ScheduleColor scheduleColor;
 
     @Column(nullable = false)
     private String startDate;
