@@ -63,7 +63,7 @@ public class Member extends BaseEntity {
     private MemberPart part;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'NON'")
     private MemberMatchingStatus matchingStatus;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
