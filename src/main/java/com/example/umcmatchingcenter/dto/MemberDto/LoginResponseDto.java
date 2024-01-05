@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto;
+package com.example.umcmatchingcenter.dto.MemberDto;
 
 import com.sun.istack.NotNull;
 import lombok.Builder;

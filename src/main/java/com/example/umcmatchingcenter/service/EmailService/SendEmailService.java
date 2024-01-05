@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 public class SendEmailService {
     private final JavaMailSender emailSender;
 
+    //email 전송
     public void sendEmail(String toEmail,
                           String title,
                           String text) {
@@ -19,7 +20,7 @@ public class SendEmailService {
         try {
             emailSender.send(emailForm);
         } catch (RuntimeException e) {
-            throw new MemberHandler(ErrorStatus.TEMP_EXCEPTION);
+            throw new MemberHandler(ErrorStatus.FAIL_CREATE_EMAIL);
         }
     }
 

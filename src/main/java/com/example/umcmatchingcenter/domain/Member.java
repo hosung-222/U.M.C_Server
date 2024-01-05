@@ -1,18 +1,13 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
-import com.example.umcmatchingcenter.domain.enums.MatchingStatus;
+import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.Email;
 
-import com.example.umcmatchingcenter.domain.enums.Part;
+import javax.persistence.*;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,56 +28,58 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 20)
-    @Email(message = "이메일 형식에 맞지 않습니다.")
+    @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 5)
-    private String name;
+    @Column(nullable = false)
+    private String nameNickname;
 
-    @Column(nullable = false, length = 10)
-    private String nickName;
+   // @ManyToOne(fetch = FetchType.LAZY)
+   // @JoinColumn(name = "universityId")
+   // private University university;
 
     @Column(nullable = false)
-    private Long universityId;
-
-    private Boolean isManager;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Part part;
-
-    @Column(nullable = false, length = 15)
     private String phoneNumber;
 
-    @Column(length = 50)
     private String portfolio;
 
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
-    private MemberStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'INCOMPLETE'")
-    private MatchingStatus matchingStatus;
-
-    @Column(length = 50)
-    private String profileImgUrl;
+    private String profileImage;
 
     @Column(nullable = false)
     private int generation;
 
-    @Column(length = 50)
-    private String userName;
+    @Column(nullable = false)
+    private String memberName;
 
-    private Long projectId;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
+    private MemberStatus memberStatus;
 
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'USER'")
-    private String authority;
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'CHALLENGER'")
+    private MemberRole role;
 
+    @Enumerated(EnumType.STRING)
+    private MemberPart part;
+
+    @Enumerated(EnumType.STRING)
+    private MemberMatchingStatus matchingStatus;
+
+    //@OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    //private List<Alarm> alarms = new ArrayList<>();
+
+    //@OneToMany(mappedBy = "pm", cascade = CascadeType.ALL)
+    //private List<Chat> pmChats = new ArrayList<>();
+
+    //@OneToMany(mappedBy = "inquirer", cascade = CascadeType.ALL)
+    //private List<Chat> inquirerChats = new ArrayList<>();
+
+    //@ManyToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "projectId")
+    //private Project project;
 
 
 }

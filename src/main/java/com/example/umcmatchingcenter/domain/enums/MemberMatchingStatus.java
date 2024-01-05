@@ -1,5 +1,5 @@
 package com.example.umcmatchingcenter.domain.enums;
 
-public enum MatchingStatus {
+public enum MemberMatchingStatus {
     COMPLETE, INCOMPLETE
 }

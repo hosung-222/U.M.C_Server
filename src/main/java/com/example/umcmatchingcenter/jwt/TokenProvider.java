@@ -1,6 +1,5 @@
 package com.example.umcmatchingcenter.jwt;
 
-import com.example.umcmatchingcenter.domain.Member;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -42,13 +41,13 @@ public class TokenProvider implements InitializingBean {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, int time) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date validity = new Date(now + this.tokenValidityInMilliseconds*time);
 
         return Jwts.builder()
                 .setSubject(authentication.getName())
@@ -72,8 +71,6 @@ public class TokenProvider implements InitializingBean {
                         .collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
-
-        //return new UsernamePasswordAuthenticationToken(principal, token, authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 

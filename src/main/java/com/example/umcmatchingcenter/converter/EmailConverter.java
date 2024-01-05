@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.enums.EmailCertificationResult;
-import com.example.umcmatchingcenter.dto.EmailResponseDto;
+import com.example.umcmatchingcenter.dto.MemberDto.EmailResponseDto;
 
 public class EmailConverter {
 

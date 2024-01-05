@@ -1,12 +1,10 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.domain.enums.Part;
-import com.example.umcmatchingcenter.dto.LoginResponseDto;
-import com.example.umcmatchingcenter.dto.MemberRequestDto;
-import com.example.umcmatchingcenter.dto.MemberResponseDto;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.dto.MemberDto.LoginResponseDto;
+import com.example.umcmatchingcenter.dto.MemberDto.MemberRequestDto;
+import com.example.umcmatchingcenter.dto.MemberDto.MemberResponseDto;
 
 import java.time.LocalDateTime;
 
@@ -24,44 +22,43 @@ public class MemberConverter {
     }
     public static MemberResponseDto.JoinResultDTO toJoinResultDTO(Member member){
         return MemberResponseDto.JoinResultDTO.builder()
-                .userId(member.getId())
+                .id(member.getId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
     public static Member toMember(MemberRequestDto.JoinDto request){
-        Part part = null;
+        MemberPart memberPart = null;
         switch (request.getPart()){
             case 1:
-                part = Part.SPRING;
+                memberPart = MemberPart.SPRING;
                 break;
             case 2:
-                part = Part.NODE;
+                memberPart = MemberPart.NODE;
                 break;
             case 3:
-                part = Part.iOS;
+                memberPart = MemberPart.iOS;
                 break;
             case 4:
-                part = Part.ANDROID;
+                memberPart = MemberPart.ANDROID;
                 break;
             case 5:
-                part = Part.WEB;
+                memberPart = MemberPart.WEB;
                 break;
             case 6:
-                part = Part.PM;
+                memberPart = MemberPart.PM;
                 break;
             case 7:
-                part = Part.DESIGN;
+                memberPart = MemberPart.DESIGN;
                 break;
         }
 
         return Member.builder()
-                .name(request.getName())
+                .memberName(request.getMemberName())
                 .email(request.getEmail())
                 .password(request.getPassword())
-                .nickName(request.getNickName())
-                .universityId(request.getUniversityId())
+                .nameNickname(request.getNameNickname())
                 .phoneNumber(request.getPhoneNumber())
-                .part(part)
+                .part(memberPart)
                 .generation(request.getGeration())
                 .build();
     }

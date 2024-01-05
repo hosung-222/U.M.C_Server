@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto;
+package com.example.umcmatchingcenter.dto.MemberDto;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -14,13 +14,11 @@ public class MemberRequestDto {
         @NotBlank
         String email;
         @NotNull
-        String name;
+        String memberName;
         @NotNull
         String password;
         @NotNull
-        String nickName;
-        @NotNull
-        Long universityId;
+        String nameNickname;
         @NotNull
         Integer part;
         @NotNull

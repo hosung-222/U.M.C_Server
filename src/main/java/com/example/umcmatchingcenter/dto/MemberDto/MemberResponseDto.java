@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto;
+package com.example.umcmatchingcenter.dto.MemberDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +14,7 @@ public class MemberResponseDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinResultDTO{
-        Long userId;
+        Long id;
         LocalDateTime createdAt;
     }
 

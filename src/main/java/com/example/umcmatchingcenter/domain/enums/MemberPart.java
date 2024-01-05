@@ -1,5 +1,5 @@
 package com.example.umcmatchingcenter.domain.enums;
 
-public enum Part {
+public enum MemberPart {
     SPRING, NODE, iOS, ANDROID, WEB, PM, DESIGN
 }

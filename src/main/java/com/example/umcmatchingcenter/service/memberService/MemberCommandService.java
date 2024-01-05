@@ -1,11 +1,10 @@
 package com.example.umcmatchingcenter.service.memberService;
 
-import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.dto.LoginRequestDto;
-import com.example.umcmatchingcenter.dto.LoginResponseDto;
-import com.example.umcmatchingcenter.dto.MemberRequestDto;
+import com.example.umcmatchingcenter.dto.MemberDto.LoginRequestDto;
+import com.example.umcmatchingcenter.dto.MemberDto.LoginResponseDto;
+import com.example.umcmatchingcenter.dto.MemberDto.MemberRequestDto;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -31,28 +30,29 @@ public class MemberCommandService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
 
+    //회원가입
     public Member join(MemberRequestDto.JoinDto request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member newMember = MemberConverter.toMember(request);
         return memberRepository.save(newMember);
     }
 
+    //로그인
     public ResponseEntity login(LoginRequestDto request){
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+                new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String accessToken = tokenProvider.createToken(authentication);
-        String refreshToken = tokenProvider.createToken(authentication);
-
+        String accessToken = tokenProvider.createToken(authentication,1);
+        String refreshToken = tokenProvider.createToken(authentication,24);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
 
-        LoginResponseDto loginResponseDto = MemberConverter.toLoginResponseDto(request.getEmail(), accessToken, refreshToken);
 
-        return new ResponseEntity<>(loginResponseDto, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(MemberConverter.toLoginResponseDto(request.getMemberName(), accessToken, refreshToken),
+                httpHeaders, HttpStatus.OK);
     }
 }

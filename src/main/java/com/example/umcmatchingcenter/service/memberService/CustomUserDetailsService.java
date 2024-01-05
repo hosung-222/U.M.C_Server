@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.jwt;
+package com.example.umcmatchingcenter.service.memberService;
 
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
@@ -25,18 +25,18 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
-        return memberRepository.findByEmail(username)
-                .map(user -> createUser(username,user))
+        return memberRepository.findByMemberName(username)
+                .map(member -> createUser(username,member))
                 .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
     }
 
     private User createUser(String username, Member member) {
-        if (!(member.getStatus() == MemberStatus.ACTIVE)) {
+        if (!(member.getMemberStatus() == MemberStatus.ACTIVE)) {
             throw new RuntimeException(username + " -> 활성화되어 있지 않습니다.");
         }
 
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(member.getAuthority()));
+        grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().toString()));
 
         return new User(member.getEmail(),
                 member.getPassword(),
