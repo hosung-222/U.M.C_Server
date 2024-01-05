@@ -1,5 +1,5 @@
 package com.example.umcmatchingcenter.domain.enums;
 
-public enum MatchingColor {
+public enum ScheduleColor {
     RED, GREEN, BLUE
 }
