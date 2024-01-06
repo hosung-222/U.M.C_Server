@@ -26,7 +26,7 @@ import javax.validation.Valid;
 public class EmailController {
     private final EmailService emailService;
 
-    @PostMapping("/authCode")
+    @PostMapping("/auth-code")
     @Operation(summary = "이메일 인증코드 요청 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -39,7 +39,7 @@ public class EmailController {
         return ApiResponse.onSuccess(EmailConverter.toEmailAuthCodeResultDto(request.getEmail(), authCode));
     }
 
-    @PostMapping("/authCode/certification")
+    @PostMapping("/auth-code/certification")
     @Operation(summary = "이메일 인증 코드 검증 요청 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
