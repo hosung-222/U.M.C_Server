@@ -1,9 +1,9 @@
 spring:
   datasource:
     url: ${datasource}
-      username: ${username}
-      password: ${password}
-      driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${username}
+    password: ${password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   mail:
     host: smtp.gmail.com

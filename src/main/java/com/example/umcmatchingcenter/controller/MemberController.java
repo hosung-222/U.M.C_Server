@@ -27,7 +27,7 @@ public class MemberController {
 
     private final MemberCommandService memberCommandService;
 
-    @PostMapping("/memeber")
+    @PostMapping("/member")
     @Operation(summary = "회원가입 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
