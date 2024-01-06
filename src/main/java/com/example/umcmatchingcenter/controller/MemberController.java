@@ -39,7 +39,7 @@ public class MemberController {
             @Parameter(name = "nameNickname", description = "이름/닉네임"),
             @Parameter(name = "part", description = "파트"),
             @Parameter(name = "phoneNumber", description = "전화번호"),
-            @Parameter(name = "geration", description = "기수"),
+            @Parameter(name = "generation", description = "기수"),
             @Parameter(name = "portfolio", description = "포트폴리오 URL"),
     })
     public ApiResponse<MemberResponseDto.JoinResultDTO> join(@RequestBody @Valid MemberRequestDto.JoinDto request){
