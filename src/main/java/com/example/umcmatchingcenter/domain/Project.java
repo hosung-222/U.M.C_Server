@@ -38,9 +38,9 @@ public class Project extends BaseEntity {
     private String body;
 
     @OneToMany(mappedBy = "project")
-    private List<Evaluation> evaluations = new ArrayList<>();
+    private List<Evaluation> evaluations;
 
     @OneToMany(mappedBy = "project")
-    private List<Member> members = new ArrayList<>();
+    private List<Member> members;
 
 }
