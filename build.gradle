@@ -31,11 +31,21 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	//email
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '3.0.5'
+	implementation 'javax.mail:javax.mail-api:1.6.2'
+	//reedis
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	//jwt
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
 
 	// swagger
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 }
 
 tasks.named('bootBuildImage') {
