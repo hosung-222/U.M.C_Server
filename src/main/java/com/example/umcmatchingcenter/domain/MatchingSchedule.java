@@ -21,7 +21,7 @@ public class MatchingSchedule extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branchId")
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @Enumerated(EnumType.STRING)

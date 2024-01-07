@@ -20,11 +20,11 @@ public class Chat extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pmId")
+    @JoinColumn(name = "pm_id")
     private Member pm;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "inquirerId")
+    @JoinColumn(name = "inquirer_id")
     private Member inquirer;
 
     @Column(nullable = false)

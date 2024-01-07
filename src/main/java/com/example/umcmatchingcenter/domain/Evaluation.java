@@ -20,15 +20,15 @@ public class Evaluation extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "evaluatorId")
+    @JoinColumn(name = "evaluator_id")
     private Member evaluator;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "evaluateeId")
+    @JoinColumn(name = "evaluatee_id")
     private Member evaluatee;
 
     @Column(nullable = false)

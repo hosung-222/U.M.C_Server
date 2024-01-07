@@ -17,7 +17,7 @@ public class Notice extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branchId")
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @Column(nullable = false)

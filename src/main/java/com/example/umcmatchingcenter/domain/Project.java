@@ -22,11 +22,11 @@ public class Project extends BaseEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "branchId")
+    @JoinColumn(name = "branch_id")
     private Branch branch;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pmId")
+    @JoinColumn(name = "pm_id")
     private Member member;
 
     private String name;
