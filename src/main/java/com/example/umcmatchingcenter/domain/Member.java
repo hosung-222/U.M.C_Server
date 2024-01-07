@@ -67,13 +67,13 @@ public class Member extends BaseEntity {
     private MemberMatchingStatus matchingStatus;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-    private List<Alarm> alarms = new ArrayList<>();
+    private List<Alarm> alarms;
 
     @OneToMany(mappedBy = "pm", cascade = CascadeType.ALL)
-    private List<Chat> pmChats = new ArrayList<>();
+    private List<Chat> pmChats;
 
     @OneToMany(mappedBy = "inquirer", cascade = CascadeType.ALL)
-    private List<Chat> inquirerChats = new ArrayList<>();
+    private List<Chat> inquirerChats;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
