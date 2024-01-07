@@ -76,7 +76,7 @@ public class Member extends BaseEntity {
     private List<Chat> inquirerChats = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
+    @JoinColumn(name = "project_id")
     private Project project;
 
 }
