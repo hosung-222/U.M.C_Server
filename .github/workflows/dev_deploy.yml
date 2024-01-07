@@ -3,7 +3,7 @@ name: UMC Matching Dev CI/CD
 on:
   pull_request:
     types: [closed]
-  workflow_dispatch: # (2).수동 실행도 가능하도록
+  workflow_dispatch: # (2).수동 실행도 가능하도록 (옵션 설정 가능)
 
 jobs:
   build:
@@ -33,13 +33,13 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
-          utcOffset: "+09:00"  # (8).build시점의 시간확보
+          utcOffset: "+09:00"  # (8).build시점의 시간확보 (한국시간으로)
 
       - name: Show Current Time
         run: echo "CurrentTime=$"
         shell: bash # (9).확보한 시간 보여주기
 
-      - name: Generate deployment package # 깃허브액션에서 빌드해본 코드
+      - name: Generate deployment package  # 깃허브액션에서 빌드해본 코드
         run: |
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
