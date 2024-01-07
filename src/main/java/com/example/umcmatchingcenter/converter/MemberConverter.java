@@ -30,13 +30,13 @@ public class MemberConverter {
         MemberPart memberPart = null;
         switch (request.getPart()){
             case 1:
-                memberPart = MemberPart.SPRING;
+                memberPart = MemberPart.SPRINGBOOT;
                 break;
             case 2:
-                memberPart = MemberPart.NODE;
+                memberPart = MemberPart.NODEJS;
                 break;
             case 3:
-                memberPart = MemberPart.iOS;
+                memberPart = MemberPart.IOS;
                 break;
             case 4:
                 memberPart = MemberPart.ANDROID;
@@ -45,7 +45,7 @@ public class MemberConverter {
                 memberPart = MemberPart.WEB;
                 break;
             case 6:
-                memberPart = MemberPart.PM;
+                memberPart = MemberPart.PLAN;
                 break;
             case 7:
                 memberPart = MemberPart.DESIGN;
