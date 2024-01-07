@@ -19,7 +19,7 @@ public class University extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "university", cascade = CascadeType.ALL)
-    private List<Member> members = new ArrayList<>();
+    private List<Member> members;
 
     @Column(nullable = false)
     private String name;

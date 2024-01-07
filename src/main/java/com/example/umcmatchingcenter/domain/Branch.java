@@ -25,15 +25,15 @@ public class Branch extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "branch")
-    private List<University> universities = new ArrayList<>();
+    private List<University> universities;
 
     @OneToMany(mappedBy = "branch")
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> projects;
 
     @OneToMany(mappedBy = "branch")
-    private List<Notice> notices = new ArrayList<>();
+    private List<Notice> notices;
 
     @OneToMany(mappedBy = "branch")
-    private List<MatchingSchedule> schedules = new ArrayList<>();
+    private List<MatchingSchedule> schedules;
 
 }
