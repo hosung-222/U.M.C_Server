@@ -20,7 +20,18 @@ public enum ErrorStatus implements BaseErrorCode {
 
     // 멤버 관려 에러
     MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
-    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4002", "닉네임은 필수 입니다."),
+    MEMBER_WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER4002", "잘못된 비밀번호 입니다"),
+    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
+
+    WRONG_AUTH_CODE(HttpStatus.BAD_REQUEST, "EMAIL4002", "잘못된 인증 코드 입니다"),
+    FAIL_CREATE_CODE(HttpStatus.BAD_REQUEST, "EMAIL4003", "코드 생성에 실패했습니다"),
+    FAIL_CREATE_EMAIL(HttpStatus.BAD_REQUEST, "EMAIL4004", "이메일 전송에 실패했습니다"),
+
+    //jwt
+    JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다"),
+    JWT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
+
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
