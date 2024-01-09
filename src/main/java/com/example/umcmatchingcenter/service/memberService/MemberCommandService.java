@@ -39,9 +39,14 @@ public class MemberCommandService {
     private final PasswordEncoder passwordEncoder;
 
     //회원가입
-    public Member join(MemberRequestDTO.JoinDto request){
+    public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<University> university = universityRepository.findById(request.getUniversityId());
+
+        if(memberRepository.findByMemberName(request.getMemberName()).isPresent()){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
+        }
+
         Member newMember = MemberConverter.toMember(request, university.get());
         return memberRepository.save(newMember);
     }

@@ -6,13 +6,12 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 public class MemberRequestDTO {
 
     @Getter
     @Setter
-    public static class JoinDto{
+    public static class JoinDTO {
         @NotBlank
         @Email(message = "잘못된 이메일 형식입니다.")
         String email;
@@ -31,7 +30,7 @@ public class MemberRequestDTO {
        // @Pattern(regexp = "^\\d{2,3}\\d{3,4}\\d{4}$", message = "핸드폰 번호의 약식과 맞지 않습니다. xxx-xxxx-xxxx")
         String phoneNumber;
         @NotNull
-        Integer geration;
+        Integer generation;
 
         String portfolio;
     }

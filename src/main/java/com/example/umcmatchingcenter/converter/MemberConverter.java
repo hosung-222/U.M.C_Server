@@ -6,8 +6,6 @@ import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
-import com.example.umcmatchingcenter.repository.UniversityRepository;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -30,7 +28,7 @@ public class MemberConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
-    public static Member toMember(MemberRequestDTO.JoinDto request, University university){
+    public static Member toMember(MemberRequestDTO.JoinDTO request, University university){
         MemberPart memberPart = null;
         switch (request.getPart()){
             case 1:
@@ -65,7 +63,8 @@ public class MemberConverter {
                 .university(university)
                 .phoneNumber(request.getPhoneNumber())
                 .part(memberPart)
-                .generation(request.getGeration())
+                .generation(request.getGeneration())
+                .portfolio(request.getPortfolio())
                 .build();
     }
 }
