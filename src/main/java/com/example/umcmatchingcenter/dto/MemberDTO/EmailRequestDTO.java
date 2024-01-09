@@ -1,21 +1,21 @@
-package com.example.umcmatchingcenter.dto.MemberDto;
+package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import lombok.Getter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
-public class EmailRequestDto {
+public class EmailRequestDTO {
 
     @Getter
-    public static class AuthCodeDto {
+    public static class AuthCodeDTO {
         @Email(message = "잘못된 이메일 형식입니다.")
         @NotEmpty
         private String email;
     }
 
     @Getter
-    public static class CertificationDto {
+    public static class CertificationDTO {
 
         @NotEmpty
         private String email;

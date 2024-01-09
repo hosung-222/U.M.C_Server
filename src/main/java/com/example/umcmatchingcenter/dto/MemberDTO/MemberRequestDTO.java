@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto.MemberDto;
+package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-public class MemberRequestDto {
+public class MemberRequestDTO {
 
     @Getter
     @Setter

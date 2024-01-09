@@ -2,17 +2,17 @@ package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
-import com.example.umcmatchingcenter.dto.MemberDto.LoginResponseDto;
-import com.example.umcmatchingcenter.dto.MemberDto.MemberRequestDto;
-import com.example.umcmatchingcenter.dto.MemberDto.MemberResponseDto;
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 
 import java.time.LocalDateTime;
 
 
 public class MemberConverter {
 
-    public static LoginResponseDto toLoginResponseDto(String email, String accessToken,String refreshToken){
-        return LoginResponseDto.builder()
+    public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
+        return LoginResponseDTO.builder()
                 .email(email)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
@@ -20,13 +20,13 @@ public class MemberConverter {
 
 
     }
-    public static MemberResponseDto.JoinResultDTO toJoinResultDTO(Member member){
-        return MemberResponseDto.JoinResultDTO.builder()
+    public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
+        return MemberResponseDTO.JoinResultDTO.builder()
                 .id(member.getId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
-    public static Member toMember(MemberRequestDto.JoinDto request){
+    public static Member toMember(MemberRequestDTO.JoinDto request){
         MemberPart memberPart = null;
         switch (request.getPart()){
             case 1:

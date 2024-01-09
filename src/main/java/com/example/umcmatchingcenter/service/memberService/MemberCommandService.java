@@ -2,9 +2,8 @@ package com.example.umcmatchingcenter.service.memberService;
 
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.dto.MemberDto.LoginRequestDto;
-import com.example.umcmatchingcenter.dto.MemberDto.LoginResponseDto;
-import com.example.umcmatchingcenter.dto.MemberDto.MemberRequestDto;
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -31,14 +30,14 @@ public class MemberCommandService {
     private final PasswordEncoder passwordEncoder;
 
     //회원가입
-    public Member join(MemberRequestDto.JoinDto request){
+    public Member join(MemberRequestDTO.JoinDto request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Member newMember = MemberConverter.toMember(request);
         return memberRepository.save(newMember);
     }
 
     //로그인
-    public ResponseEntity login(LoginRequestDto request){
+    public ResponseEntity login(LoginRequestDTO request){
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
 
