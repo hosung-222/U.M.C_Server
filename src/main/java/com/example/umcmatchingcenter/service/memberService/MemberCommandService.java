@@ -4,11 +4,13 @@ import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
+import com.example.umcmatchingcenter.repository.UniversityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,12 +25,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class MemberCommandService {
 
     private final MemberRepository memberRepository;
+    private final UniversityRepository universityRepository;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
@@ -36,7 +41,8 @@ public class MemberCommandService {
     //회원가입
     public Member join(MemberRequestDTO.JoinDto request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        Member newMember = MemberConverter.toMember(request);
+        Optional<University> university = universityRepository.findById(request.getUniversityId());
+        Member newMember = MemberConverter.toMember(request, university.get());
         return memberRepository.save(newMember);
     }
 

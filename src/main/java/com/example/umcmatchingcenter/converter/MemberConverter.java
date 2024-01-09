@@ -1,15 +1,19 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.repository.UniversityRepository;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 
 public class MemberConverter {
+
 
     public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
         return LoginResponseDTO.builder()
@@ -26,7 +30,7 @@ public class MemberConverter {
                 .createdAt(LocalDateTime.now())
                 .build();
     }
-    public static Member toMember(MemberRequestDTO.JoinDto request){
+    public static Member toMember(MemberRequestDTO.JoinDto request, University university){
         MemberPart memberPart = null;
         switch (request.getPart()){
             case 1:
@@ -52,11 +56,13 @@ public class MemberConverter {
                 break;
         }
 
+
         return Member.builder()
                 .memberName(request.getMemberName())
                 .email(request.getEmail())
                 .password(request.getPassword())
                 .nameNickname(request.getNameNickname())
+                .university(university)
                 .phoneNumber(request.getPhoneNumber())
                 .part(memberPart)
                 .generation(request.getGeration())

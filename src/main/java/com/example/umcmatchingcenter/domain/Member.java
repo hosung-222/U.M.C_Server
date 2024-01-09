@@ -85,4 +85,9 @@ public class Member extends BaseEntity {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public void setUniversity(University university){
+        this.university = university;
+        university.getMembers().add(this);
+    }
+
 }
