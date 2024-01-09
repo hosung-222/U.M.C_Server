@@ -43,7 +43,7 @@ public class MemberController {
             @Parameter(name = "generation", description = "기수"),
             @Parameter(name = "portfolio", description = "포트폴리오 URL"),
     })
-    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDto request){
+    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
         Member member = memberCommandService.join(request);
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member));
     }
