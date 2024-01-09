@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.service.memberService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -38,10 +42,11 @@ public class MemberCommandService {
 
     //로그인
     public ResponseEntity login(LoginRequestDTO request){
+
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
 
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        Authentication authentication = getAuthentication(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = tokenProvider.createToken(authentication,1);
@@ -53,6 +58,16 @@ public class MemberCommandService {
 
         return new ResponseEntity<>(MemberConverter.toLoginResponseDto(request.getMemberName(), accessToken, refreshToken),
                 httpHeaders, HttpStatus.OK);
+    }
+
+    public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){
+        try{
+            return authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        }catch (BadCredentialsException e){
+            throw new MemberHandler(ErrorStatus.MEMBER_WRONG_PASSWORD);
+        }catch (InternalAuthenticationServiceException e){
+            throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
     }
 
 }
