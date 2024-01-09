@@ -5,6 +5,8 @@ import com.example.umcmatchingcenter.apiPayload.exception.handler.TempHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
+
 @Service
 @RequiredArgsConstructor
 public class TempQueryService {

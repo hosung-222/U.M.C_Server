@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.service.memberService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -27,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(final String username) {
         return memberRepository.findByMemberName(username)
                 .map(member -> createUser(username,member))
-                .orElseThrow(() -> new UsernameNotFoundException(username + " -> 데이터베이스에서 찾을 수 없습니다."));
+                .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
     }
 
     private User createUser(String username, Member member) {
@@ -38,7 +40,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         grantedAuthorities.add(new SimpleGrantedAuthority(member.getRole().toString()));
 
-        return new User(member.getEmail(),
+        return new User(member.getMemberName(),
                 member.getPassword(),
                 grantedAuthorities);
     }

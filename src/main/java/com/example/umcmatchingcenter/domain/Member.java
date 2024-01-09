@@ -12,12 +12,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@DynamicUpdate
+@DynamicInsert
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -54,9 +58,11 @@ public class Member extends BaseEntity {
     private String memberName;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberStatus memberStatus;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30) DEFAULT 'ROLE_CHALLENGER'")
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
@@ -78,5 +84,10 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    public void setUniversity(University university){
+        this.university = university;
+        university.getMembers().add(this);
+    }
 
 }

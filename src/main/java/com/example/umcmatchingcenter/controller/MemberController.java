@@ -4,9 +4,10 @@ package com.example.umcmatchingcenter.controller;
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.dto.MemberDto.LoginRequestDto;
-import com.example.umcmatchingcenter.dto.MemberDto.MemberRequestDto;
-import com.example.umcmatchingcenter.dto.MemberDto.MemberResponseDto;
+
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -42,7 +43,7 @@ public class MemberController {
             @Parameter(name = "generation", description = "기수"),
             @Parameter(name = "portfolio", description = "포트폴리오 URL"),
     })
-    public ApiResponse<MemberResponseDto.JoinResultDTO> join(@RequestBody @Valid MemberRequestDto.JoinDto request){
+    public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDto request){
         Member member = memberCommandService.join(request);
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member));
     }
@@ -60,7 +61,7 @@ public class MemberController {
             @Parameter(name = "memberName", description = "로그인용 아이디"),
             @Parameter(name = "password", description = "비밀번호"),
     })
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDto request){
+    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO request){
         return memberCommandService.login(request);
     }
 
