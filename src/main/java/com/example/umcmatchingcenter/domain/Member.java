@@ -62,7 +62,7 @@ public class Member extends BaseEntity {
     private MemberStatus memberStatus;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'CHALLENGER'")
+    @Column(columnDefinition = "VARCHAR(30) DEFAULT 'ROLE_CHALLENGER'")
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
