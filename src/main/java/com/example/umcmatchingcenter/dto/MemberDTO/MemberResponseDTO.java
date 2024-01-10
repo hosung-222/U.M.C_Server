@@ -18,4 +18,14 @@ public class MemberResponseDTO {
         LocalDateTime createdAt;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyInfoDTO {
+        String universityName;
+        String part;
+        String phoneNumber;
+        String portfolio;
+    }
 }
