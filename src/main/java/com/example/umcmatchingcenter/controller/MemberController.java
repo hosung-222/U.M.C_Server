@@ -72,6 +72,12 @@ public class MemberController {
         return memberCommandService.login(request);
     }
 
+    @Operation(summary = "내 정보 조회 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public ApiResponse<MemberResponseDTO.MyInfoDTO> myPage(@Valid @ExistMember Principal principal){
