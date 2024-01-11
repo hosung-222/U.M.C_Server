@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto.ProjectDto;
+package com.example.umcmatchingcenter.dto.projectDto;
 
 import com.example.umcmatchingcenter.domain.Member;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-public class ProjectResponseDto {
+public class ProjectResponseDTO {
     // 프로젝트 목록 조회
     @Builder
     @Getter

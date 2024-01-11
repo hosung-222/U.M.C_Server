@@ -1,14 +1,14 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Project;
-import com.example.umcmatchingcenter.dto.ProjectDto.ProjectResponseDto;
+import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ProjectConverter {
-    public static ProjectResponseDto.ProjectPreViewDTO projectPreViewDTO(Project project){
-        return ProjectResponseDto.ProjectPreViewDTO.builder()
+    public static ProjectResponseDTO.ProjectPreViewDTO projectPreViewDTO(Project project){
+        return ProjectResponseDTO.ProjectPreViewDTO.builder()
                 .projectId((project.getId()))
                 .name(project.getName())
                 .image(project.getImage())
@@ -16,12 +16,12 @@ public class ProjectConverter {
                 .build();
     }
 
-    public static ProjectResponseDto.ProjectListDTO projectPreViewListDTO(List<Project> projectList){
+    public static ProjectResponseDTO.ProjectListDTO projectPreViewListDTO(List<Project> projectList){
 
-        List<ProjectResponseDto.ProjectPreViewDTO> projectPreViewDTOList = projectList.stream()
+        List<ProjectResponseDTO.ProjectPreViewDTO> projectPreViewDTOList = projectList.stream()
                 .map(ProjectConverter::projectPreViewDTO).collect(Collectors.toList());
 
-        return ProjectResponseDto.ProjectListDTO.builder()
+        return ProjectResponseDTO.ProjectListDTO.builder()
                 .listSize(projectPreViewDTOList.size())
                 .projectList(projectPreViewDTOList)
                 .build();

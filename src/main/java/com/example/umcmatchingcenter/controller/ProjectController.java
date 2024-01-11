@@ -4,7 +4,7 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
-import com.example.umcmatchingcenter.dto.ProjectDto.ProjectResponseDto;
+import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +38,7 @@ public class ProjectController {
             @Parameter(name = "status", description = "프로젝트 상태 (현재 매칭중: PROCEEDING, OB 프로젝트: COMPLETE)"),
             @Parameter(name = "page", description = "페이지 번호 (1부터 시작, 15개를 기준으로 페이징)")
     })
-    public ApiResponse<ProjectResponseDto.ProjectListDTO> getProjectList(@RequestParam(name = "status") ProjectStatus status, @RequestParam(name = "page") Integer page){
+    public ApiResponse<ProjectResponseDTO.ProjectListDTO> getProjectList(@RequestParam(name = "status") ProjectStatus status, @RequestParam(name = "page") Integer page){
         List<Project> projectList = projectQueryService.getProjectList(status, page - 1);
         return ApiResponse.onSuccess(ProjectConverter.projectPreViewListDTO(projectList));
     }
