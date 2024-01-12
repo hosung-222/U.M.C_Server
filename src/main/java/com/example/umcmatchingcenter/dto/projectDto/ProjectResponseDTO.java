@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ProjectResponseDTO {
@@ -38,7 +40,22 @@ public class ProjectResponseDTO {
     public static class ProjectDTO {
         Long projectId;
         String name;
+        String image;
+        String introduction;
         String body;
-        List<Member> members;
+        List<ProjectMemberDTO> members;
+        LocalDateTime createAt;
+    }
+
+    // 프로젝트 참여 멤버
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ProjectMemberDTO {
+        Long id;
+        String nameNickname;
+        String profileImage;
+        String part;
     }
 }

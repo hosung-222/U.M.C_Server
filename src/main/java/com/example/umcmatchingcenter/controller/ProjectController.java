@@ -42,4 +42,21 @@ public class ProjectController {
         List<Project> projectList = projectQueryService.getProjectList(status, page - 1);
         return ApiResponse.onSuccess(ProjectConverter.projectPreViewListDTO(projectList));
     }
+
+    // 프로젝트 상세 조회
+    @GetMapping("/{projectId}")
+    @Operation(summary = "프로젝트 상세 조회 API")
+    @ApiResponses({ // API 응답
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "projectId", description = "프로젝트 아이디")
+    })
+    public ApiResponse<ProjectResponseDTO.ProjectDTO> getProject(@PathVariable(name = "projectId") Long projectId){
+        Project project = projectQueryService.getProjectDetail(projectId);
+        return ApiResponse.onSuccess(ProjectConverter.projectDetailDTO(project));
+    }
 }

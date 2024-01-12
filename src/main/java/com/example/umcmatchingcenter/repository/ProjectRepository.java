@@ -10,4 +10,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Page<Project> findAllByStatusOrderByCreatedAt(ProjectStatus status, PageRequest pageRequest);
 
+//    Project getProjectDetail(Long projectId);
+
 }

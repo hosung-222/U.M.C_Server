@@ -4,7 +4,6 @@ import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,6 +32,21 @@ public class ProjectQueryServiceImpl implements ProjectQueryService{
         } catch (Exception e) {
             throw new RuntimeException("프로젝트 목록을 가져오는 중 오류가 발생했습니다", e);
         }
+    }
+
+    @Override
+    public Project getProjectDetail(Long projectId) {
+        return projectRepository.findById(projectId).orElse(null);
+    }
+
+//    @Override
+//    public Project getProjectDetail(Long projectId) {
+//        return projectRepository.getProjectDetail(projectId);
+//    }
+
+    @Override
+    public boolean existProject(Long projectId) {
+        return projectRepository.existsById(projectId);
     }
 
 }
