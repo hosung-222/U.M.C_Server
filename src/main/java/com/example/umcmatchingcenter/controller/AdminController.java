@@ -2,7 +2,6 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfo;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import java.util.List;
@@ -20,8 +19,8 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/manage")
-    public ApiResponse<List<MemberResponseDTO.ChallengerInfo>> challengerList(){
-//        List<ChallengerInfo> challengerList = memberQueryService.getChallengerList();
+    public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(){
+//        List<ChallengerInfoDTO> challengerList = memberQueryService.getChallengerList();
 
         return ApiResponse.onSuccess(null);
     }

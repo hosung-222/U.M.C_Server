@@ -33,11 +33,11 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ChallengerInfo {
+    public static class ChallengerInfoDTO {
         int generation;
         String nameNickname;
         String part;
-        String matchCount;
+        int matchCount;
         String matchingStatus;
     }
 }
