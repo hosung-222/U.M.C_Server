@@ -28,4 +28,16 @@ public class MemberResponseDTO {
         String phoneNumber;
         String portfolio;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChallengerInfo {
+        int generation;
+        String nameNickname;
+        String part;
+        String matchCount;
+        String matchingStatus;
+    }
 }
