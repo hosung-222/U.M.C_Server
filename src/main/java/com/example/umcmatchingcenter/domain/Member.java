@@ -8,16 +8,16 @@ import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import javax.persistence.*;
 
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.umcmatchingcenter.domain.mapping.Application;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -63,6 +63,7 @@ public class Member extends BaseEntity {
     private MemberPart part;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDefault("NON")
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'NON'")
     private MemberMatchingStatus matchingStatus;
 
@@ -75,8 +76,12 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "inquirer", cascade = CascadeType.ALL)
     private List<Chat> inquirerChats;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "application_id")
+    private Application application;
 
 }
