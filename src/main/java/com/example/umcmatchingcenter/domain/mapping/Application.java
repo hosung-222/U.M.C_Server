@@ -15,7 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Builder
-public class ProjectVolunteer extends BaseEntity {
+public class Application extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class ProjectVolunteer extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
