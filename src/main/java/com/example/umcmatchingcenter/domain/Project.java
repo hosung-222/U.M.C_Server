@@ -1,6 +1,8 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
+import com.example.umcmatchingcenter.domain.mapping.Application;
+import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +43,9 @@ public class Project extends BaseEntity {
     private List<Evaluation> evaluations;
 
     @OneToMany(mappedBy = "project")
-    private List<Member> members;
+    private List<Recruitment> recruitments;
+
+    @OneToMany(mappedBy = "project")
+    private List<Application> applications;
 
 }
