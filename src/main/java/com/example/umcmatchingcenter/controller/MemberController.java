@@ -9,14 +9,20 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
+
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
+import com.example.umcmatchingcenter.validation.annotation.ExistMember;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.security.Principal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +33,7 @@ import javax.validation.Valid;
 public class MemberController {
 
     private final MemberCommandService memberCommandService;
+    private final MemberQueryService memberQueryService;
 
     @PostMapping("/members")
     @Operation(summary = "회원가입 api")
@@ -65,4 +72,16 @@ public class MemberController {
         return memberCommandService.login(request);
     }
 
+    @Operation(summary = "내 정보 조회 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public ApiResponse<MemberResponseDTO.MyInfoDTO> myPage(@Valid @ExistMember Principal principal){
+        Member member = memberQueryService.getMyInfo(principal.getName());
+        return ApiResponse.onSuccess(MemberConverter.toMyInfoDTO(member));
+    }
 }
