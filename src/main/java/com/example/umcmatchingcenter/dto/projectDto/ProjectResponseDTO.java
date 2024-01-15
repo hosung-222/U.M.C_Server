@@ -17,8 +17,8 @@ public class ProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProjectListDTO {
-        List<ProjectPreViewDTO> projectList;
-        Integer listSize;
+        private List<ProjectPreViewDTO> projectList;
+        private Integer listSize;
     }
 
     @Builder
@@ -26,10 +26,10 @@ public class ProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProjectPreViewDTO {
-        Long projectId;
-        String name;
-        String image;
-        String introduction;
+        private Long projectId;
+        private String name;
+        private String image;
+        private String introduction;
     }
 
     // 프로젝트 상세 조회
@@ -38,13 +38,13 @@ public class ProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProjectDTO {
-        Long projectId;
-        String name;
-        String image;
-        String introduction;
-        String body;
-        List<ProjectMemberDTO> members;
-        LocalDateTime createAt;
+        private Long projectId;
+        private String name;
+        private String image;
+        private String introduction;
+        private String body;
+        private List<ProjectMemberDTO> members;
+        private LocalDateTime createAt;
     }
 
     // 프로젝트 참여 멤버
@@ -53,9 +53,9 @@ public class ProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ProjectMemberDTO {
-        Long id;
-        String nameNickname;
-        String profileImage;
-        String part;
+        private Long id;
+        private String nameNickname;
+        private String profileImage;
+        private String part;
     }
 }
