@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDTO {
-    String email;
-    String accessToken;
-    String refreshToken;
+    private String email;
+    private String accessToken;
+    private String refreshToken;
 }
