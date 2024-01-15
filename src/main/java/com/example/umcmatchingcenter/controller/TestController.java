@@ -47,7 +47,7 @@ public class TestController {
         return ApiResponse.onSuccess(TempConverter.toTempTestDTO());
     }
 
-    
+
     @GetMapping("/exception")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<TempResponse.TempExceptionDTO> exceptionAPI(@RequestParam Integer flag){
