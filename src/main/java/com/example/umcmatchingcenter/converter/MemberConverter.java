@@ -7,6 +7,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
 import java.time.LocalDateTime;
 
 
@@ -65,6 +66,15 @@ public class MemberConverter {
                 .part(memberPart)
                 .generation(request.getGeneration())
                 .portfolio(request.getPortfolio())
+                .build();
+    }
+
+    public static MyInfoDTO toMyInfoDTO(Member member) {
+        return MyInfoDTO.builder()
+                .universityName(member.getUniversity().getName())
+                .part(member.getPart().name())
+                .phoneNumber(member.getPhoneNumber())
+                .portfolio(member.getPortfolio())
                 .build();
     }
 }
