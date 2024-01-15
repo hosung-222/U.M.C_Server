@@ -15,24 +15,24 @@ public class MemberRequestDTO {
     public static class JoinDTO {
         @NotBlank
         @Email(message = "잘못된 이메일 형식입니다.")
-        String email;
+        private String email;
         @NotNull
-        String memberName;
+        private String memberName;
         @Pattern(regexp = "(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\\W)(?=\\S+$).{8,16}", message = "비밀번호는 8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.")
         @NotNull
-        String password;
+        private String password;
         @NotNull
-        String nameNickname;
+        private String nameNickname;
         @NotNull
-        Integer part;
+        private Integer part;
         @NotNull
-        Long universityId;
+        private Long universityId;
         @NotNull
         @Pattern(regexp = "^\\d{2,3}\\d{3,4}\\d{4}$", message = "핸드폰 번호의 약식과 맞지 않습니다.")
-        String phoneNumber;
+        private String phoneNumber;
         @NotNull
-        Integer generation;
+        private Integer generation;
 
-        String portfolio;
+        private String portfolio;
     }
 }

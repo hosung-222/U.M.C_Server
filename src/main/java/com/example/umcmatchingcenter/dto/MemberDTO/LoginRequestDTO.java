@@ -8,8 +8,8 @@ import javax.validation.constraints.Email;
 @Getter
 public class LoginRequestDTO {
     @NotNull
-    String memberName;
+    private String memberName;
 
     @NotNull
-    String password;
+    private String password;
 }
