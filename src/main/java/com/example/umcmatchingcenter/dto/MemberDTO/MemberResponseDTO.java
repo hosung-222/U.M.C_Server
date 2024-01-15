@@ -14,8 +14,18 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class JoinResultDTO{
-        Long id;
-        LocalDateTime createdAt;
+        private Long id;
+        private LocalDateTime createdAt;
     }
 
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyInfoDTO {
+        private String universityName;
+        private String part;
+        private String phoneNumber;
+        private String portfolio;
+    }
 }
