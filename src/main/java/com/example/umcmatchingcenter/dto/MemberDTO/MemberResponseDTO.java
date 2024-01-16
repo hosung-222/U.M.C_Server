@@ -27,6 +27,7 @@ public class MemberResponseDTO {
         private String part;
         private String phoneNumber;
         private String portfolio;
+
     }
 
     @Builder
@@ -50,5 +51,6 @@ public class MemberResponseDTO {
     public static class ApplyTeamDTO {
         int round;
         String teamName;
+
     }
 }
