@@ -14,6 +14,7 @@ public class AlarmConverter {
                 .alarmType(alarmType)
                 .body(content)
                 .url(url)
+                .title("제목")
                 .build();
     }
 

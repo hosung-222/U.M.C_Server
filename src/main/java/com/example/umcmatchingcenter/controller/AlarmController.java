@@ -21,11 +21,9 @@ public class AlarmController {
     private final AlarmCommandService alarmCommandService;
 
     @GetMapping(value = "/subscribe", produces = "text/event-stream")
-    @PreAuthorize("hasRole('ROLE_CHALLENGER')")
-    @ResponseStatus(HttpStatus.OK)
-    public SseEmitter subscribe(Principal principal,
-                                                   @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        return alarmCommandService.subscribe(principal.getName(), lastEventId);
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public SseEmitter subscribe(Principal principal) {
+        return alarmCommandService.subscribe(principal.getName());
     }
+
 }

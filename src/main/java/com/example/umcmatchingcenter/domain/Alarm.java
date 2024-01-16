@@ -34,6 +34,9 @@ public class Alarm extends BaseEntity {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
+    @Column
+    private String title;
+
     @Column(nullable = false)
     private String url;
 

@@ -26,7 +26,7 @@ public class AlarmCommandService {
     private final EmitterRepository emitterRepository;
     private final AlarmRepository alarmRepository;
 
-    public SseEmitter subscribe(String memberName, String lastEventId) {
+    public SseEmitter subscribe(String memberName) {
         String emitterId = makeTimeIncludeId(memberName);
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
@@ -36,26 +36,11 @@ public class AlarmCommandService {
         String eventId = makeTimeIncludeId(memberName);
         sendNotification(emitter, eventId, emitterId, "EventStream Created. [memberName=" + memberName + "]");
 
-        if (hasLostData(lastEventId)) {
-            sendLostData(lastEventId, memberName, emitterId, emitter);
-        }
-
         return emitter;
-    }
-
-    private boolean hasLostData(String lastEventId) {
-        return !lastEventId.isEmpty();
     }
 
     private String makeTimeIncludeId(String memberName) {
         return memberName + "_" + System.currentTimeMillis();
-    }
-
-    private void sendLostData(String lastEventId, String memberName, String emitterId, SseEmitter emitter) {
-        Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByMemberId(String.valueOf(memberName));
-        eventCaches.entrySet().stream()
-                .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-                .forEach(entry -> sendNotification(emitter, entry.getKey(), emitterId, entry.getValue()));
     }
 
     private void sendNotification(SseEmitter emitter, String eventId, String emitterId, Object data) {
@@ -73,12 +58,11 @@ public class AlarmCommandService {
     public void send(Member receiver, AlarmType alarmType, String content, String url) {
         Alarm alarm = alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content, url));
 
-        String receiverEmail = receiver.getEmail();
-        String eventId = receiverEmail + "_" + System.currentTimeMillis();
-        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiverEmail);
+        String memberName = receiver.getMemberName();
+        String eventId = memberName + "_" + System.currentTimeMillis();
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(memberName);
         emitters.forEach(
                 (key, emitter) -> {
-                    emitterRepository.saveEventCache(key, alarm);
                     sendNotification(emitter, eventId, key, AlarmConverter.toAlarmDTO(alarm));
                 }
         );
