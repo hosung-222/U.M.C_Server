@@ -81,6 +81,7 @@ public class MemberConverter {
 
     public static ChallengerInfoDTO toChallengerInfoDTO(Member member){
         return ChallengerInfoDTO.builder()
+                .nameNickname(member.getMemberName())
                 .generation(member.getGeneration())
                 .nameNickname(member.getNameNickname())
                 .part(member.getPart().toString())

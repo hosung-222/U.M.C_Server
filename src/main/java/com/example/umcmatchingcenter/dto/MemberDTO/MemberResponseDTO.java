@@ -35,6 +35,7 @@ public class MemberResponseDTO {
     @AllArgsConstructor
 
     public static class ChallengerInfoDTO {
+        String name;
         int generation;
         String nameNickname;
         String part;
