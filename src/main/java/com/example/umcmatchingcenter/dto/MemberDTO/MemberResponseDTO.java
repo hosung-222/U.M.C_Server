@@ -42,4 +42,13 @@ public class MemberResponseDTO {
         int matchCount;
         String matchingStatus;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MatchingRoundDTO{
+        int round;
+        String teamName;
+    }
 }
