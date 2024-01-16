@@ -24,7 +24,8 @@ public enum ErrorStatus implements BaseErrorCode {
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
 
     // 내 프로젝트 에러
-    NO_SUCH_APPLICANT(HttpStatus.NOT_FOUND, "MYPROJECT401", "해당 프로젝트의 지원자가 없습니다"),
+    NO_SUCH_APPLICANT(HttpStatus.BAD_REQUEST, "MYPROJECT4001", "해당 프로젝트의 지원자가 없습니다."),
+    NO_MORE_APPLICANT(HttpStatus.BAD_REQUEST, "MYPROJECT4002", "더 이상 지원자를 받을 수 없습니다."),
 
     WRONG_AUTH_CODE(HttpStatus.BAD_REQUEST, "EMAIL4002", "잘못된 인증 코드 입니다"),
     FAIL_CREATE_CODE(HttpStatus.BAD_REQUEST, "EMAIL4003", "코드 생성에 실패했습니다"),
