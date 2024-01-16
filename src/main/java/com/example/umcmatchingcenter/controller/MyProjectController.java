@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.controller;
 
+import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.dto.projectDto.MyProjectResponseDto;
 import com.example.umcmatchingcenter.service.myProjectService.ProjectService;
 import io.swagger.annotations.ApiParam;
@@ -25,8 +26,8 @@ public class MyProjectController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public MyProjectResponseDto myProject() {
-        return projectService.myProject();
+    public ApiResponse<MyProjectResponseDto> myProject() {
+        return ApiResponse.onSuccess(projectService.myProject());
     }
 
     @PostMapping("/pass/{memberId}")
@@ -37,9 +38,8 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
-    public HttpStatus pass(@PathVariable Long memberId) {
-        String pass = projectService.pass(memberId);
-        return HttpStatus.OK;
+    public ApiResponse<String> pass(@PathVariable Long memberId) {
+        return ApiResponse.onSuccess(projectService.pass(memberId));
     }
 
     @PostMapping("/fail/{memberId}")
@@ -50,8 +50,7 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
-    public HttpStatus fail(@PathVariable Long memberId) {
-        String fail = projectService.fail(memberId);
-        return HttpStatus.OK;
+    public ApiResponse<String> fail(@PathVariable Long memberId) {
+        return ApiResponse.onSuccess(projectService.fail(memberId));
     }
 }
