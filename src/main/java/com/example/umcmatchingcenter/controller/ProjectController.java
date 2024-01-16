@@ -40,7 +40,7 @@ public class ProjectController {
     })
     public ApiResponse<ProjectResponseDTO.ProjectListDTO> getProjectList(@RequestParam(name = "status") ProjectStatus status, @RequestParam(name = "page") Integer page){
         List<Project> projectList = projectQueryService.getProjectList(status, page - 1);
-        return ApiResponse.onSuccess(ProjectConverter.projectPreViewListDTO(projectList));
+        return ApiResponse.onSuccess(ProjectConverter.toProjectPreViewListDTO(projectList));
     }
 
     // 프로젝트 상세 조회
@@ -57,6 +57,6 @@ public class ProjectController {
     })
     public ApiResponse<ProjectResponseDTO.ProjectDTO> getProject(@PathVariable(name = "projectId") Long projectId){
         Project project = projectQueryService.getProjectDetail(projectId);
-        return ApiResponse.onSuccess(ProjectConverter.projectDetailDTO(project));
+        return ApiResponse.onSuccess(ProjectConverter.toProjectDetailDTO(project));
     }
 }

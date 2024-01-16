@@ -1,12 +1,10 @@
 package com.example.umcmatchingcenter.dto.projectDto;
 
-import com.example.umcmatchingcenter.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
