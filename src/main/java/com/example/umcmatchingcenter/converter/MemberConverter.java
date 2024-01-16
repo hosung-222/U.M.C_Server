@@ -85,7 +85,7 @@ public class MemberConverter {
                 .generation(member.getGeneration())
                 .nameNickname(member.getNameNickname())
                 .part(member.getPart().toString())
-                .matchCount(3)
+                .matchCount(member.getProjectVolunteerList().size())
                 .matchingStatus(member.getMatchingStatus().toString())
                 .build();
     }
