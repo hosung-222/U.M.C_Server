@@ -31,10 +31,10 @@ public class Alarm extends BaseEntity {
     @Column(nullable = false)
     private AlarmType alarmType;
 
-    @Column(nullable = false)
-    private String title;
-
     @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
+
+    @Column(nullable = false)
+    private String url;
 
 }
