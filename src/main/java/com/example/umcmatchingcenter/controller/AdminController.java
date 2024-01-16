@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "관리자 API")
 public class AdminController {
 
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
 
-    @Tag(name = "Challenger Manage API")
     @Operation(summary = "챌린저 관리용 조회 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -48,7 +48,6 @@ public class AdminController {
         return ApiResponse.onSuccess(challengerList);
     }
 
-    @Tag(name = "Apply Team API")
     @Operation(summary = "매칭 차수 별 지원 팀 조회 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
