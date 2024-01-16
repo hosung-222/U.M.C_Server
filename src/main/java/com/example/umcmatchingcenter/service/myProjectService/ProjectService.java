@@ -121,9 +121,12 @@ public class ProjectService {
     @Transactional
     public String pass(Long memberId) {
 
-        Optional<Application> foundApplication = applicationRepository.findByMember_Id(memberId);
+        // 인원 만석 시 예외처리
+        if (isFull(memberId)) {
+            throw new MyProjectHandler(ErrorStatus.NO_MORE_APPLICANT);
+        }
 
-        if (foundApplication != null && foundApplication.isPresent()) {
+        if (getApplication(memberId) != null && getApplication(memberId).isPresent()) {
 
             getMember(memberId).setProject(getProject());
             getMember(memberId).setMatchingStatus(MemberMatchingStatus.MATCH);
@@ -138,13 +141,32 @@ public class ProjectService {
     @Transactional
     public String fail(Long memberId) {
 
-        Optional<Application> foundApplication = applicationRepository.findByMember_Id(memberId);
+        Optional<Application> foundApplication = getApplication(memberId);
 
         if (foundApplication != null && foundApplication.isPresent()) {
             getMember(memberId).setMatchingStatus(MemberMatchingStatus.NON);
             return getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
+    }
+
+    public Boolean isFull(Long memberId) {
+
+        if (getMember(memberId) == null) {
+            throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
+        }
+        MemberPart memberPart = getMember(memberId).getPart();
+        Optional<Recruitment> recruitment = getProject().getRecruitments().stream()
+                .filter(part -> part.getPart().equals(memberPart)).findAny();
+        if (recruitment.get().getNowRecruitment() == recruitment.get().getTotalRecruitment()){
+            return true;
+        }
+        return false;
+    }
+
+    private Optional<Application> getApplication(Long memberId) {
+        Optional<Application> foundApplication = applicationRepository.findByMember_Id(memberId);
+        return foundApplication;
     }
 
     private Project getProject() {
