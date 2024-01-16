@@ -35,6 +35,6 @@ public class AdminController {
     public ApiResponse<List<ApplyTeamDTO>> matchRoundList(@PathVariable String name){
         List<ApplyTeamDTO> matchingRoundDTOList = memberQueryService.getMatcingRoundList(name);
 
-        return ApiResponse.onSuccess(null);
+        return ApiResponse.onSuccess(matchingRoundDTOList);
     }
 }
