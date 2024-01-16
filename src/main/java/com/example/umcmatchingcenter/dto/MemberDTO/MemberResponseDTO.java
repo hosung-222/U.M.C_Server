@@ -33,6 +33,7 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+
     public static class ChallengerInfoDTO {
         int generation;
         String nameNickname;
