@@ -5,6 +5,7 @@ import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 
+import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import javax.persistence.*;
 
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
@@ -84,6 +85,9 @@ public class Member extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @OneToMany(mappedBy = "member")
+    private List<ProjectVolunteer> projectVolunteerList;
 
     public void setUniversity(University university){
         this.university = university;
