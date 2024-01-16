@@ -3,8 +3,10 @@ package com.example.umcmatchingcenter.converter;
 import com.example.umcmatchingcenter.domain.Alarm;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
-import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmDTO;
 import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AlarmConverter {
     public static Alarm toAlarm(Member receiver, AlarmType alarmType, String content, String url){
@@ -18,8 +20,8 @@ public class AlarmConverter {
                 .build();
     }
 
-    public static AlarmDTO toAlarmDTO(Alarm alarm){
-        return AlarmDTO.builder()
+    public static AlarmResponseDTO.AlarmViewDTO toAlarmViewDTO(Alarm alarm){
+        return AlarmResponseDTO.AlarmViewDTO.builder()
                 .memberName(alarm.getMember().getMemberName())
                 .id(alarm.getId().toString())
                 .body(alarm.getBody())
@@ -27,12 +29,13 @@ public class AlarmConverter {
                 .build();
     }
 
+    public static AlarmResponseDTO.AlarmViewListDTO toAlarmViewListDTO(List<Alarm> alarmList){
+        List<AlarmResponseDTO.AlarmViewDTO> alarmViewDTOList = alarmList.stream()
+                .map(AlarmConverter::toAlarmViewDTO).collect(Collectors.toList());
 
-    public static AlarmResponseDTO toAlarmResponseDTO(String memberName,String emitterId){
-        return AlarmResponseDTO.builder()
-                .memberName(memberName)
-                .emitterId(emitterId)
+        return AlarmResponseDTO.AlarmViewListDTO.builder()
+                .alarmList(alarmViewDTOList)
+                .listSize(alarmViewDTOList.size())
                 .build();
-
     }
 }

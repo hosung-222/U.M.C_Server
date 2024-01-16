@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,12 +30,12 @@ public class AlarmCommandService {
     public SseEmitter subscribe(String memberName) {
         String emitterId = makeTimeIncludeId(memberName);
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
+
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
-        // 503 에러를 방지하기 위한 더미 이벤트 전송
         String eventId = makeTimeIncludeId(memberName);
-        sendNotification(emitter, eventId, emitterId, "EventStream Created. [memberName=" + memberName + "]");
+        sendNotification(emitter, eventId, emitterId, "연결 성공" + memberName + "]");
 
         return emitter;
     }
@@ -63,7 +64,7 @@ public class AlarmCommandService {
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(memberName);
         emitters.forEach(
                 (key, emitter) -> {
-                    sendNotification(emitter, eventId, key, AlarmConverter.toAlarmDTO(alarm));
+                    sendNotification(emitter, eventId, key, AlarmConverter.toAlarmViewDTO(alarm));
                 }
         );
     }
