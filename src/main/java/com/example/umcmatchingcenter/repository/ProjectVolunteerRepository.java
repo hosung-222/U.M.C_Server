@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProjectVolunteerRepository extends JpaRepository<ProjectVolunteer, Long> {
 
-    List<ProjectVolunteer> findAllByMember(Member member);
+    List<ProjectVolunteer> findAllByMemberOrderByRound(Member member);
 }

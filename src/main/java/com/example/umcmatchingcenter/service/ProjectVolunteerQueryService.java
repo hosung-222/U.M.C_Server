@@ -20,7 +20,7 @@ public class ProjectVolunteerQueryService {
     private final ProjectVolunteerRepository projectVolunteerRepository;
 
     public List<ApplyTeamDTO> getAllApplyTeam(Member member){
-        List<ProjectVolunteer> matchingScheduleList = projectVolunteerRepository.findAllByMember(member);
+        List<ProjectVolunteer> matchingScheduleList = projectVolunteerRepository.findAllByMemberOrderByRound(member);
 
         return matchingScheduleList.stream()
                 .map(ProjectVolunteerConverter::toApplyTeamDTO)

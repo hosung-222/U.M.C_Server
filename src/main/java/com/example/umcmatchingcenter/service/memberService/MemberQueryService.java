@@ -50,7 +50,6 @@ public class MemberQueryService {
     public List<ApplyTeamDTO> getMatcingRoundList(String name) {
         Optional<Member> member = memberRepository.findByMemberName(name);
 
-        List<ApplyTeamDTO> teamList = projectVolunteerQueryService.getAllApplyTeam(member.get());
-        return teamList;
+        return projectVolunteerQueryService.getAllApplyTeam(member.get());
     }
 }
