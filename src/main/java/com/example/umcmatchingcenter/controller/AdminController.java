@@ -4,13 +4,12 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MatchingRoundDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +32,8 @@ public class AdminController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/manage/{name}")
-    public ApiResponse<List<MemberResponseDTO.MatchingRoundDTO>> matchRoundList(@PathVariable String name){
-
+    public ApiResponse<List<ApplyTeamDTO>> matchRoundList(@PathVariable String name){
+        List<ApplyTeamDTO> matchingRoundDTOList = memberQueryService.getMatcingRoundList(name);
 
         return ApiResponse.onSuccess(null);
     }

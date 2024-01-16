@@ -47,7 +47,7 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class MatchingRoundDTO{
+    public static class ApplyTeamDTO {
         int round;
         String teamName;
     }

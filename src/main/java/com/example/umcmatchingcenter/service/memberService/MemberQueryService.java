@@ -6,16 +6,16 @@ import static com.example.umcmatchingcenter.domain.enums.MemberRole.*;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
-import com.example.umcmatchingcenter.domain.enums.MemberRole;
+import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 import com.example.umcmatchingcenter.repository.MemberRepository;
+import com.example.umcmatchingcenter.service.ProjectVolunteerQueryService;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +27,7 @@ public class MemberQueryService {
     private static final int NOW_GENERATION = 5;
 
     private final MemberRepository memberRepository;
+    private final ProjectVolunteerQueryService projectVolunteerQueryService;
 
     public Optional<Member> findMember(Long id){
         return memberRepository.findById(id);
@@ -44,5 +45,12 @@ public class MemberQueryService {
         return members.stream()
                 .map(MemberConverter::toChallengerInfoDTO)
                 .toList();
+    }
+
+    public List<ApplyTeamDTO> getMatcingRoundList(String name) {
+        Optional<Member> member = memberRepository.findByMemberName(name);
+
+        List<ApplyTeamDTO> teamList = projectVolunteerQueryService.getAllApplyTeam(member.get());
+        return teamList;
     }
 }
