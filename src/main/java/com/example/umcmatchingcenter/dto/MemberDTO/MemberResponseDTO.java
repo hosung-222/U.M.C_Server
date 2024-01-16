@@ -27,5 +27,30 @@ public class MemberResponseDTO {
         private String part;
         private String phoneNumber;
         private String portfolio;
+
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+
+    public static class ChallengerInfoDTO {
+        String name;
+        int generation;
+        String nameNickname;
+        String part;
+        int matchCount;
+        String matchingStatus;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ApplyTeamDTO {
+        int round;
+        String teamName;
+
     }
 }
