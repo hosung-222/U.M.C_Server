@@ -41,11 +41,4 @@ public class Alarm extends BaseEntity {
     @Column
     private String title;
 
-    @Column(nullable = false)
-    private String url;
-
-    public void changeIsConfirmed(Boolean isConfirmed){
-        this.isConfirmed = isConfirmed;
-    }
-
 }

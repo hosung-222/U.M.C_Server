@@ -9,14 +9,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AlarmConverter {
-    public static Alarm toAlarm(Member receiver, AlarmType alarmType, String content, String url){
+    public static Alarm toAlarm(Member receiver, AlarmType alarmType, String content){
 
         return Alarm.builder()
                 .member(receiver)
                 .alarmType(alarmType)
                 .body(content)
-                .url(url)
-                .title("제목")
+                .title(alarmType.getTitle())
                 .build();
     }
 
@@ -24,8 +23,19 @@ public class AlarmConverter {
         return AlarmResponseDTO.AlarmViewDTO.builder()
                 .memberName(alarm.getMember().getMemberName())
                 .id(alarm.getId().toString())
+                .title(alarm.getAlarmType().getTitle())
                 .body(alarm.getBody())
                 .isConfirmed(alarm.getIsConfirmed())
+                .createdAt(alarm.getCreatedAt().toString())
+                .build();
+    }
+
+    public static AlarmResponseDTO.SseAlarmViewDTO toSseAlarmViewDTO(Alarm alarm){
+        return AlarmResponseDTO.SseAlarmViewDTO.builder()
+                .memberName(alarm.getMember().getMemberName())
+                .id(alarm.getId().toString())
+                .title(alarm.getAlarmType().getTitle())
+                .body(alarm.getBody())
                 .createdAt(alarm.getCreatedAt().toString())
                 .build();
     }

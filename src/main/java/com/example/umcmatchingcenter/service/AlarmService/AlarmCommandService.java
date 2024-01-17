@@ -35,7 +35,7 @@ public class AlarmCommandService {
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
         String eventId = makeTimeIncludeId(memberName);
-        sendNotification(emitter, eventId, emitterId, "연결 성공" + memberName + "]");
+        sendNotification(emitter, eventId, emitterId, "연결 성공 [멤버 닉네임 : " + memberName + "]");
 
         return emitter;
     }
@@ -56,15 +56,15 @@ public class AlarmCommandService {
         }
     }
 
-    public void send(Member receiver, AlarmType alarmType, String content, String url) {
-        Alarm alarm = alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content, url));
+    public void send(Member receiver, AlarmType alarmType, String content) {
+        Alarm alarm = alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content));
 
         String memberName = receiver.getMemberName();
         String eventId = memberName + "_" + System.currentTimeMillis();
         Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(memberName);
         emitters.forEach(
                 (key, emitter) -> {
-                    sendNotification(emitter, eventId, key, AlarmConverter.toAlarmViewDTO(alarm));
+                    sendNotification(emitter, eventId, key, AlarmConverter.toSseAlarmViewDTO(alarm));
                 }
         );
     }
