@@ -2,22 +2,18 @@ package com.example.umcmatchingcenter.controller;
 
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
-import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RestController
@@ -38,13 +34,14 @@ public class AlarmController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
-    @GetMapping("/{memberName}/alarms")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
     @Parameters({
             @Parameter(name = "memberName", description = "멤버의 로그인 아이디")
     })
+    @GetMapping("/{memberName}/alarms")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
     public ApiResponse<AlarmResponseDTO.AlarmViewListDTO> getReviewList(@PathVariable(name = "memberName") String memberName){
         return ApiResponse.onSuccess(alarmQueryService.getAlarmList(memberName));
     }
+
 
 }

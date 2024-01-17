@@ -6,12 +6,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@DynamicUpdate
+@DynamicInsert
 @Getter
 @Builder
 public class Alarm extends BaseEntity {
@@ -39,5 +43,9 @@ public class Alarm extends BaseEntity {
 
     @Column(nullable = false)
     private String url;
+
+    public void changeIsConfirmed(Boolean isConfirmed){
+        this.isConfirmed = isConfirmed;
+    }
 
 }

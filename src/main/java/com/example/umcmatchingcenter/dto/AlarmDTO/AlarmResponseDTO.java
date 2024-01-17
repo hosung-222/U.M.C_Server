@@ -28,6 +28,19 @@ public class AlarmResponseDTO {
         String id;
         String memberName;
         String body;
+        Boolean isConfirmed;
+        String createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DeleteAlarmDTO{
+        String id;
+        String memberName;
+        String body;
+        Boolean isConfirmed;
         String createdAt;
     }
 

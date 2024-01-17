@@ -25,6 +25,7 @@ public class AlarmConverter {
                 .memberName(alarm.getMember().getMemberName())
                 .id(alarm.getId().toString())
                 .body(alarm.getBody())
+                .isConfirmed(alarm.getIsConfirmed())
                 .createdAt(alarm.getCreatedAt().toString())
                 .build();
     }

@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class AlarmQueryService {
 
     private final MemberRepository memberRepository;
@@ -27,7 +27,13 @@ public class AlarmQueryService {
         Member member = memberRepository.findByMemberName(memberName).get();
 
         List<Alarm> alarmList = alarmRepository.findAllByMember(member);
+        updateAlarmIsConfirmed(member);
         return AlarmConverter.toAlarmViewListDTO(alarmList);
     }
+
+    public void updateAlarmIsConfirmed(Member member){
+        alarmRepository.updateAlarmIsConfirmed(member);
+    }
+
 
 }
