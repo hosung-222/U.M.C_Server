@@ -7,8 +7,6 @@ import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmQueryService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/alarms")
 @RequiredArgsConstructor
 public class AlarmController {
 
@@ -29,7 +26,7 @@ public class AlarmController {
     private final AlarmQueryService alarmQueryService;
 
     @Operation(summary = "실시간 알림 통신 연결",description = "특정 멤버의 실시간 알림 통신을 위한 연결 api")
-    @GetMapping(value = "/subscribe", produces = "text/event-stream")
+    @GetMapping(value = "/alarms/subscribe", produces = "text/event-stream")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
     public SseEmitter subscribe(Principal principal, HttpServletResponse response) {
         response.setHeader("X-Accel-Buffering", "no");
@@ -43,13 +40,10 @@ public class AlarmController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NO_ALARM_LIST", description = "알림이 존재하지 않습니다.",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
-    @Parameters({
-            @Parameter(name = "memberName", description = "멤버의 로그인 아이디")
-    })
-    @GetMapping("/{memberName}/alarms")
+    @GetMapping("/alarms")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
-    public ApiResponse<AlarmResponseDTO.AlarmViewListDTO> getAlarmList(@PathVariable(name = "memberName") String memberName){
-        return ApiResponse.onSuccess(alarmQueryService.getAlarmList(memberName));
+    public ApiResponse<AlarmResponseDTO.AlarmViewListDTO> getAlarmList(Principal principal){
+        return ApiResponse.onSuccess(alarmQueryService.getAlarmList(principal.getName()));
     }
 
 
@@ -59,14 +53,11 @@ public class AlarmController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NO_DELETE_ALARM", description = "삭제할 알림이 존재하지 않습니다.",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
-    @Parameters({
-            @Parameter(name = "memberName", description = "멤버의 로그인 아이디")
-    })
-    @DeleteMapping("/{memberName}/alarms")
+    @DeleteMapping("/alarms")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
-    public ApiResponse<AlarmResponseDTO.DeleteAlarmDTO> deleteAlarms(@PathVariable(name = "memberName") String memberName){
-        int deleteCount = alarmCommandService.deleteAlarms(memberName);
-        return ApiResponse.onSuccess(AlarmConverter.toDeleteAlarmDTO(memberName, deleteCount));
+    public ApiResponse<AlarmResponseDTO.DeleteAlarmDTO> deleteAlarms(Principal principal){
+        int deleteCount = alarmCommandService.deleteAlarms(principal.getName());
+        return ApiResponse.onSuccess(AlarmConverter.toDeleteAlarmDTO(principal.getName(), deleteCount));
     }
 
 
