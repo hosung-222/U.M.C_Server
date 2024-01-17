@@ -5,19 +5,24 @@ import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 
+import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import javax.persistence.*;
 
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import com.example.umcmatchingcenter.domain.mapping.Application;
-import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@DynamicUpdate
+@DynamicInsert
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -54,16 +59,17 @@ public class Member extends BaseEntity {
     private String memberName;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'ACTIVE'")
     private MemberStatus memberStatus;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(30) DEFAULT 'ROLE_CHALLENGER'")
     private MemberRole role;
 
     @Enumerated(EnumType.STRING)
     private MemberPart part;
 
     @Enumerated(EnumType.STRING)
-    @ColumnDefault("NON")
     @Column(columnDefinition = "VARCHAR(15) DEFAULT 'NON'")
     private MemberMatchingStatus matchingStatus;
 
@@ -76,12 +82,16 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "inquirer", cascade = CascadeType.ALL)
     private List<Chat> inquirerChats;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "application_id")
-    private Application application;
+    @OneToMany(mappedBy = "member")
+    private List<ProjectVolunteer> projectVolunteerList;
+
+    public void setUniversity(University university){
+        this.university = university;
+        university.getMembers().add(this);
+    }
 
 }
