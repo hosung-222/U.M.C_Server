@@ -5,12 +5,16 @@ import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.enums.AlarmType;
+import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
+import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
+import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,6 +41,7 @@ public class MemberCommandService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
+    private final AlarmCommandService alarmCommandService;
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
@@ -46,6 +51,9 @@ public class MemberCommandService {
         if(memberRepository.findByMemberName(request.getMemberName()).isPresent()){
             throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
         }
+
+        Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
+        alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
 
         Member newMember = MemberConverter.toMember(request, university.get());
         return memberRepository.save(newMember);
