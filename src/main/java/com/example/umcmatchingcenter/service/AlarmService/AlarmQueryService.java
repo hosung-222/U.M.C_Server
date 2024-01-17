@@ -25,7 +25,8 @@ public class AlarmQueryService {
 
     public AlarmResponseDTO.AlarmViewListDTO getAlarmList(String memberName) {
 
-        Member member = memberRepository.findByMemberName(memberName).get();
+        Member member = memberRepository.findByMemberName(memberName)
+                .orElseThrow(()-> new AlarmHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<Alarm> alarmList = alarmRepository.findAllByMember(member);
 

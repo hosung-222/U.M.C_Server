@@ -70,7 +70,8 @@ public class AlarmCommandService {
     }
 
     public int deleteAlarms(String memberName){
-        Member member = memberRepository.findByMemberName(memberName).get();
+        Member member = memberRepository.findByMemberName(memberName)
+                .orElseThrow(()-> new AlarmHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         int deletecout = alarmRepository.deleteAllByIds(member);
         if(deletecout==0){
