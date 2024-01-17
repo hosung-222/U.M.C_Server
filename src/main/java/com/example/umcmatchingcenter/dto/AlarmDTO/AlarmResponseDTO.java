@@ -37,11 +37,8 @@ public class AlarmResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class DeleteAlarmDTO{
-        String id;
         String memberName;
-        String body;
-        Boolean isConfirmed;
-        String createdAt;
+        int deleteCount;
     }
 
 }

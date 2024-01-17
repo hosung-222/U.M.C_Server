@@ -1,22 +1,20 @@
 package com.example.umcmatchingcenter.service.AlarmService;
 
-import com.example.umcmatchingcenter.apiPayload.ApiResponse;
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
 import com.example.umcmatchingcenter.converter.AlarmConverter;
-import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Alarm;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
-import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 import com.example.umcmatchingcenter.repository.AlarmRepository;
 import com.example.umcmatchingcenter.repository.EmitterRepository;
+import com.example.umcmatchingcenter.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -27,6 +25,7 @@ public class AlarmCommandService {
 
     private final EmitterRepository emitterRepository;
     private final AlarmRepository alarmRepository;
+    private final MemberRepository memberRepository;
 
     public SseEmitter subscribe(String memberName) {
         String emitterId = makeTimeIncludeId(memberName);
@@ -68,5 +67,16 @@ public class AlarmCommandService {
                     sendNotification(emitter, eventId, key, AlarmConverter.toAlarmViewDTO(alarm));
                 }
         );
+    }
+
+    public int deleteAlarms(String memberName){
+        Member member = memberRepository.findByMemberName(memberName).get();
+
+        int deletecout = alarmRepository.deleteAllByIds(member);
+        if(deletecout==0){
+            throw new AlarmHandler(ErrorStatus.NO_DELETE_ALARM);
+        }else{
+            return deletecout;
+        }
     }
 }

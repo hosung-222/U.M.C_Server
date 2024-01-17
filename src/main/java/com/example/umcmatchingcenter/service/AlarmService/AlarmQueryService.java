@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.service.AlarmService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
 import com.example.umcmatchingcenter.converter.AlarmConverter;
 import com.example.umcmatchingcenter.domain.Alarm;
 import com.example.umcmatchingcenter.domain.Member;
@@ -11,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +28,10 @@ public class AlarmQueryService {
         Member member = memberRepository.findByMemberName(memberName).get();
 
         List<Alarm> alarmList = alarmRepository.findAllByMember(member);
+
+        if (alarmList == null || alarmList.isEmpty())
+            throw new AlarmHandler(ErrorStatus.NO_ALARM_LIST);
+
         updateAlarmIsConfirmed(member);
         return AlarmConverter.toAlarmViewListDTO(alarmList);
     }

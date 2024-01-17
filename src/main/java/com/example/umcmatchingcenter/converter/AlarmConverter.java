@@ -39,4 +39,11 @@ public class AlarmConverter {
                 .listSize(alarmViewDTOList.size())
                 .build();
     }
+
+    public static AlarmResponseDTO.DeleteAlarmDTO toDeleteAlarmDTO(String memberName, int deleteCount){
+        return AlarmResponseDTO.DeleteAlarmDTO.builder()
+                .deleteCount(deleteCount)
+                .memberName(memberName)
+                .build();
+    }
 }
