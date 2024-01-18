@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
-import com.example.umcmatchingcenter.dto.projectDto.MyProjectResponseDto;
+import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.service.myProjectService.ProjectService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,7 +25,7 @@ public class MyProjectController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    public ApiResponse<MyProjectResponseDto> myProject() {
+    public ApiResponse<MyProjectResponseDTO> myProject() {
         return ApiResponse.onSuccess(projectService.myProject());
     }
 

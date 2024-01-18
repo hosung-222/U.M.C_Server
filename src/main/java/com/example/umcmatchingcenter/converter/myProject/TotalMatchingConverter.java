@@ -1,12 +1,12 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
-import com.example.umcmatchingcenter.dto.projectDto.TotalMatchingResponseDto;
+import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
 
 public class TotalMatchingConverter {
 
-    public static TotalMatchingResponseDto toTotalMatchingResponseDto(int nowMatchingNum,
+    public static TotalMatchingResponseDTO toTotalMatchingResponseDTO(int nowMatchingNum,
                                                                       int totalMatchingNum) {
-        return TotalMatchingResponseDto.builder()
+        return TotalMatchingResponseDTO.builder()
                 .nowMatchingNum(nowMatchingNum)
                 .totalMatchingNum(totalMatchingNum)
                 .build();

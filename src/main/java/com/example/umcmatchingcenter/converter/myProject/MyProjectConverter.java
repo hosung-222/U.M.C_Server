@@ -1,20 +1,20 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
-import com.example.umcmatchingcenter.dto.projectDto.ApplicantInfoResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.MyProjectResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.PartMatchingResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.TotalMatchingResponseDto;
+import com.example.umcmatchingcenter.dto.projectDTO.ApplicantInfoResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.PartMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
 
 import java.util.List;
 
 public class MyProjectConverter {
 
-    public static MyProjectResponseDto toMyProjectResponseDto(TotalMatchingResponseDto totalMatchingResponseDto,
-                                                              List<PartMatchingResponseDto> partMatchingDto,
+    public static MyProjectResponseDTO toMyProjectResponseDto(TotalMatchingResponseDTO totalMatchingResponseDto,
+                                                              List<PartMatchingResponseDTO> partMatchingDto,
                                                               double competitionRate,
-                                                              List<ApplicantInfoResponseDto> applicantInfoDto) {
+                                                              List<ApplicantInfoResponseDTO> applicantInfoDto) {
 
-        return MyProjectResponseDto.builder()
+        return MyProjectResponseDTO.builder()
                 .totalMatchingResponseDto(totalMatchingResponseDto)
                 .partMatchingDto(partMatchingDto)
                 .competitionRate(competitionRate)
