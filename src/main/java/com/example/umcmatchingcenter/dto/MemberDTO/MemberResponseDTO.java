@@ -53,4 +53,13 @@ public class MemberResponseDTO {
         String teamName;
 
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DepartResultDTO{
+        private Long memberId;
+        private String nameNickname;
+    }
 }
