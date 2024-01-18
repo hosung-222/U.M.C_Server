@@ -94,4 +94,8 @@ public class Member extends BaseEntity {
         university.getMembers().add(this);
     }
 
+    public void depart(){
+        this.memberStatus = MemberStatus.INACTIVE;
+    }
+
 }
