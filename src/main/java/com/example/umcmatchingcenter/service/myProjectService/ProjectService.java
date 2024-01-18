@@ -6,21 +6,15 @@ import com.example.umcmatchingcenter.converter.myProject.ApplicantsConverter;
 import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.ProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.TotalMatchingConverter;
-import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
-import com.example.umcmatchingcenter.domain.mapping.Application;
+import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
+import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
-import com.example.umcmatchingcenter.dto.projectDto.ApplicantInfoResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.MyProjectResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.PartMatchingResponseDto;
-import com.example.umcmatchingcenter.dto.projectDto.TotalMatchingResponseDto;
-import com.example.umcmatchingcenter.jwt.SecurityUtil;
-import com.example.umcmatchingcenter.repository.MemberRepository;
-import com.example.umcmatchingcenter.repository.project.ApplicationRepository;
-import com.example.umcmatchingcenter.repository.project.ProjectRepository;
-import com.example.umcmatchingcenter.repository.project.RecruitmentRepository;
+import com.example.umcmatchingcenter.dto.projectDTO.ApplicantInfoResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.PartMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,12 +29,9 @@ import java.util.Optional;
 @Slf4j
 public class ProjectService {
 
-    private final ProjectRepository projectRepository;
-    private final RecruitmentRepository recruitmentRepository;
-    private final MemberRepository memberRepository;
-    private final ApplicationRepository applicationRepository;
+    private final ProjectQueryService projectQueryService;
 
-    public MyProjectResponseDto myProject() {
+    public MyProjectResponseDTO myProject() {
         return MyProjectConverter.toMyProjectResponseDto(
                 getCurrentMatchingNum(),
                 getPartRecruitment(),
@@ -49,27 +40,27 @@ public class ProjectService {
     }
 
     @Transactional
-    public TotalMatchingResponseDto getCurrentMatchingNum() {
+    public TotalMatchingResponseDTO getCurrentMatchingNum() {
 
         int nowMatchingNum = 0;
         int totalMatchingNum = 0;
 
-        if (getProject() != null) {
-            List<Recruitment> recruitments = getProject().getRecruitments();
+        if (projectQueryService.getProject() != null) {
+            List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
             for (Recruitment recruitment : recruitments) {
                 nowMatchingNum += recruitment.getNowRecruitment();
                 totalMatchingNum += recruitment.getTotalRecruitment();
             }
         }
-        return TotalMatchingConverter.toTotalMatchingResponseDto(nowMatchingNum,totalMatchingNum);
+        return TotalMatchingConverter.toTotalMatchingResponseDTO(nowMatchingNum,totalMatchingNum);
     }
 
     @Transactional
-    public List<PartMatchingResponseDto> getPartRecruitment() {
+    public List<PartMatchingResponseDTO> getPartRecruitment() {
 
-        List<PartMatchingResponseDto> result = new ArrayList<>();
-        if (getProject() != null) {
-            List<Recruitment> recruitments = getProject().getRecruitments();
+        List<PartMatchingResponseDTO> result = new ArrayList<>();
+        if (projectQueryService.getProject() != null) {
+            List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
             for (Recruitment recruitment : recruitments) {
                 MemberPart part = recruitment.getPart();
                 result.add(ProjectConverter.toPartMatchingResponseDto(
@@ -86,9 +77,9 @@ public class ProjectService {
 
         int totalRecruitmentNum = 0;
 
-        if (getProject() != null) {
-            List<Application> applications = getProject().getApplications();
-            List<Recruitment> recruitments = getProject().getRecruitments();
+        if (projectQueryService.getProject() != null) {
+            List<ProjectVolunteer> applications = projectQueryService.getProject().getProjectVolunteerList();
+            List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
             for (Recruitment recruitment : recruitments) {
                 totalRecruitmentNum += recruitment.getTotalRecruitment();
             }
@@ -98,11 +89,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public List<ApplicantInfoResponseDto> getProjectApplicants() {
-        ArrayList<ApplicantInfoResponseDto> result = new ArrayList<>();
-        if (getProject() != null) {
-            List<Application> applications = getProject().getApplications();
-            for (Application application : applications) {
+    public List<ApplicantInfoResponseDTO> getProjectApplicants() {
+        ArrayList<ApplicantInfoResponseDTO> result = new ArrayList<>();
+        if (projectQueryService.getProject() != null) {
+            List<ProjectVolunteer> applications = projectQueryService.getProject().getProjectVolunteerList();
+            for (ProjectVolunteer application : applications) {
                 result.add(
                         ApplicantsConverter.toProjectApplicantsResponseDto(
                                 application.getMember().getNameNickname(),
@@ -126,14 +117,19 @@ public class ProjectService {
             throw new MyProjectHandler(ErrorStatus.NO_MORE_APPLICANT);
         }
 
-        if (getApplication(memberId) != null && getApplication(memberId).isPresent()) {
+        if (projectQueryService.getProjectVolunteer(memberId) != null && projectQueryService.getProjectVolunteer(memberId).isPresent()) {
 
-            getMember(memberId).setProject(getProject());
-            getMember(memberId).setMatchingStatus(MemberMatchingStatus.MATCH);
-            Recruitment recruitment = getRecruitment(getMember(memberId).getPart(), getProject());
+            projectQueryService.getMember(memberId).setProject(projectQueryService.getProject());
+            projectQueryService.getMember(memberId).setMatchingStatus(MemberMatchingStatus.MATCH);
+            Recruitment recruitment = projectQueryService.getRecruitment(
+                    projectQueryService.getMember(memberId).getPart(),
+                    projectQueryService.getProject());
             int nowRecruitment = recruitment.getNowRecruitment();
             recruitment.setNowRecruitment(++nowRecruitment);
-            return getMember(memberId).getNameNickname();
+            if(isFull(memberId)){
+                recruitment.setRecruitmentStatus(RecruitmentStatus.FULL);
+            }
+            return projectQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
     }
@@ -141,22 +137,22 @@ public class ProjectService {
     @Transactional
     public String fail(Long memberId) {
 
-        Optional<Application> foundApplication = getApplication(memberId);
+        Optional<ProjectVolunteer> foundApplication = projectQueryService.getProjectVolunteer(memberId);
 
         if (foundApplication != null && foundApplication.isPresent()) {
-            getMember(memberId).setMatchingStatus(MemberMatchingStatus.NON);
-            return getMember(memberId).getNameNickname();
+            projectQueryService.getMember(memberId).setMatchingStatus(MemberMatchingStatus.NON);
+            return projectQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
     }
 
     public Boolean isFull(Long memberId) {
 
-        if (getMember(memberId) == null) {
+        if (projectQueryService.getMember(memberId) == null) {
             throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
         }
-        MemberPart memberPart = getMember(memberId).getPart();
-        Optional<Recruitment> recruitment = getProject().getRecruitments().stream()
+        MemberPart memberPart = projectQueryService.getMember(memberId).getPart();
+        Optional<Recruitment> recruitment = projectQueryService.getProject().getRecruitments().stream()
                 .filter(part -> part.getPart().equals(memberPart)).findAny();
         if (recruitment.get().getNowRecruitment() == recruitment.get().getTotalRecruitment()){
             return true;
@@ -164,42 +160,8 @@ public class ProjectService {
         return false;
     }
 
-    private Optional<Application> getApplication(Long memberId) {
-        Optional<Application> foundApplication = applicationRepository.findByMember_Id(memberId);
-        return foundApplication;
-    }
-
-    private Project getProject() {
-
-        String memberName = SecurityUtil.getCurrentMember();
-        Optional<Member> member = memberRepository.findMemberByEmail(memberName);
-
-        if (member.isPresent()) {
-            Optional<Project> project = projectRepository.findByMember(member.get());
-            if (project.isPresent()) {
-                return project.get();
-            }
-        }
-        return null;
-    }
-
-    private Recruitment getRecruitment(MemberPart part,Project project) {
-        Optional<Recruitment> foundRecruitment = recruitmentRepository.findByPartAndProject(part,project);
-        if (foundRecruitment.isPresent() && foundRecruitment != null) {
-            return foundRecruitment.get();
-        }
-        return null;
-    }
-
-    private Member getMember(Long memberId) {
-        Optional<Member> foundMember = memberRepository.findById(memberId);
-        if (foundMember.isPresent() && foundMember != null) {
-            return foundMember.get();
-        }
-        return null;
-    }
-
     private double calculateCompetitionRate(int totalRecruitment, int totalApplicants) {
         return Math.ceil((double) totalApplicants / totalRecruitment * 100) / 100.0;
     }
+
 }
