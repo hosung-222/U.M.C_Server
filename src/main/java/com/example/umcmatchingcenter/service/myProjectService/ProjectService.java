@@ -6,6 +6,7 @@ import com.example.umcmatchingcenter.converter.myProject.ApplicantsConverter;
 import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.ProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.TotalMatchingConverter;
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
@@ -21,8 +22,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,71 +44,66 @@ public class ProjectService {
 
     @Transactional
     public TotalMatchingResponseDTO getCurrentMatchingNum() {
-
-        int nowMatchingNum = 0;
-        int totalMatchingNum = 0;
-
         if (projectQueryService.getProject() != null) {
             List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
-            for (Recruitment recruitment : recruitments) {
-                nowMatchingNum += recruitment.getNowRecruitment();
-                totalMatchingNum += recruitment.getTotalRecruitment();
-            }
+
+            int nowMatchingNum = recruitments.stream()
+                    .mapToInt(Recruitment::getNowRecruitment)
+                    .sum();
+
+            int totalMatchingNum = recruitments.stream()
+                    .mapToInt(Recruitment::getTotalRecruitment)
+                    .sum();
+
+            return TotalMatchingConverter.toTotalMatchingResponseDTO(nowMatchingNum, totalMatchingNum);
         }
-        return TotalMatchingConverter.toTotalMatchingResponseDTO(nowMatchingNum,totalMatchingNum);
+        return TotalMatchingConverter.toTotalMatchingResponseDTO(0, 0);
     }
 
     @Transactional
     public List<PartMatchingResponseDTO> getPartRecruitment() {
 
-        List<PartMatchingResponseDTO> result = new ArrayList<>();
-        if (projectQueryService.getProject() != null) {
-            List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
-            for (Recruitment recruitment : recruitments) {
-                MemberPart part = recruitment.getPart();
-                result.add(ProjectConverter.toPartMatchingResponseDto(
-                        part,
+        return Optional.ofNullable(projectQueryService.getProject())
+                .map(Project::getRecruitments)
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(recruitment -> ProjectConverter.toPartMatchingResponseDto(
+                        recruitment.getPart(),
                         recruitment.getNowRecruitment(),
-                        recruitment.getTotalRecruitment()));
-            }
-        }
-        return result;
+                        recruitment.getTotalRecruitment()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
     public double getCompetitionRate() {
-
-        int totalRecruitmentNum = 0;
-
         if (projectQueryService.getProject() != null) {
-            List<ProjectVolunteer> applications = projectQueryService.getProject().getProjectVolunteerList();
+            List<ProjectVolunteer> ProjectVolunteers = projectQueryService.getProject().getProjectVolunteerList();
             List<Recruitment> recruitments = projectQueryService.getProject().getRecruitments();
-            for (Recruitment recruitment : recruitments) {
-                totalRecruitmentNum += recruitment.getTotalRecruitment();
-            }
-            return calculateCompetitionRate(totalRecruitmentNum, applications.size());
+
+            int totalRecruitmentNum = recruitments.stream()
+                    .mapToInt(Recruitment::getTotalRecruitment)
+                    .sum();
+
+            return calculateCompetitionRate(totalRecruitmentNum, ProjectVolunteers.size());
         }
         return 0;
     }
 
     @Transactional
     public List<ApplicantInfoResponseDTO> getProjectApplicants() {
-        ArrayList<ApplicantInfoResponseDTO> result = new ArrayList<>();
         if (projectQueryService.getProject() != null) {
-            List<ProjectVolunteer> applications = projectQueryService.getProject().getProjectVolunteerList();
-            for (ProjectVolunteer application : applications) {
-                result.add(
-                        ApplicantsConverter.toProjectApplicantsResponseDto(
-                                application.getMember().getNameNickname(),
-                                application.getMember().getUniversity().getName(),
-                                application.getMember().getPart(),
-                                application.getMember().getProfileImage(),
-                                application.getMember().getMatchingStatus())
-                );
-            }
-            return result;
+            List<ProjectVolunteer> projectVolunteer = projectQueryService.getProject().getProjectVolunteerList();
+
+            return projectVolunteer.stream()
+                    .map(application -> ApplicantsConverter.toProjectApplicantsResponseDto(
+                            application.getMember().getNameNickname(),
+                            application.getMember().getUniversity().getName(),
+                            application.getMember().getPart(),
+                            application.getMember().getProfileImage(),
+                            application.getMember().getMatchingStatus()))
+                    .collect(Collectors.toList());
         }
-        return null;
+        return Collections.emptyList();
     }
 
     //합격 서비스
