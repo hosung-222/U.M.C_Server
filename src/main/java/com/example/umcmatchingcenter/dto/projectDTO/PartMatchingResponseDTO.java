@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto.projectDto;
+package com.example.umcmatchingcenter.dto.projectDTO;
 
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PartMatchingResponseDto {
+public class PartMatchingResponseDTO {
 
     private MemberPart part;
     private int matchingNum;

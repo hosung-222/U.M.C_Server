@@ -1,6 +1,5 @@
-package com.example.umcmatchingcenter.dto.projectDto;
+package com.example.umcmatchingcenter.dto.projectDTO;
 
-import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import lombok.AllArgsConstructor;
@@ -12,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ApplicantInfoResponseDto {
+public class ApplicantInfoResponseDTO {
 
     private String nameNickname;
     private String university;
