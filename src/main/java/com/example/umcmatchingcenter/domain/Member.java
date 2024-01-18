@@ -9,10 +9,7 @@ import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import javax.persistence.*;
 
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -21,6 +18,7 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @DynamicUpdate
 @DynamicInsert
 @AllArgsConstructor
