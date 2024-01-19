@@ -17,7 +17,7 @@ public class MemberConverter {
 
     public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
         return LoginResponseDTO.builder()
-                .email(email)
+                .memberName(email)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

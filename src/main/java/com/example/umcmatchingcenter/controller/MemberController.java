@@ -13,6 +13,8 @@ import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.validation.annotation.ExistMember;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -25,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
@@ -39,16 +42,6 @@ public class MemberController {
     @Operation(summary = "회원가입 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
-    })
-    @Parameters({
-            @Parameter(name = "email", description = "이메일"),
-            @Parameter(name = "memberName", description = "로그인용 아이디"),
-            @Parameter(name = "password", description = "비밀번호"),
-            @Parameter(name = "nameNickname", description = "이름/닉네임"),
-            @Parameter(name = "part", description = "파트"),
-            @Parameter(name = "phoneNumber", description = "전화번호"),
-            @Parameter(name = "generation", description = "기수"),
-            @Parameter(name = "portfolio", description = "포트폴리오 URL"),
     })
     public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
         Member member = memberCommandService.join(request);
@@ -68,8 +61,8 @@ public class MemberController {
             @Parameter(name = "memberName", description = "로그인용 아이디"),
             @Parameter(name = "password", description = "비밀번호"),
     })
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO request){
-        return memberCommandService.login(request);
+    public ApiResponse login(@RequestBody @Valid LoginRequestDTO request, HttpServletResponse response){
+        return memberCommandService.login(request, response);
     }
 
     @Operation(summary = "내 정보 조회 API")

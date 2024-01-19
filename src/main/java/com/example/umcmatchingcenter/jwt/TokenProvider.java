@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.jwt;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -88,6 +90,8 @@ public class TokenProvider implements InitializingBean {
             logger.info("JWT 토큰이 잘못되었습니다.");
         }
         return false;
+
+
     }
 }
 

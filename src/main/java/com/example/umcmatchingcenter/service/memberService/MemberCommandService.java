@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.service.memberService;
 
+import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
@@ -14,10 +15,7 @@ import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
-import io.lettuce.core.ScriptOutputType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -29,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -60,7 +59,7 @@ public class MemberCommandService {
     }
 
     //로그인
-    public ResponseEntity login(LoginRequestDTO request){
+    public ApiResponse login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
@@ -71,12 +70,10 @@ public class MemberCommandService {
         String accessToken = tokenProvider.createToken(authentication,1);
         String refreshToken = tokenProvider.createToken(authentication,24);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        response.setHeader(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
 
-
-        return new ResponseEntity<>(MemberConverter.toLoginResponseDto(request.getMemberName(), accessToken, refreshToken),
-                httpHeaders, HttpStatus.OK);
+        return ApiResponse.onSuccess(MemberConverter.toLoginResponseDto(request.getMemberName(),
+                accessToken, refreshToken));
     }
 
     public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){

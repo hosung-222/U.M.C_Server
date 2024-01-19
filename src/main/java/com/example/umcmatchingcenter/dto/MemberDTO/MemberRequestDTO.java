@@ -1,6 +1,7 @@
 package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiParam;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,6 +33,7 @@ public class MemberRequestDTO {
         private String phoneNumber;
         @NotNull
         private Integer generation;
+        @ApiParam(value = "포트폴리오 url", required = false)
 
         private String portfolio;
     }
