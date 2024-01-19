@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -57,10 +56,7 @@ public class MemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4002", description = "잘못된 비밀번호 입니다",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "memberName", description = "로그인용 아이디"),
-            @Parameter(name = "password", description = "비밀번호"),
-    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인 dto")
     public ApiResponse login(@RequestBody @Valid LoginRequestDTO request, HttpServletResponse response){
         return memberCommandService.login(request, response);
     }
@@ -77,4 +73,19 @@ public class MemberController {
         Member member = memberQueryService.getMyInfo(principal.getName());
         return ApiResponse.onSuccess(MemberConverter.toMyInfoDTO(member));
     }
+
+    @PostMapping("/duplication")
+    @Operation(summary = "로그인 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER301",description = "사용 가능한 닉네임입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4004", description = "이미 등록된 사용자 입니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
+
+    })
+    @Parameter(name = "memberName", description = "로그인용 닉네임")
+    public ApiResponse duplicationMemberName(@RequestParam String memberName){
+        return memberCommandService.duplicationMemberName(memberName);
+    }
+
+
 }

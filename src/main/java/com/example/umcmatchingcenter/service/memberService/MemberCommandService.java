@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.service.memberService;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.code.status.SuccessStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
@@ -23,6 +24,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,10 +48,6 @@ public class MemberCommandService {
     public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<University> university = universityRepository.findById(request.getUniversityId());
-
-        if(memberRepository.findByMemberName(request.getMemberName()).isPresent()){
-            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
-        }
 
         Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
         alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
@@ -84,6 +82,14 @@ public class MemberCommandService {
         }catch (InternalAuthenticationServiceException e){
             throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
         }
+    }
+
+    public ApiResponse duplicationMemberName(String memberName){
+        if(memberRepository.findByMemberName(memberName).isPresent()){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
+        }
+
+        return ApiResponse.of(SuccessStatus._MEMBERNICKNAME_OK,memberName);
     }
 
 }
