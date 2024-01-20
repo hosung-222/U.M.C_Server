@@ -7,6 +7,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -81,4 +82,13 @@ public class MemberCommandService {
         }
     }
 
+    public MemberResponseDTO.DepartResultDTO memberDepart(String name) {
+        Optional<Member> member  = memberRepository.findByMemberName(name);
+        if (member.isEmpty()){
+            throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+        member.get().depart();
+
+        return MemberConverter.toDepartResultDTO(memberRepository.save(member.get()));
+    }
 }

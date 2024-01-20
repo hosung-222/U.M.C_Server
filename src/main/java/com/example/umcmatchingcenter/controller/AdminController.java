@@ -1,12 +1,14 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -19,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -63,5 +66,12 @@ public class AdminController {
         List<ApplyTeamDTO> matchingRoundDTOList = memberQueryService.getMatcingRoundList(name);
 
         return ApiResponse.onSuccess(matchingRoundDTOList);
+    }
+
+    @PostMapping("/challenger/depart/{name}")
+    public ApiResponse<MemberResponseDTO.DepartResultDTO> memberDepart(@PathVariable(name = "name") String name){
+        MemberResponseDTO.DepartResultDTO departResultDTO = memberCommandService.memberDepart(name);
+
+        return ApiResponse.onSuccess(departResultDTO);
     }
 }
