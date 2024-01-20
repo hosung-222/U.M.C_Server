@@ -2,8 +2,6 @@ package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
-import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
-import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -49,11 +47,4 @@ public class Project extends BaseEntity {
 
     @OneToMany(mappedBy = "project")
     private List<Member> members;
-
-    @OneToMany(mappedBy = "project")
-    private List<Recruitment> recruitments;
-
-    @OneToMany(mappedBy = "project")
-    private List<ProjectVolunteer> projectVolunteerList;
-
 }
