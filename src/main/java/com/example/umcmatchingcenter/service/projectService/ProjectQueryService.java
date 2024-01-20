@@ -7,12 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectQueryService {
-    Optional<Project> findProject(Long id);
+    Project getProjectDetail(Long id);
 
     List<Project> getProjectList(ProjectStatus status, Integer page);
 
-    // TODO: 작성자(pm)가 나인지 확인
-    Project getProjectDetail(Long projectId);
+//    Project getProjectDetail(Long projectId);
 
     boolean existProject(Long projectId);
+
+    Project findCompleteProject(Long projectId, ProjectStatus status);
 }

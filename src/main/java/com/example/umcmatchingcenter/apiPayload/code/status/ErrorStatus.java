@@ -32,7 +32,8 @@ public enum ErrorStatus implements BaseErrorCode {
     JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다"),
     JWT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
 
-
+    // 프로젝트 관련 에러
+    PROJECT_NOT_COMPLETE(HttpStatus.BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
