@@ -3,8 +3,8 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.EmailConverter;
-import com.example.umcmatchingcenter.dto.MemberDto.EmailRequestDto;
-import com.example.umcmatchingcenter.dto.MemberDto.EmailResponseDto;
+import com.example.umcmatchingcenter.dto.MemberDTO.EmailRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.EmailResponseDTO;
 import com.example.umcmatchingcenter.service.EmailService.EmailService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +34,7 @@ public class EmailController {
     @Parameters({
             @Parameter(name = "email", description = "인증할 이메일 주소")
     })
-    public ApiResponse<EmailResponseDto.AuthCodeResultDto> sendAuthCode(@RequestBody @Valid EmailRequestDto.AuthCodeDto request){
+    public ApiResponse<EmailResponseDTO.AuthCodeResultDTO> sendAuthCode(@RequestBody @Valid EmailRequestDTO.AuthCodeDTO request){
         String authCode = emailService.sendAuthCode(request);
         return ApiResponse.onSuccess(EmailConverter.toEmailAuthCodeResultDto(request.getEmail(), authCode));
     }
@@ -51,7 +51,7 @@ public class EmailController {
             @Parameter(name = "email", description = "인증할 이메일 주소"),
             @Parameter(name = "authCode", description = "인증코드")
     })
-    public ApiResponse<EmailResponseDto.AuthCodeCertificaitionResultDto> AuthCodeCertification(@RequestBody EmailRequestDto.CertificationDto request) {
+    public ApiResponse<EmailResponseDTO.AuthCodeCertificaitionResultDTO> AuthCodeCertification(@RequestBody EmailRequestDTO.CertificationDTO request) {
         emailService.AuthCodeCertification(request);
         return ApiResponse.onSuccess(EmailConverter.toEmailCertificaitionResultDto(request.getEmail()));
 

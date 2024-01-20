@@ -1,15 +1,16 @@
-package com.example.umcmatchingcenter.dto.MemberDto;
+package com.example.umcmatchingcenter.dto.MemberDTO;
 
-import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-
-import javax.validation.constraints.NotBlank;
+import lombok.NoArgsConstructor;
 
 @Builder
 @Getter
-public class LoginResponseDto {
-    String email;
-    String accessToken;
-    String refreshToken;
+@NoArgsConstructor
+@AllArgsConstructor
+public class LoginResponseDTO {
+    private String email;
+    private String accessToken;
+    private String refreshToken;
 }

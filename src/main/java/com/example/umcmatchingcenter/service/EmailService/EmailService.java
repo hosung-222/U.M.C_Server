@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.service.EmailService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
-import com.example.umcmatchingcenter.dto.MemberDto.EmailRequestDto;
+import com.example.umcmatchingcenter.dto.MemberDTO.EmailRequestDTO;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.service.RedisService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class EmailService {
 
     private final RedisService redisService;
 
-    public String sendAuthCode(EmailRequestDto.AuthCodeDto request) {
+    public String sendAuthCode(EmailRequestDTO.AuthCodeDTO request) {
         String title = "UmcMatchingCenter 이메일 인증 번호";
         String authCode = this.createAuthCode();
         sendMailService.sendEmail(request.getEmail(), title, authCode);
@@ -46,7 +46,7 @@ public class EmailService {
     }
 
     //이메일 코드 인증
-    public EmailRequestDto.CertificationDto AuthCodeCertification(EmailRequestDto.CertificationDto request) {
+    public EmailRequestDTO.CertificationDTO AuthCodeCertification(EmailRequestDTO.CertificationDTO request) {
         String redisAuthCode = redisService.getData(request.getEmail());
         if(request.getAuthCode().equals(redisAuthCode)){
             return request;

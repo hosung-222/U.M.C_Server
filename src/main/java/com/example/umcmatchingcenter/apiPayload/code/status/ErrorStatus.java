@@ -19,9 +19,10 @@ public enum ErrorStatus implements BaseErrorCode {
 
 
     // 멤버 관려 에러
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "사용자가 없습니다."),
+    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "존재하지 않는 사용자입니다."),
     MEMBER_WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER4002", "잘못된 비밀번호 입니다"),
     NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
+    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4004", "이미 등록된 사용자 입니다."),
 
     // 내 프로젝트 에러
     NO_SUCH_APPLICANT(HttpStatus.BAD_REQUEST, "MYPROJECT4001", "해당 프로젝트의 지원자가 없습니다."),
@@ -34,6 +35,10 @@ public enum ErrorStatus implements BaseErrorCode {
     //jwt
     JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다"),
     JWT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
+
+    //알림
+    NO_DELETE_ALARM(HttpStatus.BAD_REQUEST, "ALARM4001", "삭제할 알림이 존재하지 않습니다."),
+    NO_ALARM_LIST(HttpStatus.BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
 
 

@@ -1,17 +1,21 @@
-package com.example.umcmatchingcenter.dto.MemberDto;
+package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import com.example.umcmatchingcenter.domain.enums.EmailCertificationResult;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EmailResponseDto {
+public class EmailResponseDTO {
 
     @Getter
     @Builder
-    public static class AuthCodeResultDto {
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AuthCodeResultDTO {
         private String email;
         private String authCode;
 
@@ -19,7 +23,9 @@ public class EmailResponseDto {
 
     @Getter
     @Builder
-    public static class AuthCodeCertificaitionResultDto {
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AuthCodeCertificaitionResultDTO {
         private String email;
         private EmailCertificationResult emailCertificationResult;
 

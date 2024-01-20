@@ -1,12 +1,16 @@
 package com.example.umcmatchingcenter.service.queryService;
 
+
+import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
-import com.example.umcmatchingcenter.repository.project.ProjectVolunteerRepository;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.repository.ProjectVolunteerRepository;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,8 +19,11 @@ public class ProjectVolunteerQueryService {
 
     private final ProjectVolunteerRepository projectVolunteerRepository;
 
-    public Optional<ProjectVolunteer> getProjectVolunteer(Long memberId) {
-        Optional<ProjectVolunteer> foundApplication = projectVolunteerRepository.findByMemberId(memberId);
-        return foundApplication;
+    public List<MemberResponseDTO.ApplyTeamDTO> getAllApplyTeam(Member member){
+        List<ProjectVolunteer> matchingScheduleList = projectVolunteerRepository.findAllByMemberOrderByRound(member);
+
+        return matchingScheduleList.stream()
+                .map(ProjectVolunteerConverter::toApplyTeamDTO)
+                .collect(Collectors.toList());
     }
 }

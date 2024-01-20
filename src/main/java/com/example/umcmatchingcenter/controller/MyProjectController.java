@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
-import com.example.umcmatchingcenter.service.myProjectService.ProjectService;
+import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class MyProjectController {
 
-    private final ProjectService projectService;
+    private final MyProjectService myProjectService;
 
     @GetMapping("")
     @Operation(summary = "내 프로젝트 관리 api")
@@ -26,7 +26,7 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
     public ApiResponse<MyProjectResponseDTO> myProject() {
-        return ApiResponse.onSuccess(projectService.myProject());
+        return ApiResponse.onSuccess(myProjectService.myProject());
     }
 
     @PostMapping("/pass/{memberId}")
@@ -38,7 +38,7 @@ public class MyProjectController {
     })
     @ApiParam(value = "유저 아이디")
     public ApiResponse<String> pass(@PathVariable Long memberId) {
-        return ApiResponse.onSuccess(projectService.pass(memberId));
+        return ApiResponse.onSuccess(myProjectService.pass(memberId));
     }
 
     @PostMapping("/fail/{memberId}")
@@ -50,6 +50,6 @@ public class MyProjectController {
     })
     @ApiParam(value = "유저 아이디")
     public ApiResponse<String> fail(@PathVariable Long memberId) {
-        return ApiResponse.onSuccess(projectService.fail(memberId));
+        return ApiResponse.onSuccess(myProjectService.fail(memberId));
     }
 }

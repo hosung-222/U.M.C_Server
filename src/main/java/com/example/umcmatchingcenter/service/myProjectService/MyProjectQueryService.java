@@ -1,19 +1,15 @@
-package com.example.umcmatchingcenter.service.queryService;
+package com.example.umcmatchingcenter.service.myProjectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MyProjectHandler;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
-import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
-import com.example.umcmatchingcenter.jwt.SecurityUtil;
-import com.example.umcmatchingcenter.repository.MemberRepository;
-import com.example.umcmatchingcenter.repository.project.ProjectRepository;
-import com.example.umcmatchingcenter.repository.project.ProjectVolunteerRepository;
-import com.example.umcmatchingcenter.repository.project.RecruitmentRepository;
-import com.example.umcmatchingcenter.service.queryService.MemberQueryService;
+import com.example.umcmatchingcenter.repository.ProjectRepository;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +17,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 @Transactional(readOnly = true)
-public class ProjectQueryService {
+public class MyProjectQueryService {
 
     private final MemberQueryService memberQueryService;
     private final ProjectRepository projectRepository;
 
+    //현재 로그인된 PM 아이디에 해당하는 프로젝트 찾기
     public Project getProject() {
 
         Member currentLoginMember = memberQueryService.getCurrentLoginMember();

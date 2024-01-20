@@ -15,9 +15,7 @@ import com.example.umcmatchingcenter.dto.projectDTO.ApplicantInfoResponseDTO;
 import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.dto.projectDTO.PartMatchingResponseDTO;
 import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
-import com.example.umcmatchingcenter.service.queryService.MemberQueryService;
-import com.example.umcmatchingcenter.service.queryService.ProjectQueryService;
-import com.example.umcmatchingcenter.service.queryService.ProjectVolunteerQueryService;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.queryService.RecruitmentQueryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,11 +31,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 @Transactional
-public class ProjectService {
+public class MyProjectService {
 
     private final MemberQueryService memberQueryService;
-    private final ProjectQueryService projectQueryService;
-    private final ProjectVolunteerQueryService projectVolunteerQueryService;
+    private final MyProjectQueryService projectQueryService;
+    private final MyProjectVolunteerQueryService projectVolunteerQueryService;
     private final RecruitmentQueryService recruitmentQueryService;
 
     public MyProjectResponseDTO myProject() {

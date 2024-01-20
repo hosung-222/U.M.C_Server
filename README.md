@@ -99,7 +99,7 @@ footer
 ### 6. 커밋예시
 
 ```java
-feat: "회원 가입 기능 구현"
+`:sparkles:`feat: 회원 가입 기능 구현
 
 SMS, 이메일 중복확인 API 개발
 

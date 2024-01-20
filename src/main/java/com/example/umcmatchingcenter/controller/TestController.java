@@ -43,13 +43,13 @@ public class TestController {
             @Parameter(name = "categoryId", description = "조회할 게시물들의 카테고리 ID 입니다")
     })
     @GetMapping("/test")
+    @PreAuthorize("hasRole('ROLE_CHALLENGER')")
     public ApiResponse<TempTestDTO> testAPI(){
         return ApiResponse.onSuccess(TempConverter.toTempTestDTO());
     }
 
 
     @GetMapping("/exception")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ApiResponse<TempResponse.TempExceptionDTO> exceptionAPI(@RequestParam Integer flag){
         tempQueryService.CheckFlag(flag);
         return ApiResponse.onSuccess(TempConverter.toTempExceptionDTO(flag));
