@@ -7,7 +7,6 @@ import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
-import com.example.umcmatchingcenter.validation.validator.ProjectCompleteValidator;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -28,7 +27,6 @@ import java.util.Optional;
 public class ProjectController {
 
     private final ProjectQueryService projectQueryService;
-    private final ProjectCompleteValidator projectCompleteValidator;
 
     // 프로젝트 목록 조회
     @GetMapping("")

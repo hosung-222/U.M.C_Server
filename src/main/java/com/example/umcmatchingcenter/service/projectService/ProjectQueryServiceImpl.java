@@ -1,9 +1,7 @@
 package com.example.umcmatchingcenter.service.projectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
-import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
