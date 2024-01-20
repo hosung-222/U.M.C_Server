@@ -68,7 +68,8 @@ public class MemberCommandService {
         String accessToken = tokenProvider.createToken(authentication,1);
         String refreshToken = tokenProvider.createToken(authentication,24);
 
-        response.setHeader(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
+        response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
 
         return ApiResponse.onSuccess(MemberConverter.toLoginResponseDto(request.getMemberName(),
                 accessToken, refreshToken));

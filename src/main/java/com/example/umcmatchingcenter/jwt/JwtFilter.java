@@ -20,6 +20,8 @@ import java.io.IOException;
 public class JwtFilter extends GenericFilterBean {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
+    public static final String AUTHORIZATION_ACCESSS = "Authorization_AccessToken";
+    public static final String AUTHORIZATION_REFRESH = "Authorization_RefreshToken";
     public static final String AUTHORIZATION_HEADER = "Authorization";
     private TokenProvider tokenProvider;
     public JwtFilter(TokenProvider tokenProvider) {
