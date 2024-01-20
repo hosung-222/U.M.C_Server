@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
 
-                .antMatchers("/user").permitAll()
+                .antMatchers("/members").permitAll()
                 .antMatchers("/emails").permitAll()
                 .antMatchers("/health").permitAll()
 

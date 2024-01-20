@@ -47,7 +47,7 @@ public class MemberController {
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/members/login")
     @Operation(summary = "로그인 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -68,14 +68,14 @@ public class MemberController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/mypage")
+    @GetMapping("/members/mypage")
     public ApiResponse<MemberResponseDTO.MyInfoDTO> myPage(@Valid @ExistMember Principal principal){
         Member member = memberQueryService.getMyInfo(principal.getName());
         return ApiResponse.onSuccess(MemberConverter.toMyInfoDTO(member));
     }
 
-    @PostMapping("/duplication")
-    @Operation(summary = "로그인 api")
+    @PostMapping("/members/duplication")
+    @Operation(summary = "닉네임 중복확인 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER301",description = "사용 가능한 닉네임입니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4004", description = "이미 등록된 사용자 입니다.",

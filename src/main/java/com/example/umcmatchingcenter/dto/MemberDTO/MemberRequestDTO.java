@@ -25,7 +25,7 @@ public class MemberRequestDTO {
         @NotNull
         private String nameNickname;
         @NotNull
-        private Integer part;
+        private String part;
         @NotNull
         private Long universityId;
         @NotNull
