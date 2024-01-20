@@ -17,5 +17,4 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Optional<Project> findByMember(Member member);
 
-
 }

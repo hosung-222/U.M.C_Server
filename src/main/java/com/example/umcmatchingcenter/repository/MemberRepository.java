@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.repository;
 
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.sun.xml.bind.v2.schemagen.episode.SchemaBindings;
@@ -19,4 +20,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByUniversityAndRole(University university, MemberRole role);
 
     Page<Member> findByGenerationAndRoleAndMatchingStatus(int generation, MemberRole role, MemberMatchingStatus matchingStatus, Pageable pageable);
+
 }
