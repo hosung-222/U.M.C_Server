@@ -48,7 +48,7 @@ public class TestController {
         return ApiResponse.onSuccess(TempConverter.toTempTestDTO());
     }
 
-
+    
     @GetMapping("/exception")
     public ApiResponse<TempResponse.TempExceptionDTO> exceptionAPI(@RequestParam Integer flag){
         tempQueryService.CheckFlag(flag);

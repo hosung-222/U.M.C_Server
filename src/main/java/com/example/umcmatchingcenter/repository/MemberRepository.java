@@ -16,9 +16,7 @@ import java.util.Optional;
 @Repository
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberName(String username);
-
     Member findByUniversityAndRole(University university, MemberRole role);
 
     Page<Member> findByGenerationAndRoleAndMatchingStatus(int generation, MemberRole role, MemberMatchingStatus matchingStatus, Pageable pageable);
-
 }
