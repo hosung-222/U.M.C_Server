@@ -16,6 +16,7 @@ import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
+import com.example.umcmatchingcenter.service.RedisService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -43,6 +44,7 @@ public class MemberCommandService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
     private final AlarmCommandService alarmCommandService;
+    private final RedisService redisService;
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
@@ -67,6 +69,8 @@ public class MemberCommandService {
 
         String accessToken = tokenProvider.createToken(authentication,1);
         String refreshToken = tokenProvider.createToken(authentication,24);
+
+        redisService.setData(request.getMemberName(),refreshToken, 3600L);
 
         response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
         response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
