@@ -94,4 +94,12 @@ public class Member extends BaseEntity {
         university.getMembers().add(this);
     }
 
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public void setMatchingStatus(MemberMatchingStatus matchingStatus) {
+        this.matchingStatus = matchingStatus;
+    }
+
 }

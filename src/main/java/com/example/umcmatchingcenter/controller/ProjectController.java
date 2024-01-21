@@ -4,7 +4,7 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
-import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.ProjectResponseDTO;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

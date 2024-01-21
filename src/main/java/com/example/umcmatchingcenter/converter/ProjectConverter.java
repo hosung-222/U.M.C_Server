@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Project;
-import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.projectDTO.ProjectResponseDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
