@@ -1,10 +1,10 @@
 package com.example.umcmatchingcenter.service.matchingService;
 
+import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,9 +27,9 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
     }
 
     @Override
-    public List<Project> getProjectList(ProjectStatus status, Integer page) {
+    public List<Project> getProjectList(Branch branch, ProjectStatus status, Integer page) {
         try {
-            return matchingRepository.findAllByStatusOrderByCreatedAt(status, PageRequest.of(page, PAGING_SIZE)).getContent();
+            return matchingRepository.findAllByBranchAndStatusOrderByCreatedAt(branch, status, PageRequest.of(page, PAGING_SIZE)).getContent();
         } catch (Exception e) {
             throw new RuntimeException("프로젝트 목록을 가져오는 중 오류가 발생했습니다", e);
         }

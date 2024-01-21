@@ -38,6 +38,11 @@ public class MemberQueryService {
         return target.get();
     }
 
+    public Member getBranchInfo(String name) {
+        Optional<Member> target = memberRepository.findByMemberName(name);
+        return target.get();
+    }
+
     public List<ChallengerInfoDTO> getChallengerList(MemberMatchingStatus memberMatchingStatus, int page) {
         Page<Member> members = memberRepository.findByGenerationAndRoleAndMatchingStatus(NOW_GENERATION, ROLE_CHALLENGER,
                 memberMatchingStatus, PageRequest.of(page, 10));
