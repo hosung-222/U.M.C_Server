@@ -29,10 +29,11 @@ public enum ErrorStatus implements BaseErrorCode {
     FAIL_CREATE_EMAIL(HttpStatus.BAD_REQUEST, "EMAIL4004", "이메일 전송에 실패했습니다"),
 
     //jwt
-    JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다"),
+    JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다."),
     JWT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
     JWT_EXPIRATION(HttpStatus.UNAUTHORIZED, "JWT4003", "만료된 jwt 토큰입니다"),
     JWT_WRONG_SIGNATURE(HttpStatus.UNAUTHORIZED, "JWT4004", "잘못된 jwt 서명입니다"),
+    JWT_WRONG_REFRESHTOKEN(HttpStatus.UNAUTHORIZED, "JWT4005", "잘못된 refresh 토큰입니다."),
 
     //알림
     NO_DELETE_ALARM(HttpStatus.BAD_REQUEST, "ALARM4001", "삭제할 알림이 존재하지 않습니다."),

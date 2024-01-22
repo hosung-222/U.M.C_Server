@@ -26,7 +26,7 @@ public class EmailService {
         String title = "UmcMatchingCenter 이메일 인증 번호";
         String authCode = this.createAuthCode();
         sendMailService.sendEmail(request.getEmail(), title, authCode);
-        redisService.setData(request.getEmail(),authCode, 300L);
+        redisService.setData(request.getEmail(),authCode, 60L);
         return authCode;
     }
 

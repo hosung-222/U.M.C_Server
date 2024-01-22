@@ -1,6 +1,5 @@
 package com.example.umcmatchingcenter.dto.MemberDTO;
 
-import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,4 +14,14 @@ public class LoginResponseDTO {
     private String memberName;
     private String accessToken;
     private String refreshToken;
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RenewalAccessTokenResponseDTO {
+        private String memberRole;
+        private String memberName;
+        private String accessToken;
+    }
 }

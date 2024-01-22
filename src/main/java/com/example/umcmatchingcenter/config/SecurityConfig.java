@@ -1,8 +1,6 @@
 package com.example.umcmatchingcenter.config;
 
 import com.example.umcmatchingcenter.jwt.TokenProvider;
-import com.example.umcmatchingcenter.jwt.jwtHandler.JwtAccessDeniedHandler;
-import com.example.umcmatchingcenter.jwt.jwtHandler.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
-    private final JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -38,14 +33,16 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
+
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
 
                 .antMatchers("/members").permitAll()
-                .antMatchers("/emails").permitAll()
+                .antMatchers("/members/login").permitAll()
+                .antMatchers("/emails/").permitAll()
                 .antMatchers("/health").permitAll()
-
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
