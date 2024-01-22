@@ -5,7 +5,7 @@ import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.projectDto.ProjectResponseDTO;
-import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
+import com.example.umcmatchingcenter.service.ProjectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

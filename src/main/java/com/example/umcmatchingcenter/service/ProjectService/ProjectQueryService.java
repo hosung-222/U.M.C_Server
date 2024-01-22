@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.service.projectService;
+package com.example.umcmatchingcenter.service.ProjectService;
 
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
