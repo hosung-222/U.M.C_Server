@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.config;
 
+import com.example.umcmatchingcenter.jwt.JwtExceptionFilter;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -17,6 +18,9 @@ public class JwtSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurity
     public void configure(HttpSecurity http) {
         http.addFilterBefore(new JwtFilter(tokenProvider),
                 UsernamePasswordAuthenticationFilter.class
+        );
+        http.addFilterBefore(new JwtExceptionFilter(),
+                JwtFilter.class
         );
     }
 }

@@ -13,6 +13,8 @@ import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.validation.annotation.ExistMember;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -25,10 +27,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -40,22 +42,12 @@ public class MemberController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
-    @Parameters({
-            @Parameter(name = "email", description = "이메일"),
-            @Parameter(name = "memberName", description = "로그인용 아이디"),
-            @Parameter(name = "password", description = "비밀번호"),
-            @Parameter(name = "nameNickname", description = "이름/닉네임"),
-            @Parameter(name = "part", description = "파트"),
-            @Parameter(name = "phoneNumber", description = "전화번호"),
-            @Parameter(name = "generation", description = "기수"),
-            @Parameter(name = "portfolio", description = "포트폴리오 URL"),
-    })
     public ApiResponse<MemberResponseDTO.JoinResultDTO> join(@RequestBody @Valid MemberRequestDTO.JoinDTO request){
         Member member = memberCommandService.join(request);
         return ApiResponse.onSuccess(MemberConverter.toJoinResultDTO(member));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/members/login")
     @Operation(summary = "로그인 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -64,12 +56,9 @@ public class MemberController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4002", description = "잘못된 비밀번호 입니다",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
-    @Parameters({
-            @Parameter(name = "memberName", description = "로그인용 아이디"),
-            @Parameter(name = "password", description = "비밀번호"),
-    })
-    public ResponseEntity login(@RequestBody @Valid LoginRequestDTO request){
-        return memberCommandService.login(request);
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인 dto")
+    public ApiResponse login(@RequestBody @Valid LoginRequestDTO request, HttpServletResponse response){
+        return memberCommandService.login(request, response);
     }
 
     @Operation(summary = "내 정보 조회 API")
@@ -79,9 +68,24 @@ public class MemberController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/mypage")
+    @GetMapping("/members/mypage")
     public ApiResponse<MemberResponseDTO.MyInfoDTO> myPage(@Valid @ExistMember Principal principal){
         Member member = memberQueryService.getMyInfo(principal.getName());
         return ApiResponse.onSuccess(MemberConverter.toMyInfoDTO(member));
     }
+
+    @PostMapping("/members/duplication")
+    @Operation(summary = "닉네임 중복확인 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER301",description = "사용 가능한 닉네임입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4004", description = "이미 등록된 사용자 입니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
+
+    })
+    @Parameter(name = "memberName", description = "로그인용 닉네임")
+    public ApiResponse duplicationMemberName(@RequestParam String memberName){
+        return memberCommandService.duplicationMemberName(memberName);
+    }
+
+
 }

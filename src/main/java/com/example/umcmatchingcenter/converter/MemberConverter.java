@@ -17,7 +17,7 @@ public class MemberConverter {
 
     public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
         return LoginResponseDTO.builder()
-                .email(email)
+                .memberName(email)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -32,6 +32,7 @@ public class MemberConverter {
     }
     public static Member toMember(MemberRequestDTO.JoinDTO request, University university){
         MemberPart memberPart = null;
+/**
         switch (request.getPart()){
             case 1:
                 memberPart = MemberPart.SPRINGBOOT;
@@ -54,8 +55,23 @@ public class MemberConverter {
             case 7:
                 memberPart = MemberPart.DESIGN;
                 break;
+         }
+*/
+        if(request.getPart().equals("SPRINGBOOT")){
+            memberPart = MemberPart.SPRINGBOOT;
+        }else if(request.getPart().equals("NODEJS")){
+            memberPart = MemberPart.NODEJS;
+        }else if(request.getPart().equals("IOS")){
+            memberPart = MemberPart.IOS;
+        }else if(request.getPart().equals("ANDROID")){
+            memberPart = MemberPart.ANDROID;
+        }else if(request.getPart().equals("WEB")){
+            memberPart = MemberPart.WEB;
+        }else if(request.getPart().equals("PLAN")){
+            memberPart = MemberPart.PLAN;
+        }else if(request.getPart().equals("DESIGN")){
+            memberPart = MemberPart.DESIGN;
         }
-
 
         return Member.builder()
                 .memberName(request.getMemberName())

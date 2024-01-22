@@ -32,11 +32,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(JwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
@@ -46,7 +42,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/v3/api-docs").permitAll()
 
-                .antMatchers("/user").permitAll()
+                .antMatchers("/members").permitAll()
                 .antMatchers("/emails").permitAll()
                 .antMatchers("/health").permitAll()
 

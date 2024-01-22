@@ -1,6 +1,8 @@
 package com.example.umcmatchingcenter.service.memberService;
 
+import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.code.status.SuccessStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
@@ -14,10 +16,8 @@ import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
-import io.lettuce.core.ScriptOutputType;
+import com.example.umcmatchingcenter.service.RedisService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -25,10 +25,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -42,15 +44,12 @@ public class MemberCommandService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
     private final AlarmCommandService alarmCommandService;
+    private final RedisService redisService;
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<University> university = universityRepository.findById(request.getUniversityId());
-
-        if(memberRepository.findByMemberName(request.getMemberName()).isPresent()){
-            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
-        }
 
         Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
         alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
@@ -60,7 +59,7 @@ public class MemberCommandService {
     }
 
     //로그인
-    public ResponseEntity login(LoginRequestDTO request){
+    public ApiResponse login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
@@ -71,12 +70,13 @@ public class MemberCommandService {
         String accessToken = tokenProvider.createToken(authentication,1);
         String refreshToken = tokenProvider.createToken(authentication,24);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        redisService.setData(request.getMemberName(),refreshToken, 3600L);
 
+        response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
+        response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
 
-        return new ResponseEntity<>(MemberConverter.toLoginResponseDto(request.getMemberName(), accessToken, refreshToken),
-                httpHeaders, HttpStatus.OK);
+        return ApiResponse.onSuccess(MemberConverter.toLoginResponseDto(request.getMemberName(),
+                accessToken, refreshToken));
     }
 
     public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){
@@ -87,6 +87,14 @@ public class MemberCommandService {
         }catch (InternalAuthenticationServiceException e){
             throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
         }
+    }
+
+    public ApiResponse duplicationMemberName(String memberName){
+        if(memberRepository.findByMemberName(memberName).isPresent()){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
+        }
+
+        return ApiResponse.of(SuccessStatus._MEMBERNICKNAME_OK,memberName);
     }
 
 }
