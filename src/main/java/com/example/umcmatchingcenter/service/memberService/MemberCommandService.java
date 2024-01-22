@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
@@ -18,18 +19,17 @@ import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.RedisService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
@@ -59,7 +59,7 @@ public class MemberCommandService {
     }
 
     //로그인
-    public ApiResponse login(LoginRequestDTO request, HttpServletResponse response){
+    public LoginResponseDTO login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
@@ -67,16 +67,17 @@ public class MemberCommandService {
         Authentication authentication = getAuthentication(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String accessToken = tokenProvider.createToken(authentication,1);
-        String refreshToken = tokenProvider.createToken(authentication,24);
+        String accessToken = tokenProvider.createToken(authentication,1); //1시간
+        String refreshToken = tokenProvider.createToken(authentication,24); //24시간
 
-        redisService.setData(request.getMemberName(),refreshToken, 3600L);
+        redisService.setData(request.getMemberName(),refreshToken, 1440L);
 
         response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
         response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
+        String memberRole = tokenProvider.getAuthorities(authentication);
 
-        return ApiResponse.onSuccess(MemberConverter.toLoginResponseDto(request.getMemberName(),
-                accessToken, refreshToken));
+        return MemberConverter.toLoginResponseDto(request.getMemberName(),
+                accessToken, refreshToken,memberRole);
     }
 
     public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){
@@ -95,6 +96,19 @@ public class MemberCommandService {
         }
 
         return ApiResponse.of(SuccessStatus._MEMBERNICKNAME_OK,memberName);
+    }
+
+    public LoginResponseDTO.RenewalAccessTokenResponseDTO renewalAccessToken(String memberName, HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = JwtFilter.resolveToken(request);
+        String redisToken = redisService.getData(memberName);
+        if(refreshToken.equals(redisToken)){
+            Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+            String newAccessToken = tokenProvider.createToken(authentication, 1);
+            response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, newAccessToken);
+            return MemberConverter.toRenewalAccessTokenResponseDTO(memberName, tokenProvider.getAuthorities(authentication), newAccessToken);
+        }else{
+            throw new MemberHandler(ErrorStatus.JWT_WRONG_REFRESHTOKEN);
+        }
     }
 
 }

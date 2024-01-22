@@ -46,9 +46,7 @@ public class TokenProvider implements InitializingBean {
     }
 
     public String createToken(Authentication authentication, int time) {
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
+        String authorities = getAuthorities(authentication);
 
         long now = (new Date()).getTime();
         Date validity = new Date(now + this.tokenValidityInMilliseconds*time);
@@ -61,13 +59,14 @@ public class TokenProvider implements InitializingBean {
                 .compact();
     }
 
+    public String getAuthorities(Authentication authentication){
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+    }
+
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts
-                .parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = getClaims(token);
 
         Collection<? extends GrantedAuthority> authorities =
                 Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
@@ -76,6 +75,16 @@ public class TokenProvider implements InitializingBean {
 
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
+    }
+
+    public Claims getClaims(String token){
+        Claims claims = Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        return claims;
     }
 
     public boolean validateToken(String token) {
