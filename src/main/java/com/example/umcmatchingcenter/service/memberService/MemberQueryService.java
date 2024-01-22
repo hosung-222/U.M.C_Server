@@ -58,8 +58,8 @@ public class MemberQueryService {
     }
 
     public List<ApplyTeamDTO> getMatcingRoundList(String name) {
-        Optional<Member> member = memberRepository.findByMemberName(name);
+        Member member = findMemberByName(name);
 
-        return projectVolunteerQueryService.getAllApplyTeam(member.get());
+        return projectVolunteerQueryService.getAllApplyTeam(member);
     }
 }
