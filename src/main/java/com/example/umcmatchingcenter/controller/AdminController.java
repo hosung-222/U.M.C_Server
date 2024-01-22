@@ -68,6 +68,16 @@ public class AdminController {
         return ApiResponse.onSuccess(matchingRoundDTOList);
     }
 
+    @Operation(summary = "챌린저 탈부 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "name", description = "탈부시킬 챌린저의 name(membername = id) 입니다.")
+    })
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/depart/{name}")
     public ApiResponse<MemberResponseDTO.DepartResultDTO> memberDepart(@PathVariable(name = "name") String name){
         MemberResponseDTO.DepartResultDTO departResultDTO = memberCommandService.memberDepart(name);
