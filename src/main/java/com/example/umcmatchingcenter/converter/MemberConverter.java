@@ -15,9 +15,10 @@ import java.time.LocalDateTime;
 public class MemberConverter {
 
 
-    public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
+    public static LoginResponseDTO toLoginResponseDto(String memberName, String accessToken, String refreshToken, String memberRole){
         return LoginResponseDTO.builder()
-                .memberName(email)
+                .memberRole(memberRole)
+                .memberName(memberName)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

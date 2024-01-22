@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
@@ -24,6 +25,7 @@ import org.springframework.security.authentication.InternalAuthenticationService
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,6 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +62,7 @@ public class MemberCommandService {
     }
 
     //로그인
-    public ApiResponse login(LoginRequestDTO request, HttpServletResponse response){
+    public LoginResponseDTO login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
@@ -74,9 +77,12 @@ public class MemberCommandService {
 
         response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
         response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
+        String memberRole = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
-        return ApiResponse.onSuccess(MemberConverter.toLoginResponseDto(request.getMemberName(),
-                accessToken, refreshToken));
+        return MemberConverter.toLoginResponseDto(request.getMemberName(),
+                accessToken, refreshToken,memberRole);
     }
 
     public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){

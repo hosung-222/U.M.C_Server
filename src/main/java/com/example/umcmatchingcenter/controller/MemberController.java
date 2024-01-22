@@ -58,7 +58,7 @@ public class MemberController {
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "로그인 dto")
     public ApiResponse login(@RequestBody @Valid LoginRequestDTO request, HttpServletResponse response){
-        return memberCommandService.login(request, response);
+        return ApiResponse.onSuccess(memberCommandService.login(request, response));
     }
 
     @Operation(summary = "내 정보 조회 API")
