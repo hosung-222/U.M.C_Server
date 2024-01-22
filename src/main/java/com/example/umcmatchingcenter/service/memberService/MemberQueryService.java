@@ -3,6 +3,8 @@ package com.example.umcmatchingcenter.service.memberService;
 
 import static com.example.umcmatchingcenter.domain.enums.MemberRole.*;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
@@ -31,6 +33,14 @@ public class MemberQueryService {
 
     public Optional<Member> findMember(Long id){
         return memberRepository.findById(id);
+    }
+
+    public Member findMemberByName(String name){
+        Optional<Member> member = memberRepository.findByMemberName(name);
+        if (member.isEmpty()){
+            throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
+        }
+        return member.get();
     }
 
     public Member getMyInfo(String name) {
