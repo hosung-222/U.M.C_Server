@@ -11,6 +11,7 @@ import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.service.ProjectVolunteerQueryService;
 import java.util.List;
@@ -43,9 +44,9 @@ public class MemberQueryService {
         return member.get();
     }
 
-    public Member getMyInfo(String name) {
-        Optional<Member> target = memberRepository.findByMemberName(name);
-        return target.get();
+    public MyInfoDTO getMyInfo(String name) {
+        Member target = findMemberByName(name);
+        return MemberConverter.toMyInfoDTO(target);
     }
 
     public List<ChallengerInfoDTO> getChallengerList(MemberMatchingStatus memberMatchingStatus, int page) {
