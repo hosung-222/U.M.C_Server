@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
+import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,10 +43,12 @@ public class MatchingResponseDTO {
     @AllArgsConstructor
     public static class MatchingProjectDTO {
         private Long projectId;
+        private Long pmId;
         private String name;
         private String image;
         private String introduction;
         private String body;
+        private List<MatchingProjectRecruitmentDTO> recruitments;
         private List<ProjectMemberDTO> members;
         private LocalDateTime createAt;
     }

@@ -29,7 +29,7 @@ public class Project extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pm_id")
-    private Member member;
+    private Member pm;
 
     private String name;
 
