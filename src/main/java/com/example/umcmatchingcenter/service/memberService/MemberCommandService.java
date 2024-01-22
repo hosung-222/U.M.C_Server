@@ -38,6 +38,7 @@ public class MemberCommandService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberQueryService memberQueryService;
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
@@ -83,12 +84,9 @@ public class MemberCommandService {
     }
 
     public MemberResponseDTO.DepartResultDTO memberDepart(String name) {
-        Optional<Member> member  = memberRepository.findByMemberName(name);
-        if (member.isEmpty()){
-            throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
-        }
-        member.get().depart();
+        Member member = memberQueryService.findMemberByName(name);
+        member.depart();
 
-        return MemberConverter.toDepartResultDTO(memberRepository.save(member.get()));
+        return MemberConverter.toDepartResultDTO(memberRepository.save(member));
     }
 }
