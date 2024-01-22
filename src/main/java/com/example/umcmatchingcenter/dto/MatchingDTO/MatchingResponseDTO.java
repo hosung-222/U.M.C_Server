@@ -1,5 +1,9 @@
 package com.example.umcmatchingcenter.dto.MatchingDTO;
 
+import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
+import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +32,7 @@ public class MatchingResponseDTO {
         private String name;
         private String image;
         private String introduction;
+        private List<MatchingProjectRecruitmentDTO> recruitments;
     }
 
     // 매칭 프로젝트 상세 조회
@@ -43,6 +48,19 @@ public class MatchingResponseDTO {
         private String body;
         private List<ProjectMemberDTO> members;
         private LocalDateTime createAt;
+    }
+
+    // 모집 현황 조회
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MatchingProjectRecruitmentDTO {
+        private Long id;
+        private MemberPart part;
+        private boolean isRecruitmentFinished;
+//        private int nowRecruitment;
+//        private int totalRecruitment;
     }
 
     // 프로젝트 참여 멤버
