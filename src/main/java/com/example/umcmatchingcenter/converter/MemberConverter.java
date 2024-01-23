@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.DepartResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestDTO;
 import java.time.LocalDateTime;
 
 
@@ -95,6 +96,15 @@ public class MemberConverter {
         return DepartResultDTO.builder()
                 .memberId(member.getId())
                 .nameNickname(member.getNameNickname())
+                .build();
+    }
+
+    public static SignUpRequestDTO toSignUpRequestDTO(Member member){
+        return SignUpRequestDTO.builder()
+                .memberId(member.getId())
+                .generation(member.getGeneration())
+                .nameNickname(member.getNameNickname())
+                .part(member.getPart().name())
                 .build();
     }
 }
