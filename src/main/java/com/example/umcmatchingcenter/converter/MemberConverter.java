@@ -111,17 +111,18 @@ public class MemberConverter {
                 .build();
     }
 
-    public static RejectResultDTO toRejectResultDTO(Member member){
+    public static RejectResultDTO toRejectResultDTO(Member member) {
         return RejectResultDTO.builder()
                 .memberId(member.getId())
                 .memberStatus(member.getMemberStatus().name())
+                .build();
+    }
 
     public static LoginResponseDTO.RenewalAccessTokenResponseDTO toRenewalAccessTokenResponseDTO(String memberName, String memberRole, String newAccessToken){
         return LoginResponseDTO.RenewalAccessTokenResponseDTO.builder()
                 .memberName(memberName)
                 .memberRole(memberRole)
                 .accessToken(newAccessToken)
-
                 .build();
     }
 }
