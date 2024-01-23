@@ -129,6 +129,17 @@ public class AdminController {
     }
 
 
+    @Operation(summary = "회원가입 대기 챌린저 거절 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "id에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "거절하려는 챌린저 ID 값 입니다..")
+    })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/reject/{id}/reject")
     public ApiResponse<RejectResultDTO> memberReject(@PathVariable("id") Long id){
