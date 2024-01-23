@@ -141,7 +141,7 @@ public class AdminController {
             @Parameter(name = "id", description = "거절하려는 챌린저 ID 값 입니다..")
     })
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/challenger/reject/{id}/reject")
+    @PostMapping("/challenger/signup-requests/{id}/reject")
     public ApiResponse<RejectResultDTO> memberReject(@PathVariable("id") Long id){
         RejectResultDTO rejectResultDTO = memberCommandService.requestMemberReject(id);
 
