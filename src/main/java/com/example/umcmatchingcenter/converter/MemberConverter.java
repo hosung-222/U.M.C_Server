@@ -7,10 +7,11 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.DepartResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import java.time.LocalDateTime;
 
 
@@ -99,12 +100,19 @@ public class MemberConverter {
                 .build();
     }
 
-    public static SignUpRequestDTO toSignUpRequestDTO(Member member){
-        return SignUpRequestDTO.builder()
+    public static SignUpRequestMemberDTO toSignUpRequestDTO(Member member){
+        return SignUpRequestMemberDTO.builder()
                 .memberId(member.getId())
                 .generation(member.getGeneration())
                 .nameNickname(member.getNameNickname())
                 .part(member.getPart().name())
+                .build();
+    }
+
+    public static AcceptResultDTO toAcceptResultDTO(Member member){
+        return AcceptResultDTO.builder()
+                .memberId(member.getId())
+                .memberStatus(member.getMemberStatus().name())
                 .build();
     }
 }
