@@ -3,9 +3,10 @@ package com.example.umcmatchingcenter.controller;
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -97,9 +98,17 @@ public class AdminController {
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/signup-requests")
-    public ApiResponse<List<SignUpRequestDTO>> requestMemberList(@RequestParam("page") int page){
-        List<SignUpRequestDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page);
+    public ApiResponse<List<SignUpRequestMemberDTO>> requestMemberList(@RequestParam("page") int page){
+        List<SignUpRequestMemberDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page);
 
         return ApiResponse.onSuccess(signUpRequestDTOList);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/challenger/signup-requests/{id}")
+    public ApiResponse<AcceptResultDTO> memberAccept(@PathVariable("id")Long id){
+        AcceptResultDTO acceptResultDTO = memberCommandService.requestMemberAccept(id);
+
+        return ApiResponse.onSuccess(acceptResultDTO);
     }
 }

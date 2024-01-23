@@ -23,13 +23,13 @@ public class MemberExistsValidator implements ConstraintValidator<ExistMember, L
 
     @Override
     public boolean isValid(Long value, ConstraintValidatorContext context) {
-        Optional<Member> target = memberQueryService.findMember(value);
+        Member target = memberQueryService.findMember(value);
 
-        if (target.isEmpty()){
-            context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus.MEMBER_NOT_FOUND.toString()).addConstraintViolation();
-            return false;
-        }
+//        if (target.isEmpty()){
+//            context.disableDefaultConstraintViolation();
+//            context.buildConstraintViolationWithTemplate(ErrorStatus.MEMBER_NOT_FOUND.toString()).addConstraintViolation();
+//            return false;
+//        }
         return true;
     }
 }
