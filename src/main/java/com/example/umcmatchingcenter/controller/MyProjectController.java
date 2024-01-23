@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
-import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;

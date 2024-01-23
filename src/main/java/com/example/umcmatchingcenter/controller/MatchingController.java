@@ -47,7 +47,7 @@ public class MatchingController {
     })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<MatchingResponseDTO.MatchingProjectListDTO> getProjectList(@Valid @ExistMember Principal principal, @RequestParam(name = "page") Integer page){
-        Branch branch = memberQueryService.getMyInfo(principal.getName()).getUniversity().getBranch();
+        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
         List<Project> projectList = matchingQueryService.getProjectList(branch, ProjectStatus.PROCEEDING, page - 1);
         return ApiResponse.onSuccess(MatchingConverter.toProjectPreViewListDTO(projectList));
     }

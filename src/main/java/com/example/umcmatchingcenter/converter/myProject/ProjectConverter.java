@@ -1,7 +1,7 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
-import com.example.umcmatchingcenter.dto.projectDTO.PartMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.PartMatchingResponseDTO;
 
 public class ProjectConverter {
 

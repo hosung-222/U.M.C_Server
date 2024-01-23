@@ -8,7 +8,7 @@ import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ProjectConverter {
+public class  ProjectConverter {
     // 프로젝트 전체 조회
     public static ProjectResponseDTO.ProjectPreViewDTO toProjectPreViewDTO(Project project){
         return ProjectResponseDTO.ProjectPreViewDTO.builder()

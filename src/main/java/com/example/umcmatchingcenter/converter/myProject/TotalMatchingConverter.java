@@ -1,6 +1,6 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
-import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.TotalMatchingResponseDTO;
 
 public class TotalMatchingConverter {
 

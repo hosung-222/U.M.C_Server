@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.converter.myProject;
 
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
-import com.example.umcmatchingcenter.dto.projectDTO.ApplicantInfoResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.ApplicantInfoResponseDTO;
 
 public class ApplicantsConverter {
 

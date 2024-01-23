@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto.projectDTO;
+package com.example.umcmatchingcenter.dto.ProjectDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

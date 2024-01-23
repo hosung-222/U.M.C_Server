@@ -1,9 +1,9 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
-import com.example.umcmatchingcenter.dto.projectDTO.ApplicantInfoResponseDTO;
-import com.example.umcmatchingcenter.dto.projectDTO.MyProjectResponseDTO;
-import com.example.umcmatchingcenter.dto.projectDTO.PartMatchingResponseDTO;
-import com.example.umcmatchingcenter.dto.projectDTO.TotalMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.ApplicantInfoResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.PartMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.TotalMatchingResponseDTO;
 
 import java.util.List;
 

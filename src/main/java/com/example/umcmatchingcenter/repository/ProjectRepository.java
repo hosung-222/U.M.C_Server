@@ -15,7 +15,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     Optional<Project> findByIdAndStatus(Long projectId, ProjectStatus status);
 
-    Optional<Project> findByMember(Member member);
+    Optional<Project> findByPm(Member member);
 
 
 }

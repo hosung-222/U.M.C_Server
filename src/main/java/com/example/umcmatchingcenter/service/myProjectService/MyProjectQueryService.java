@@ -30,7 +30,7 @@ public class MyProjectQueryService {
         Member currentLoginMember = memberQueryService.getCurrentLoginMember();
 
         if (currentLoginMember != null) {
-            Optional<Project> project = projectRepository.findByMember(currentLoginMember);
+            Optional<Project> project = projectRepository.findByPm(currentLoginMember);
             if (project.isPresent()) {
                 return project.get();
             }
