@@ -1,6 +1,8 @@
 package com.example.umcmatchingcenter.service.memberService;
 
+import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.code.status.SuccessStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
@@ -8,17 +10,18 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
-import io.lettuce.core.ScriptOutputType;
+import com.example.umcmatchingcenter.service.RedisService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +32,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Service
@@ -41,16 +46,15 @@ public class MemberCommandService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberQueryService memberQueryService;
     private final AlarmCommandService alarmCommandService;
+    private final RedisService redisService;
+
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<University> university = universityRepository.findById(request.getUniversityId());
-
-        if(memberRepository.findByMemberName(request.getMemberName()).isPresent()){
-            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
-        }
 
         Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
         alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
@@ -60,7 +64,7 @@ public class MemberCommandService {
     }
 
     //로그인
-    public ResponseEntity login(LoginRequestDTO request){
+    public LoginResponseDTO login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(request.getMemberName(), request.getPassword());
@@ -68,15 +72,17 @@ public class MemberCommandService {
         Authentication authentication = getAuthentication(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String accessToken = tokenProvider.createToken(authentication,1);
-        String refreshToken = tokenProvider.createToken(authentication,24);
+        String accessToken = tokenProvider.createToken(authentication,1); //1시간
+        String refreshToken = tokenProvider.createToken(authentication,24); //24시간
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + accessToken);
+        redisService.setData(request.getMemberName(),refreshToken, 1440L);
 
+        response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, "Bearer " + accessToken);
+        response.setHeader(JwtFilter.AUTHORIZATION_REFRESH, "Bearer " + refreshToken);
+        String memberRole = tokenProvider.getAuthorities(authentication);
 
-        return new ResponseEntity<>(MemberConverter.toLoginResponseDto(request.getMemberName(), accessToken, refreshToken),
-                httpHeaders, HttpStatus.OK);
+        return MemberConverter.toLoginResponseDto(request.getMemberName(),
+                accessToken, refreshToken,memberRole);
     }
 
     public Authentication getAuthentication(UsernamePasswordAuthenticationToken authenticationToken){
@@ -88,5 +94,51 @@ public class MemberCommandService {
             throw new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND);
         }
     }
+
+
+    public MemberResponseDTO.DepartResultDTO memberDepart(String name) {
+        Member member = memberQueryService.findMemberByName(name);
+        member.depart();
+
+        return MemberConverter.toDepartResultDTO(memberRepository.save(member));
+    }
+
+    public AcceptResultDTO requestMemberAccept(Long id) {
+        Member member = memberQueryService.findMember(id);
+        member.accept();
+        memberRepository.save(member);
+
+        return MemberConverter.toAcceptResultDTO(member);
+    }
+
+    public RejectResultDTO requestMemberReject(Long id) {
+        Member member = memberQueryService.findMember(id);
+        member.reject();
+        memberRepository.save(member);
+
+        return MemberConverter.toRejectResultDTO(member);
+    }
+
+    public ApiResponse duplicationMemberName(String memberName){
+        if(memberRepository.findByMemberName(memberName).isPresent()){
+            throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
+        }
+
+        return ApiResponse.of(SuccessStatus._MEMBERNICKNAME_OK,memberName);
+    }
+
+    public LoginResponseDTO.RenewalAccessTokenResponseDTO renewalAccessToken(String memberName, HttpServletRequest request, HttpServletResponse response){
+        String refreshToken = JwtFilter.resolveToken(request);
+        String redisToken = redisService.getData(memberName);
+        if(refreshToken.equals(redisToken)){
+            Authentication authentication = tokenProvider.getAuthentication(refreshToken);
+            String newAccessToken = tokenProvider.createToken(authentication, 1);
+            response.setHeader(JwtFilter.AUTHORIZATION_ACCESSS, newAccessToken);
+            return MemberConverter.toRenewalAccessTokenResponseDTO(memberName, tokenProvider.getAuthorities(authentication), newAccessToken);
+        }else{
+            throw new MemberHandler(ErrorStatus.JWT_WRONG_REFRESHTOKEN);
+        }
+    }
+
 
 }

@@ -71,6 +71,20 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(generalException,errorReasonHttpStatus,null,request);
     }
 
+    @ExceptionHandler(value = AccessDeniedException.class)
+    public ResponseEntity onThrowException(AccessDeniedException e, WebRequest request) {
+        e.printStackTrace();
+        return handleExceptionInternalFalse(e, ErrorStatus.JWT_FORBIDDEN, HttpHeaders.EMPTY,
+                ErrorStatus.JWT_FORBIDDEN.getHttpStatus(),request, e.getMessage());
+    }
+
+    @ExceptionHandler(value = AuthenticationException.class)
+    public ResponseEntity onThrowException(AuthenticationException e, WebRequest request) {
+        e.printStackTrace();
+        return handleExceptionInternalFalse(e, ErrorStatus.JWT_UNAUTHORIZED, HttpHeaders.EMPTY,
+                ErrorStatus.JWT_UNAUTHORIZED.getHttpStatus(),request, e.getMessage());
+    }
+
     private ResponseEntity<Object> handleExceptionInternal(Exception e, ErrorReasonDTO reason,
                                                            HttpHeaders headers, HttpServletRequest request) {
 

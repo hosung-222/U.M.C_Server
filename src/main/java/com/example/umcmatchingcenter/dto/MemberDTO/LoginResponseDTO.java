@@ -10,7 +10,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponseDTO {
-    private String email;
+    private String memberRole;
+    private String memberName;
     private String accessToken;
     private String refreshToken;
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RenewalAccessTokenResponseDTO {
+        private String memberRole;
+        private String memberName;
+        private String accessToken;
+    }
 }
