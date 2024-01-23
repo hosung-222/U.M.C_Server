@@ -5,8 +5,10 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
-import com.sun.xml.bind.v2.schemagen.episode.SchemaBindings;
+import com.example.umcmatchingcenter.domain.enums.MemberStatus;
+import java.util.List;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -19,4 +21,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Member findByUniversityAndRole(University university, MemberRole role);
 
     Page<Member> findByGenerationAndRoleAndMatchingStatus(int generation, MemberRole role, MemberMatchingStatus matchingStatus, Pageable pageable);
+
+    Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
 }

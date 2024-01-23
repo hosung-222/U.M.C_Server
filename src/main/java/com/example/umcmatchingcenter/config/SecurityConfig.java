@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.config;
 
+import static com.example.umcmatchingcenter.domain.enums.MemberRole.ROLE_ADMIN;
+
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,8 @@ public class SecurityConfig {
                 .antMatchers("/members/login").permitAll()
                 .antMatchers("/emails/").permitAll()
                 .antMatchers("/health").permitAll()
+                .antMatchers("/manage/**").hasRole("ADMIN")
+
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

@@ -7,8 +7,12 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.DepartResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import java.time.LocalDateTime;
 
 
@@ -83,11 +87,41 @@ public class MemberConverter {
                 .build();
     }
 
+
+    public static DepartResultDTO toDepartResultDTO(Member member){
+        return DepartResultDTO.builder()
+                .memberId(member.getId())
+                .nameNickname(member.getNameNickname())
+                .build();
+    }
+
+    public static SignUpRequestMemberDTO toSignUpRequestDTO(Member member){
+        return SignUpRequestMemberDTO.builder()
+                .memberId(member.getId())
+                .generation(member.getGeneration())
+                .nameNickname(member.getNameNickname())
+                .part(member.getPart().name())
+                .build();
+    }
+
+    public static AcceptResultDTO toAcceptResultDTO(Member member){
+        return AcceptResultDTO.builder()
+                .memberId(member.getId())
+                .memberStatus(member.getMemberStatus().name())
+                .build();
+    }
+
+    public static RejectResultDTO toRejectResultDTO(Member member){
+        return RejectResultDTO.builder()
+                .memberId(member.getId())
+                .memberStatus(member.getMemberStatus().name())
+
     public static LoginResponseDTO.RenewalAccessTokenResponseDTO toRenewalAccessTokenResponseDTO(String memberName, String memberRole, String newAccessToken){
         return LoginResponseDTO.RenewalAccessTokenResponseDTO.builder()
                 .memberName(memberName)
                 .memberRole(memberRole)
                 .accessToken(newAccessToken)
+
                 .build();
     }
 }

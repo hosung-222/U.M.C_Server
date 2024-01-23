@@ -9,6 +9,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -67,8 +68,8 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/members/mypage")
     public ApiResponse<MemberResponseDTO.MyInfoDTO> myPage(@Valid @ExistMember Principal principal){
-        Member member = memberQueryService.getMyInfo(principal.getName());
-        return ApiResponse.onSuccess(MemberConverter.toMyInfoDTO(member));
+        MyInfoDTO info =  memberQueryService.getMyInfo(principal.getName());
+        return ApiResponse.onSuccess(info);
     }
 
     @PostMapping("/members/duplication")

@@ -12,6 +12,9 @@ import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -43,8 +46,10 @@ public class MemberCommandService {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final PasswordEncoder passwordEncoder;
+    private final MemberQueryService memberQueryService;
     private final AlarmCommandService alarmCommandService;
     private final RedisService redisService;
+
 
     //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
@@ -90,6 +95,30 @@ public class MemberCommandService {
         }
     }
 
+
+    public MemberResponseDTO.DepartResultDTO memberDepart(String name) {
+        Member member = memberQueryService.findMemberByName(name);
+        member.depart();
+
+        return MemberConverter.toDepartResultDTO(memberRepository.save(member));
+    }
+
+    public AcceptResultDTO requestMemberAccept(Long id) {
+        Member member = memberQueryService.findMember(id);
+        member.accept();
+        memberRepository.save(member);
+
+        return MemberConverter.toAcceptResultDTO(member);
+    }
+
+    public RejectResultDTO requestMemberReject(Long id) {
+        Member member = memberQueryService.findMember(id);
+        member.reject();
+        memberRepository.save(member);
+
+        return MemberConverter.toRejectResultDTO(member);
+    }
+
     public ApiResponse duplicationMemberName(String memberName){
         if(memberRepository.findByMemberName(memberName).isPresent()){
             throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
@@ -110,5 +139,6 @@ public class MemberCommandService {
             throw new MemberHandler(ErrorStatus.JWT_WRONG_REFRESHTOKEN);
         }
     }
+
 
 }

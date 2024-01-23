@@ -36,12 +36,12 @@ public class MemberResponseDTO {
     @AllArgsConstructor
 
     public static class ChallengerInfoDTO {
-        String name;
-        int generation;
-        String nameNickname;
-        String part;
-        int matchCount;
-        String matchingStatus;
+        private String name;
+        private int generation;
+        private String nameNickname;
+        private String part;
+        private int matchCount;
+        private String matchingStatus;
     }
 
     @Builder
@@ -49,8 +49,46 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ApplyTeamDTO {
-        int round;
-        String teamName;
+        private int round;
+        private String teamName;
 
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class DepartResultDTO{
+        private Long memberId;
+        private String nameNickname;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SignUpRequestMemberDTO {
+        private Long memberId;
+        private int generation;
+        private String nameNickname;
+        private String part;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AcceptResultDTO{
+        private Long memberId;
+        private String memberStatus;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RejectResultDTO{
+        private Long memberId;
+        private String memberStatus;
     }
 }

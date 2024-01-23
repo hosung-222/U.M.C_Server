@@ -1,8 +1,14 @@
 package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import com.sun.istack.NotNull;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import io.swagger.annotations.ApiParam;
+
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
