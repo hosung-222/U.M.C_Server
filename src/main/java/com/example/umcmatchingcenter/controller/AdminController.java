@@ -42,13 +42,13 @@ public class AdminController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @Parameters({
-            @Parameter(name = "page", description = "페이징 넘버 입니다."),
+            @Parameter(name = "page", description = "1부터 시작하는 페이징 넘버 입니다."),
             @Parameter(name = "matchingStatus", description = "조회할 챌린저의 매칭 상태입니다.")
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger")
     public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(@RequestParam("matchingStatus") MemberMatchingStatus memberMatchingStatus, @RequestParam("page") int page){
-        List<ChallengerInfoDTO> challengerList = memberQueryService.getChallengerList(memberMatchingStatus, page);
+        List<ChallengerInfoDTO> challengerList = memberQueryService.getChallengerList(memberMatchingStatus, page - 1 );
 
         return ApiResponse.onSuccess(challengerList);
     }
@@ -58,9 +58,10 @@ public class AdminController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @Parameters({
-            @Parameter(name = "name", description = "조회할 챌린저의 name(membername = id) 입니다.")
+            @Parameter(name = "name", description = "조회할 챌린저의 name(membername) 입니다.")
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/{name}")
@@ -75,9 +76,10 @@ public class AdminController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @Parameters({
-            @Parameter(name = "name", description = "탈부시킬 챌린저의 name(membername = id) 입니다.")
+            @Parameter(name = "name", description = "탈부시킬 챌린저의 name(membername) 입니다.")
     })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/depart/{name}")
@@ -94,16 +96,27 @@ public class AdminController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @Parameters({
-            @Parameter(name = "page", description = "0부터 시작하는 페이징입니다. 10건씩 조회됩니다.")
+            @Parameter(name = "page", description = "1부터 시작하는 페이징입니다. 10건씩 조회됩니다.")
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/signup-requests")
     public ApiResponse<List<SignUpRequestMemberDTO>> requestMemberList(@RequestParam("page") int page){
-        List<SignUpRequestMemberDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page);
+        List<SignUpRequestMemberDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page - 1);
 
         return ApiResponse.onSuccess(signUpRequestDTOList);
     }
 
+    @Operation(summary = "회원가입 대기 챌린저 수락 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "id에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "수락하려는 챌린저 ID 값 입니다..")
+    })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/challenger/signup-requests/{id}")
     public ApiResponse<AcceptResultDTO> memberAccept(@PathVariable("id")Long id){
