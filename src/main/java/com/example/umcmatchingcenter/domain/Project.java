@@ -1,6 +1,8 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
+import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +29,7 @@ public class Project extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pm_id")
-    private Member member;
+    private Member pm;
 
     private String name;
 
@@ -37,10 +39,16 @@ public class Project extends BaseEntity {
 
     private String body;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR(15) DEFAULT 'PROCEEDING'")
+    private ProjectStatus status;
+
     @OneToMany(mappedBy = "project")
     private List<Evaluation> evaluations;
 
     @OneToMany(mappedBy = "project")
     private List<Member> members;
 
+    @OneToMany(mappedBy = "project")
+    private List<Recruitment> recruitments;
 }

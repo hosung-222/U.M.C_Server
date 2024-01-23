@@ -19,9 +19,10 @@ import java.time.LocalDateTime;
 public class MemberConverter {
 
 
-    public static LoginResponseDTO toLoginResponseDto(String email, String accessToken, String refreshToken){
+    public static LoginResponseDTO toLoginResponseDto(String memberName, String accessToken, String refreshToken, String memberRole){
         return LoginResponseDTO.builder()
-                .email(email)
+                .memberRole(memberRole)
+                .memberName(memberName)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -36,30 +37,22 @@ public class MemberConverter {
     }
     public static Member toMember(MemberRequestDTO.JoinDTO request, University university){
         MemberPart memberPart = null;
-        switch (request.getPart()){
-            case 1:
-                memberPart = MemberPart.SPRINGBOOT;
-                break;
-            case 2:
-                memberPart = MemberPart.NODEJS;
-                break;
-            case 3:
-                memberPart = MemberPart.IOS;
-                break;
-            case 4:
-                memberPart = MemberPart.ANDROID;
-                break;
-            case 5:
-                memberPart = MemberPart.WEB;
-                break;
-            case 6:
-                memberPart = MemberPart.PLAN;
-                break;
-            case 7:
-                memberPart = MemberPart.DESIGN;
-                break;
-        }
 
+        if(request.getPart().equals("SPRINGBOOT")){
+            memberPart = MemberPart.SPRINGBOOT;
+        }else if(request.getPart().equals("NODEJS")){
+            memberPart = MemberPart.NODEJS;
+        }else if(request.getPart().equals("IOS")){
+            memberPart = MemberPart.IOS;
+        }else if(request.getPart().equals("ANDROID")){
+            memberPart = MemberPart.ANDROID;
+        }else if(request.getPart().equals("WEB")){
+            memberPart = MemberPart.WEB;
+        }else if(request.getPart().equals("PLAN")){
+            memberPart = MemberPart.PLAN;
+        }else if(request.getPart().equals("DESIGN")){
+            memberPart = MemberPart.DESIGN;
+        }
 
         return Member.builder()
                 .memberName(request.getMemberName())
@@ -94,6 +87,7 @@ public class MemberConverter {
                 .build();
     }
 
+
     public static DepartResultDTO toDepartResultDTO(Member member){
         return DepartResultDTO.builder()
                 .memberId(member.getId())
@@ -121,6 +115,13 @@ public class MemberConverter {
         return RejectResultDTO.builder()
                 .memberId(member.getId())
                 .memberStatus(member.getMemberStatus().name())
+
+    public static LoginResponseDTO.RenewalAccessTokenResponseDTO toRenewalAccessTokenResponseDTO(String memberName, String memberRole, String newAccessToken){
+        return LoginResponseDTO.RenewalAccessTokenResponseDTO.builder()
+                .memberName(memberName)
+                .memberRole(memberRole)
+                .accessToken(newAccessToken)
+
                 .build();
     }
 }
