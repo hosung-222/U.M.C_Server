@@ -82,4 +82,13 @@ public class MemberResponseDTO {
         private Long memberId;
         private String memberStatus;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class RejectResultDTO{
+        private Long memberId;
+        private String memberStatus;
+    }
 }
