@@ -1,5 +1,7 @@
-package com.example.umcmatchingcenter.service.projectService;
+package com.example.umcmatchingcenter.service.ProjectService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
@@ -20,11 +22,7 @@ public class ProjectQueryServiceImpl implements ProjectQueryService{
 
     private final ProjectRepository projectRepository;
 
-    @Override
-    public Optional<Project> findProject(Long id) {
-        return projectRepository.findById(id);
-    }
-
+    // 프로젝트 전체 조회
     @Override
     public List<Project> getProjectList(ProjectStatus status, Integer page) {
         try {
@@ -34,19 +32,25 @@ public class ProjectQueryServiceImpl implements ProjectQueryService{
         }
     }
 
+    // 완료된 프로젝트 상세 조회
     @Override
     public Project getProjectDetail(Long projectId) {
-        return projectRepository.findById(projectId).orElse(null);
+        try {
+            Optional<Project> target = projectRepository.findByIdAndStatus(projectId, ProjectStatus.COMPLETE);
+            return target.get();
+        } catch (Exception e) {
+            throw new ProjectHandler(ErrorStatus.PROJECT_NOT_COMPLETE);
+        }
     }
-
-//    @Override
-//    public Project getProjectDetail(Long projectId) {
-//        return projectRepository.getProjectDetail(projectId);
-//    }
 
     @Override
     public boolean existProject(Long projectId) {
         return projectRepository.existsById(projectId);
+    }
+
+    @Override
+    public Project findCompleteProject(Long projectId, ProjectStatus status) {
+        return null;
     }
 
 }

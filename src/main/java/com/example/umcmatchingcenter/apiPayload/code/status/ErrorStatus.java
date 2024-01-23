@@ -39,7 +39,9 @@ public enum ErrorStatus implements BaseErrorCode {
     NO_DELETE_ALARM(HttpStatus.BAD_REQUEST, "ALARM4001", "삭제할 알림이 존재하지 않습니다."),
     NO_ALARM_LIST(HttpStatus.BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
-
+    // 프로젝트 관련 에러
+    PROJECT_NOT_COMPLETE(HttpStatus.BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
+    PROJECT_NOT_PROCEEDING(HttpStatus.BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
