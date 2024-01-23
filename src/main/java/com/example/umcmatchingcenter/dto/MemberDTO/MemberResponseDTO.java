@@ -67,10 +67,19 @@ public class MemberResponseDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class SignUpRequestDTO {
+    public static class SignUpRequestMemberDTO {
         private Long memberId;
         private int generation;
         private String nameNickname;
         private String part;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AcceptResultDTO{
+        private Long memberId;
+        private String memberStatus;
     }
 }
