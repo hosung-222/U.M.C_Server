@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.config;
 
+import static com.example.umcmatchingcenter.domain.enums.MemberRole.ROLE_ADMIN;
+
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.jwt.jwtHandler.JwtAccessDeniedHandler;
 import com.example.umcmatchingcenter.jwt.jwtHandler.JwtAuthenticationEntryPoint;
@@ -49,7 +51,7 @@ public class SecurityConfig {
                 .antMatchers("/user").permitAll()
                 .antMatchers("/emails").permitAll()
                 .antMatchers("/health").permitAll()
-
+                .antMatchers("/mange").hasRole("ROLE_ADMIN")
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
