@@ -9,7 +9,6 @@ import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
@@ -30,7 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberQueryService {
 
     private static final int NOW_GENERATION = 5;
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGING_SIZE = 10;
 
     private final MemberRepository memberRepository;
     private final ProjectVolunteerQueryService projectVolunteerQueryService;
@@ -54,7 +53,7 @@ public class MemberQueryService {
 
     public List<ChallengerInfoDTO> getChallengerList(MemberMatchingStatus memberMatchingStatus, int page) {
         Page<Member> members = memberRepository.findByGenerationAndRoleAndMatchingStatus(NOW_GENERATION, ROLE_CHALLENGER,
-                memberMatchingStatus, PageRequest.of(page, PAGE_SIZE));
+                memberMatchingStatus, PageRequest.of(page, PAGING_SIZE));
 
         return members.stream()
                 .map(MemberConverter::toChallengerInfoDTO)
@@ -69,7 +68,7 @@ public class MemberQueryService {
 
 
     public List<SignUpRequestDTO> getSignUpRequestList(int page) {
-        List<Member> member = memberRepository.findAllByMemberStatus(MemberStatus.PENDING, PageRequest.of(page,PAGE_SIZE));
+        Page<Member> member = memberRepository.findAllByMemberStatus(MemberStatus.PENDING, PageRequest.of(page, PAGING_SIZE));
 
         return member.stream()
                 .map(MemberConverter::toSignUpRequestDTO)

@@ -19,5 +19,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Page<Member> findByGenerationAndRoleAndMatchingStatus(int generation, MemberRole role, MemberMatchingStatus matchingStatus, Pageable pageable);
 
-    List<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
+    Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
 }
