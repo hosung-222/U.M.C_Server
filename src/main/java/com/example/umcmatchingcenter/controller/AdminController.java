@@ -1,14 +1,13 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
-import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
-import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -22,11 +21,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/manage")
 @Tag(name = "관리자 API")
 public class AdminController {
 
@@ -44,7 +45,7 @@ public class AdminController {
             @Parameter(name = "matchingStatus", description = "조회할 챌린저의 매칭 상태입니다.")
     })
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/challenger/manage")
+    @GetMapping("/challenger")
     public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(@RequestParam("matchingStatus") MemberMatchingStatus memberMatchingStatus, @RequestParam("page") int page){
         List<ChallengerInfoDTO> challengerList = memberQueryService.getChallengerList(memberMatchingStatus, page);
 
@@ -61,7 +62,7 @@ public class AdminController {
             @Parameter(name = "name", description = "조회할 챌린저의 name(membername = id) 입니다.")
     })
     @PreAuthorize("isAuthenticated()")
-    @GetMapping("/challenger/manage/{name}")
+    @GetMapping("/challenger/{name}")
     public ApiResponse<List<ApplyTeamDTO>> matchRoundList(@PathVariable(name = "name") String name){
         List<ApplyTeamDTO> matchingRoundDTOList = memberQueryService.getMatcingRoundList(name);
 
@@ -83,5 +84,13 @@ public class AdminController {
         MemberResponseDTO.DepartResultDTO departResultDTO = memberCommandService.memberDepart(name);
 
         return ApiResponse.onSuccess(departResultDTO);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/challenger/signup-requests")
+    public ApiResponse<List<SignUpRequestDTO>> memberAccept(@RequestParam("page") int page){
+        List<SignUpRequestDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page);
+
+        return ApiResponse.onSuccess(signUpRequestDTOList);
     }
 }
