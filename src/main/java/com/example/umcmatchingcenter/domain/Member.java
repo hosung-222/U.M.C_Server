@@ -101,4 +101,8 @@ public class Member extends BaseEntity {
     public void accept() {
         this.memberStatus = MemberStatus.ACTIVE;
     }
+
+    public void reject() {
+        this.memberStatus = MemberStatus.INACTIVE;
+    }
 }
