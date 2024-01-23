@@ -86,9 +86,18 @@ public class AdminController {
         return ApiResponse.onSuccess(departResultDTO);
     }
 
+    @Operation(summary = "회원가입 대기 챌린저 조회 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "page", description = "0부터 시작하는 페이징입니다. 10건씩 조회됩니다.")
+    })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger/signup-requests")
-    public ApiResponse<List<SignUpRequestDTO>> memberAccept(@RequestParam("page") int page){
+    public ApiResponse<List<SignUpRequestDTO>> requestMemberList(@RequestParam("page") int page){
         List<SignUpRequestDTO> signUpRequestDTOList = memberQueryService.getSignUpRequestList(page);
 
         return ApiResponse.onSuccess(signUpRequestDTOList);
