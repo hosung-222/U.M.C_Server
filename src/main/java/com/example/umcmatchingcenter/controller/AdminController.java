@@ -6,9 +6,11 @@ import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -19,6 +21,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -118,10 +121,19 @@ public class AdminController {
             @Parameter(name = "id", description = "수락하려는 챌린저 ID 값 입니다..")
     })
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/challenger/signup-requests/{id}")
+    @PostMapping("/challenger/signup-requests/{id}/accept")
     public ApiResponse<AcceptResultDTO> memberAccept(@PathVariable("id")Long id){
         AcceptResultDTO acceptResultDTO = memberCommandService.requestMemberAccept(id);
 
         return ApiResponse.onSuccess(acceptResultDTO);
+    }
+
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/challenger/reject/{id}/reject")
+    public ApiResponse<RejectResultDTO> memberReject(@PathVariable("id") Long id){
+        RejectResultDTO rejectResultDTO = memberCommandService.requestMemberReject(id);
+
+        return ApiResponse.onSuccess(rejectResultDTO);
     }
 }

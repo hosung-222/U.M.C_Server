@@ -9,6 +9,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.jwt.JwtFilter;
 import com.example.umcmatchingcenter.jwt.TokenProvider;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -97,5 +98,13 @@ public class MemberCommandService {
         memberRepository.save(member);
 
         return MemberConverter.toAcceptResultDTO(member);
+    }
+
+    public RejectResultDTO requestMemberReject(Long id) {
+        Member member = memberQueryService.findMember(id);
+        member.reject();
+        memberRepository.save(member);
+
+        return MemberConverter.toRejectResultDTO(member);
     }
 }
