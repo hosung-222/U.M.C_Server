@@ -79,6 +79,6 @@ public class MatchingScheduleController {
         Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
         matchingScheduleCommandService.updateSchedule(scheduleId, request, branch);
 
-        return ApiResponse.onSuccess("일정 수정에 성공했습니다.");
+        return ApiResponse.onSuccess(scheduleId + "번 일정 수정에 성공했습니다.");
     }
 }

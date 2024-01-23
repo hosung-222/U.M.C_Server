@@ -26,7 +26,7 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
     }
 
     @Override
-    public MatchingSchedule updateSchedule(Long scheduleId, MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch) {
+    public void updateSchedule(Long scheduleId, MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch) {
         try {
             MatchingSchedule findSchedule = matchingScheduleRepository.findScheduleById(scheduleId);
 
@@ -40,9 +40,13 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
             findSchedule.setScheduleColor(request.getScheduleColor());
             findSchedule.setStartDate(request.getStartDate());
             findSchedule.setEndDate(request.getEndDate());
+
+            // 업데이트 날짜 갱신
+            findSchedule.setUpdatedAt();
+
+            matchingScheduleRepository.save(findSchedule);
         } catch (NullPointerException e){
             throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_NOT_EXIST);
         }
-        return null;
     }
 }
