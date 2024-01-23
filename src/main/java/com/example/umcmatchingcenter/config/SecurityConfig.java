@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .antMatchers("/user").permitAll()
                 .antMatchers("/emails").permitAll()
                 .antMatchers("/health").permitAll()
-                .antMatchers("/mange").hasRole("ROLE_ADMIN")
+                .antMatchers("/manage/**").hasRole("ADMIN")
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));
