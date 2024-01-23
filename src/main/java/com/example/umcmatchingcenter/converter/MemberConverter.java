@@ -11,6 +11,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResul
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.DepartResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import java.time.LocalDateTime;
 
@@ -111,6 +112,13 @@ public class MemberConverter {
 
     public static AcceptResultDTO toAcceptResultDTO(Member member){
         return AcceptResultDTO.builder()
+                .memberId(member.getId())
+                .memberStatus(member.getMemberStatus().name())
+                .build();
+    }
+
+    public static RejectResultDTO toRejectResultDTO(Member member){
+        return RejectResultDTO.builder()
                 .memberId(member.getId())
                 .memberStatus(member.getMemberStatus().name())
                 .build();
