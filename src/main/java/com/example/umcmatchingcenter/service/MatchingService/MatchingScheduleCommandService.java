@@ -8,4 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface MatchingScheduleCommandService {
     @Transactional
     public abstract MatchingSchedule postSchedule(MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch);
+
+    @Transactional
+    public abstract MatchingSchedule updateSchedule(Long scheduleId, MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch);
 }

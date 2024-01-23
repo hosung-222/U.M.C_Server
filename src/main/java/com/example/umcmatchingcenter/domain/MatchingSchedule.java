@@ -2,10 +2,7 @@ package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@Setter
 @Builder
 public class MatchingSchedule extends BaseEntity {
 
