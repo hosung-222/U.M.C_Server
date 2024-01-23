@@ -40,4 +40,12 @@ public class Recruitment extends BaseEntity {
     @Column(nullable = false)
     private int totalRecruitment;
 
+    public void setNowRecruitment(int nowRecruitment) {
+        this.nowRecruitment = nowRecruitment;
+    }
+
+    public void setRecruitmentStatus(RecruitmentStatus recruitmentStatus) {
+        this.recruitmentStatus = recruitmentStatus;
+    }
+
 }

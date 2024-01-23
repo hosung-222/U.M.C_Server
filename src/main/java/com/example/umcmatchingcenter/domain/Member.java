@@ -94,6 +94,16 @@ public class Member extends BaseEntity {
         university.getMembers().add(this);
     }
 
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public void setMatchingStatus(MemberMatchingStatus matchingStatus) {
+        this.matchingStatus = matchingStatus;
+    }
+
+
     public void depart(){
         this.memberStatus = MemberStatus.INACTIVE;
     }
@@ -105,4 +115,5 @@ public class Member extends BaseEntity {
     public void reject() {
         this.memberStatus = MemberStatus.INACTIVE;
     }
+  
 }
