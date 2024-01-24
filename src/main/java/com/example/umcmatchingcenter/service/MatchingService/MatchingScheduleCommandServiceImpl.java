@@ -49,4 +49,19 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
             throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_NOT_EXIST);
         }
     }
+
+    @Override
+    public void deleteSchedule(Long scheduleId, Branch branch) {
+        try {
+            MatchingSchedule findSchedule = matchingScheduleRepository.findScheduleById(scheduleId);
+
+            // 수정할 일정이 현재 관리자의 지부 내용 일정인지 확인
+            if (!branch.getId().equals(findSchedule.getBranch().getId())) {
+                throw new MatchingHandler(ErrorStatus.JWT_FORBIDDEN);
+            }
+            matchingScheduleRepository.deleteById(scheduleId);
+        }catch (NullPointerException e){
+            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_NOT_EXIST);
+        }
+    }
 }

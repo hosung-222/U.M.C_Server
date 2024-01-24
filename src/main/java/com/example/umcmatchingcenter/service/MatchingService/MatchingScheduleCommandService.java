@@ -11,4 +11,7 @@ public interface MatchingScheduleCommandService {
 
     @Transactional
     public abstract void updateSchedule(Long scheduleId, MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch);
+
+    @Transactional
+    public abstract void deleteSchedule(Long scheduleId, Branch branch);
 }
