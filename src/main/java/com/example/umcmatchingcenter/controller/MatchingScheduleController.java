@@ -27,7 +27,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/manage")
+@RequestMapping("/schedules")
 @Tag(name = "매칭 일정 API")
 public class MatchingScheduleController {
 
@@ -46,7 +46,7 @@ public class MatchingScheduleController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/schedule")
+    @PostMapping("/manage")
     public ApiResponse<MatchingScheduleResponseDTO.ScheduleResultDTO> postMatchingSchedule (
             @RequestBody @Valid MatchingScheduleRequestDTO.MatchingScheduleDTO request,
             @Valid @ExistMember Principal principal
@@ -68,7 +68,7 @@ public class MatchingScheduleController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/schedule/{scheduleId}")
+    @PatchMapping("/manage/{scheduleId}")
     @Parameters({
             @Parameter(name = "scheduleId", description = "일정 아이디")
     })
@@ -94,7 +94,7 @@ public class MatchingScheduleController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @DeleteMapping("/schedule/{scheduleId}")
+    @DeleteMapping("/manage/{scheduleId}")
     @Parameters({
             @Parameter(name = "scheduleId", description = "일정 아이디")
     })
@@ -112,7 +112,7 @@ public class MatchingScheduleController {
      * 매칭 일정 조회
      */
     @Operation(summary = "특정 지부의 매칭 일정 조회 API")
-    @GetMapping("/schedule")
+    @GetMapping("")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
