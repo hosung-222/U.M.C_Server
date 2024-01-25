@@ -4,10 +4,10 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.matching.MatchingScheduleConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
+import com.example.umcmatchingcenter.service.MatchingService.MatchingScheduleQueryService;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
 import com.example.umcmatchingcenter.service.MatchingService.MatchingScheduleCommandService;
-import com.example.umcmatchingcenter.service.memberService.MemberCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.validation.annotation.ExistMember;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,9 +31,9 @@ import java.security.Principal;
 @Tag(name = "매칭 일정 API")
 public class MatchingScheduleController {
 
-    private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
     private final MatchingScheduleCommandService matchingScheduleCommandService;
+    private final MatchingScheduleQueryService matchingScheduleQueryService;
 
     /**
      * 매칭 일정 생성
@@ -105,5 +106,26 @@ public class MatchingScheduleController {
         matchingScheduleCommandService.deleteSchedule(scheduleId, branch);
 
         return ApiResponse.onSuccess(scheduleId + "번 일정 삭제에 성공했습니다.");
+    }
+
+    /**
+     * 매칭 일정 조회
+     */
+    @Operation(summary = "특정 지부의 매칭 일정 조회 API")
+    @GetMapping("/schedule")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<MatchingScheduleResponseDTO.MatchingScheduleListDTO> getMatchingScheduleList (
+            @Valid @ExistMember Principal principal
+    ) {
+        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
+        List<MatchingSchedule> scheduleList = matchingScheduleQueryService.getScheduleList(branch);
+
+        return ApiResponse.onSuccess(MatchingScheduleConverter.toSchedulePreViewListDTO(scheduleList));
     }
 }
