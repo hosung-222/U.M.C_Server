@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 public class MyProjectResponseDTO {
 
-    private TotalMatchingResponseDTO totalMatchingResponseDto;
-    private List<PartMatchingResponseDTO> partMatchingDto;
+    private TotalMatchingResponseDTO totalMatchingResponseDTO;
+    private List<PartMatchingResponseDTO> partMatchingDTO;
     private double competitionRate;
     private List<ApplicantInfoResponseDTO> applicantInfoList;
 

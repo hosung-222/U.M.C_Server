@@ -41,6 +41,21 @@ spring:
       max-file-size: 200MB
       max-request-size: 300MB
 jwt:
-  heaer : Authorization
+  header : Authorization
   secret: ${JWT_SECRET_KEY}
   token-validity-in-seconds : 3600
+
+cloud:
+  aws:
+    credentials:
+      access-key: ${cloud.aws.credentials.access-key}
+      secret-key: ${cloud.aws.credentials.secret-key}
+    s3:
+      bucket: umc-matching-center
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+
+
