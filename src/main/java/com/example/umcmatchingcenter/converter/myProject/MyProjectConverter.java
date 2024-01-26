@@ -9,16 +9,16 @@ import java.util.List;
 
 public class MyProjectConverter {
 
-    public static MyProjectResponseDTO toMyProjectResponseDto(TotalMatchingResponseDTO totalMatchingResponseDto,
-                                                              List<PartMatchingResponseDTO> partMatchingDto,
+    public static MyProjectResponseDTO toMyProjectResponseDto(TotalMatchingResponseDTO totalMatchingResponseDTO,
+                                                              List<PartMatchingResponseDTO> partMatchingDTO,
                                                               double competitionRate,
-                                                              List<ApplicantInfoResponseDTO> applicantInfoDto) {
+                                                              List<ApplicantInfoResponseDTO> applicantInfoDTO) {
 
         return MyProjectResponseDTO.builder()
-                .totalMatchingResponseDto(totalMatchingResponseDto)
-                .partMatchingDto(partMatchingDto)
+                .totalMatchingResponseDTO(totalMatchingResponseDTO)
+                .partMatchingDTO(partMatchingDTO)
                 .competitionRate(competitionRate)
-                .applicantInfoList(applicantInfoDto)
+                .applicantInfoList(applicantInfoDTO)
                 .build();
     }
 }
