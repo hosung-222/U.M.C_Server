@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.service.ProjectService;
+package com.example.umcmatchingcenter.service.projectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;

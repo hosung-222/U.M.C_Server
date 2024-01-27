@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.service.MatchingService;
+package com.example.umcmatchingcenter.service.matchingService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;

@@ -3,7 +3,7 @@ package com.example.umcmatchingcenter.validation.validator;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
-import com.example.umcmatchingcenter.service.ProjectService.ProjectQueryService;
+import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
