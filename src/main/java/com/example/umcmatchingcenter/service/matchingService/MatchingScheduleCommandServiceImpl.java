@@ -28,13 +28,11 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
     @Override
     public void updateSchedule(Long scheduleId, MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch) {
         try {
-            MatchingSchedule findSchedule = matchingScheduleRepository.findScheduleById(scheduleId);
 
             // 수정할 일정이 현재 관리자의 지부 내용 일정인지 확인
-            if (!branch.getId().equals(findSchedule.getBranch().getId())) {
-                throw new MatchingHandler(ErrorStatus.JWT_FORBIDDEN);
-            }
+            MatchingSchedule findSchedule = checkIsAuthorized(scheduleId, branch);
 
+            // 업데이트 진행
             findSchedule.updateSchedule(request);
 
             matchingScheduleRepository.save(findSchedule);
@@ -46,15 +44,24 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
     @Override
     public void deleteSchedule(Long scheduleId, Branch branch) {
         try {
-            MatchingSchedule findSchedule = matchingScheduleRepository.findScheduleById(scheduleId);
-
             // 수정할 일정이 현재 관리자의 지부 내용 일정인지 확인
-            if (!branch.getId().equals(findSchedule.getBranch().getId())) {
-                throw new MatchingHandler(ErrorStatus.JWT_FORBIDDEN);
-            }
+            checkIsAuthorized(scheduleId, branch);
+
             matchingScheduleRepository.deleteById(scheduleId);
         }catch (NullPointerException e){
             throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_NOT_EXIST);
         }
+    }
+
+    @Override
+    public MatchingSchedule checkIsAuthorized(Long scheduleId, Branch branch) {
+        MatchingSchedule findSchedule = matchingScheduleRepository.findScheduleById(scheduleId);
+
+        // 수정할 일정이 현재 관리자의 지부 내용 일정인지 확인
+        if (!branch.getId().equals(findSchedule.getBranch().getId())) {
+            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_UNAUTHORIZED);
+        }
+
+        return findSchedule;
     }
 }
