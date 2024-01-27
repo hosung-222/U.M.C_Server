@@ -1,12 +1,12 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
-import com.example.umcmatchingcenter.converter.MatchingConverter;
+import com.example.umcmatchingcenter.converter.matching.MatchingConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingResponseDTO;
-import com.example.umcmatchingcenter.service.MatchingService.MatchingQueryService;
+import com.example.umcmatchingcenter.service.matchingService.MatchingQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.validation.annotation.ExistMember;
 import io.swagger.v3.oas.annotations.Operation;

@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.service.MatchingService;
+package com.example.umcmatchingcenter.service.matchingService;
 
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Project;

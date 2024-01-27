@@ -47,6 +47,10 @@ public enum ErrorStatus implements BaseErrorCode {
     PROJECT_NOT_COMPLETE(HttpStatus.BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
     PROJECT_NOT_PROCEEDING(HttpStatus.BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 
+    // 매칭 일정 관련 에러
+    MATCHINGSCHEDULE_NOT_EXIST(HttpStatus.BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
+    MATCHINGSCHEDULE_UNAUTHORIZED(HttpStatus.BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 

@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.converter;
+package com.example.umcmatchingcenter.converter.matching;
 
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
