@@ -48,8 +48,8 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: ${cloud.aws.credentials.access-key}
-      secret-key: ${cloud.aws.credentials.secret-key}
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_ACCESS_KEY}
     s3:
       bucket: umc-matching-center
     region:
