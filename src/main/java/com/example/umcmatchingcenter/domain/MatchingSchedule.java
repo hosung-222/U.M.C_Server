@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
+import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -10,7 +11,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter
 @Builder
 public class MatchingSchedule extends BaseEntity {
 
@@ -36,4 +36,11 @@ public class MatchingSchedule extends BaseEntity {
 
     private String description;
 
+    public void updateSchedule(MatchingScheduleRequestDTO.MatchingScheduleDTO schedule) {
+        this.name = schedule.getTitle();
+        this.description = schedule.getDescription();
+        this.scheduleColor = schedule.getScheduleColor();
+        this.startDate = schedule.getStartDate();
+        this.endDate = schedule.getEndDate();
+    }
 }

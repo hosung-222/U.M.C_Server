@@ -35,14 +35,7 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
                 throw new MatchingHandler(ErrorStatus.JWT_FORBIDDEN);
             }
 
-            findSchedule.setName(request.getTitle());
-            findSchedule.setDescription(request.getDescription());
-            findSchedule.setScheduleColor(request.getScheduleColor());
-            findSchedule.setStartDate(request.getStartDate());
-            findSchedule.setEndDate(request.getEndDate());
-
-            // 업데이트 날짜 갱신
-            findSchedule.setUpdatedAt();
+            findSchedule.updateSchedule(request);
 
             matchingScheduleRepository.save(findSchedule);
         } catch (NullPointerException e){

@@ -68,7 +68,7 @@ public class MatchingScheduleController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    @PatchMapping("/manage/{scheduleId}")
+    @PutMapping("/manage/{scheduleId}")
     @Parameters({
             @Parameter(name = "scheduleId", description = "일정 아이디")
     })
