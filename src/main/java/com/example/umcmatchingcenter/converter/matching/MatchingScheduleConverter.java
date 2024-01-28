@@ -2,7 +2,6 @@ package com.example.umcmatchingcenter.converter.matching;
 
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
-import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
 
@@ -36,8 +35,14 @@ public class MatchingScheduleConverter {
                 .title(schedule.getName())
                 .description(schedule.getDescription())
                 .scheduleColor(schedule.getScheduleColor().getColor())
-                .startDate(schedule.getStartDate())
-                .endDate(schedule.getEndDate())
+                .startYear(splitDate(schedule.getStartDate(), 0))
+                .startMonth(splitDate(schedule.getStartDate(), 1))
+                .startDay(splitDate(schedule.getStartDate(), 2))
+                .endYear(splitDate(schedule.getEndDate(), 0))
+                .endMonth(splitDate(schedule.getEndDate(), 1))
+                .endDay(splitDate(schedule.getEndDate(), 2))
+//                .startDate(schedule.getStartDate())
+//                .endDate(schedule.getEndDate())
                 .build();
     }
 
@@ -50,5 +55,12 @@ public class MatchingScheduleConverter {
                 .listSize(schedulePreViewDTOList.size())
                 .scheduleList(schedulePreViewDTOList)
                 .build();
+    }
+
+    private static Integer splitDate(String str, int i) {
+        String[] date = str.split("-");
+        String current = date[i];
+        current = current.substring(current.length()-2, current.length());
+        return Integer.parseInt(current);
     }
 }
