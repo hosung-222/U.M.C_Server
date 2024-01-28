@@ -36,24 +36,6 @@ public class MemberConverter {
                 .build();
     }
     public static Member toMember(MemberRequestDTO.JoinDTO request, University university){
-        MemberPart memberPart = null;
-
-        if(request.getPart().equals("SPRINGBOOT")){
-            memberPart = MemberPart.SPRINGBOOT;
-        }else if(request.getPart().equals("NODEJS")){
-            memberPart = MemberPart.NODEJS;
-        }else if(request.getPart().equals("IOS")){
-            memberPart = MemberPart.IOS;
-        }else if(request.getPart().equals("ANDROID")){
-            memberPart = MemberPart.ANDROID;
-        }else if(request.getPart().equals("WEB")){
-            memberPart = MemberPart.WEB;
-        }else if(request.getPart().equals("PLAN")){
-            memberPart = MemberPart.PLAN;
-        }else if(request.getPart().equals("DESIGN")){
-            memberPart = MemberPart.DESIGN;
-        }
-
         return Member.builder()
                 .memberName(request.getMemberName())
                 .email(request.getEmail())
@@ -61,7 +43,7 @@ public class MemberConverter {
                 .nameNickname(request.getNameNickname())
                 .university(university)
                 .phoneNumber(request.getPhoneNumber())
-                .part(memberPart)
+                .part(request.getPart())
                 .generation(request.getGeneration())
                 .portfolio(request.getPortfolio())
                 .build();
