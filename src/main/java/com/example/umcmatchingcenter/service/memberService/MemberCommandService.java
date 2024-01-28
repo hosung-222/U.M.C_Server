@@ -8,6 +8,7 @@ import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
@@ -50,20 +51,25 @@ public class MemberCommandService {
     private final AlarmCommandService alarmCommandService;
     private final RedisService redisService;
 
-
-    //회원가입
     public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Optional<University> university = universityRepository.findById(request.getUniversityId());
 
+        Member newMember = MemberConverter.toMember(request, university.get());
+
         Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
         alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
 
-        Member newMember = MemberConverter.toMember(request, university.get());
-        return memberRepository.save(newMember);
+        return memberRepository.save(checkRole(request, newMember));
     }
 
-    //로그인
+    private Member checkRole(MemberRequestDTO.JoinDTO request, Member member){
+        if(request.getPart()== MemberPart.PLAN)
+            member.setRole(MemberRole.ROLE_PM);
+
+        return member;
+    }
+
     public LoginResponseDTO login(LoginRequestDTO request, HttpServletResponse response){
 
         UsernamePasswordAuthenticationToken authenticationToken =

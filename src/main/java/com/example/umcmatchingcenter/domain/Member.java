@@ -115,5 +115,7 @@ public class Member extends BaseEntity {
     public void reject() {
         this.memberStatus = MemberStatus.INACTIVE;
     }
+
+    public void setRole(MemberRole role){this.role = role;}
   
 }
