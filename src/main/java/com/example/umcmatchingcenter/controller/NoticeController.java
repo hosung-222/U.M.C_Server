@@ -7,6 +7,7 @@ import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeRequestDTO;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeResponseDTO;
 import com.example.umcmatchingcenter.service.noticeService.NoticeCommandService;
+import com.example.umcmatchingcenter.service.noticeService.NoticeQueryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -16,12 +17,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class NoticeController {
 
     private final NoticeCommandService noticeCommandService;
+    private final NoticeQueryService noticeQueryService;
 
     @Operation(summary = "공지 등룍 API")
     @ApiResponses({
@@ -41,8 +44,10 @@ public class NoticeController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @GetMapping("/notices")
-    public ApiResponse<NoticeResponseDTO> noticeList(){
-        return null;
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<NoticeResponseDTO.NoticeListDTO> noticeList(Principal principal){
+        List<Notice> noticeList = noticeQueryService.noticeList(principal.getName());
+        return ApiResponse.onSuccess(NoticeConverter.toNoticeListDTO(noticeList));
     }
 
     @Operation(summary = "공지 싱세 조회 API")
