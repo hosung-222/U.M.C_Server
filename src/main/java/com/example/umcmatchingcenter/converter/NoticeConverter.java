@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class NoticeConverter {
 
-    public static Notice toNotice(NoticeRequestDTO request){
+    public static Notice toNotice(NoticeRequestDTO.AddNoticeDTO request){
         return Notice.builder()
                 .title(request.getTitle())
                 .body(request.getBody())
@@ -18,6 +18,7 @@ public class NoticeConverter {
 
     public static NoticeResponseDTO.AddNoticeDTO toAddNoticeDTO(Notice notice){
         return NoticeResponseDTO.AddNoticeDTO.builder()
+                .noticeId(notice.getId())
                 .title(notice.getTitle())
                 .body(notice.getBody())
                 .createdAt(notice.getCreatedAt())
@@ -26,6 +27,7 @@ public class NoticeConverter {
 
     public static NoticeResponseDTO.NoticeDetailsDTO toNoticeDetailsDTO(Notice notice){
         return NoticeResponseDTO.NoticeDetailsDTO.builder()
+                .noticeId(notice.getId())
                 .title(notice.getTitle())
                 .body(notice.getBody())
                 .createdAt(notice.getCreatedAt())
@@ -40,6 +42,15 @@ public class NoticeConverter {
         return NoticeResponseDTO.NoticeListDTO.builder()
                 .alarmList(noticeDetailsDTOList)
                 .listSize(noticeDetailsDTOList.size())
+                .build();
+    }
+
+    public static NoticeResponseDTO.UpdateNoticeDetailsDTO toUpdateNoticeDetailsDTO(Notice notice){
+        return NoticeResponseDTO.UpdateNoticeDetailsDTO.builder()
+                .noticeId(notice.getId())
+                .title(notice.getTitle())
+                .body(notice.getBody())
+                .updatedAt(notice.getUpdatedAt())
                 .build();
     }
 }

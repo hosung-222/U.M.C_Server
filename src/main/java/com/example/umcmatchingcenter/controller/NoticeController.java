@@ -3,12 +3,13 @@ package com.example.umcmatchingcenter.controller;
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.NoticeConverter;
 import com.example.umcmatchingcenter.domain.Notice;
-import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeRequestDTO;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeResponseDTO;
 import com.example.umcmatchingcenter.service.noticeService.NoticeCommandService;
 import com.example.umcmatchingcenter.service.noticeService.NoticeQueryService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -32,7 +33,7 @@ public class NoticeController {
     })
     @PostMapping("/notices")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ApiResponse<NoticeResponseDTO.AddNoticeDTO> addNotices(@RequestBody NoticeRequestDTO request, Principal principal){
+    public ApiResponse<NoticeResponseDTO.AddNoticeDTO> addNotices(@RequestBody NoticeRequestDTO.AddNoticeDTO request, Principal principal){
         Notice notice = noticeCommandService.addNotice(request, principal.getName());
         return ApiResponse.onSuccess(NoticeConverter.toAddNoticeDTO(notice));
     }
@@ -50,13 +51,16 @@ public class NoticeController {
         return ApiResponse.onSuccess(NoticeConverter.toNoticeListDTO(noticeList));
     }
 
-    @Operation(summary = "공지 싱세 조회 API")
+    @Operation(summary = "공지 상세 조회 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4001", description = "공지사항이 없습니다.",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @GetMapping("/notices/{noticeId}")
+    @Parameters({
+            @Parameter(name = "noticeId", description = "공지사항 아이디(PathVariable)")
+    })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<NoticeResponseDTO.NoticeDetailsDTO> notice(@PathVariable(name = "noticeId") Long noticeId){
         Notice notice = noticeQueryService.getNoticeDetails(noticeId);
@@ -65,10 +69,17 @@ public class NoticeController {
 
     @Operation(summary = "공지 수정 API")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4001", description = "공지사항이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @PatchMapping("/notices/{noticeId}")
-    public ApiResponse<NoticeResponseDTO> updateNotice(@PathVariable(name = "noticeId") Long noticeId){
-        return null;
+    @Parameters({
+            @Parameter(name = "noticeId", description = "공지사항 아이디(PathVariable)")
+    })
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ApiResponse<NoticeResponseDTO.UpdateNoticeDetailsDTO> updateNotice(@PathVariable(name = "noticeId") Long noticeId,@RequestBody NoticeRequestDTO.UpdateNoticeDTO request){
+        Notice notice = noticeCommandService.updateNotice(noticeId, request);
+        return ApiResponse.onSuccess(NoticeConverter.toUpdateNoticeDetailsDTO(notice));
     }
 }

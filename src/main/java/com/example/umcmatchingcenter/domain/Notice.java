@@ -28,4 +28,9 @@ public class Notice extends BaseEntity {
 
     public void setBranch(Branch branch){this.branch = branch;}
 
+    public void update(String title, String body){
+        this.title = title;
+        this.body = body;
+    }
+
 }

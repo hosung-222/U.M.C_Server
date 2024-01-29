@@ -16,6 +16,7 @@ public class NoticeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AddNoticeDTO{
+        private Long noticeId;
         private String title;
         private String body;
         private LocalDateTime createdAt;
@@ -35,9 +36,21 @@ public class NoticeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class NoticeDetailsDTO{
+        private Long noticeId;
         private String title;
         private String body;
         private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UpdateNoticeDetailsDTO{
+        private Long noticeId;
+        private String title;
+        private String body;
         private LocalDateTime updatedAt;
     }
 }
