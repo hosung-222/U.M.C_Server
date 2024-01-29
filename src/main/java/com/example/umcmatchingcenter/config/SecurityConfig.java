@@ -43,8 +43,9 @@ public class SecurityConfig {
 
                 .antMatchers("/members").permitAll()
                 .antMatchers("/members/login").permitAll()
-                .antMatchers("/emails/").permitAll()
+                .antMatchers("/emails/**").permitAll()
                 .antMatchers("/health").permitAll()
+                .antMatchers("/projects/**").permitAll()
                 .antMatchers("/manage/**").hasRole("ADMIN")
 
 
