@@ -40,7 +40,18 @@ public class MatchingSchedule extends BaseEntity {
         this.name = schedule.getTitle();
         this.description = schedule.getDescription();
         this.scheduleColor = schedule.getScheduleColor();
-        this.startDate = schedule.getStartDate();
-        this.endDate = schedule.getEndDate();
+        this.startDate = combineDate(schedule.getStartYear(), schedule.getStartMonth(), schedule.getEndYear());
+        this.endDate = combineDate(schedule.getEndYear(), schedule.getEndMonth(), schedule.getEndDay());
+    }
+
+    public static String combineDate(Integer year, Integer month, Integer day) {
+        return "20" + year + "-" + month + "-" + day;
+    }
+
+    public static Integer splitDate(String str, int i) {
+        String[] date = str.split("-");
+        String current = date[i];
+        current = current.substring(current.length()-2, current.length());
+        return Integer.parseInt(current);
     }
 }

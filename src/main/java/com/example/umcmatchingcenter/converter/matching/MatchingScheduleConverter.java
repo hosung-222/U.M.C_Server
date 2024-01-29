@@ -21,8 +21,8 @@ public class MatchingScheduleConverter {
         return MatchingSchedule.builder()
                 .branch(branch)
                 .scheduleColor(request.getScheduleColor())
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
+                .startDate(MatchingSchedule.combineDate(request.getStartYear(), request.getStartMonth(), request.getStartDay()))
+                .endDate(MatchingSchedule.combineDate(request.getEndYear(), request.getEndMonth(), request.getEndDay()))
                 .name(request.getTitle())
                 .description(request.getDescription())
                 .build();
@@ -35,12 +35,12 @@ public class MatchingScheduleConverter {
                 .title(schedule.getName())
                 .description(schedule.getDescription())
                 .scheduleColor(schedule.getScheduleColor().getColor())
-                .startYear(splitDate(schedule.getStartDate(), 0))
-                .startMonth(splitDate(schedule.getStartDate(), 1))
-                .startDay(splitDate(schedule.getStartDate(), 2))
-                .endYear(splitDate(schedule.getEndDate(), 0))
-                .endMonth(splitDate(schedule.getEndDate(), 1))
-                .endDay(splitDate(schedule.getEndDate(), 2))
+                .startYear(MatchingSchedule.splitDate(schedule.getStartDate(), 0))
+                .startMonth(MatchingSchedule.splitDate(schedule.getStartDate(), 1))
+                .startDay(MatchingSchedule.splitDate(schedule.getStartDate(), 2))
+                .endYear(MatchingSchedule.splitDate(schedule.getEndDate(), 0))
+                .endMonth(MatchingSchedule.splitDate(schedule.getEndDate(), 1))
+                .endDay(MatchingSchedule.splitDate(schedule.getEndDate(), 2))
 //                .startDate(schedule.getStartDate())
 //                .endDate(schedule.getEndDate())
                 .build();
@@ -57,10 +57,5 @@ public class MatchingScheduleConverter {
                 .build();
     }
 
-    private static Integer splitDate(String str, int i) {
-        String[] date = str.split("-");
-        String current = date[i];
-        current = current.substring(current.length()-2, current.length());
-        return Integer.parseInt(current);
-    }
+
 }
