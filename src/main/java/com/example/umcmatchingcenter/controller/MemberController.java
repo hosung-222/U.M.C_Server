@@ -23,6 +23,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.io.IOException;
 import java.security.Principal;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,6 +37,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "회원 API")
 public class MemberController {
 
     private final MemberCommandService memberCommandService;
