@@ -26,7 +26,7 @@ public class NoticeController {
     private final NoticeCommandService noticeCommandService;
     private final NoticeQueryService noticeQueryService;
 
-    @Operation(summary = "공지 등룍 API")
+    @Operation(summary = "공지 등록 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
@@ -41,22 +41,26 @@ public class NoticeController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4001", description = "공지사항이 없습니다.",
-                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @GetMapping("/notices")
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<NoticeResponseDTO.NoticeListDTO> noticeList(Principal principal){
-        List<Notice> noticeList = noticeQueryService.noticeList(principal.getName());
+        List<Notice> noticeList = noticeQueryService.getNoticeList(principal.getName());
         return ApiResponse.onSuccess(NoticeConverter.toNoticeListDTO(noticeList));
     }
 
     @Operation(summary = "공지 싱세 조회 API")
     @ApiResponses({
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공")
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4001", description = "공지사항이 없습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @GetMapping("/notices/{noticeId}")
-    public ApiResponse<NoticeResponseDTO> notice(@PathVariable(name = "noticeId") Long noticeId){
-        return null;
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<NoticeResponseDTO.NoticeDetailsDTO> notice(@PathVariable(name = "noticeId") Long noticeId){
+        Notice notice = noticeQueryService.getNoticeDetails(noticeId);
+        return ApiResponse.onSuccess(NoticeConverter.toNoticeDetailsDTO(notice));
     }
 
     @Operation(summary = "공지 수정 API")

@@ -1,5 +1,8 @@
 package com.example.umcmatchingcenter.service.noticeService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.NoticeHandler;
 import com.example.umcmatchingcenter.converter.NoticeConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
@@ -22,11 +25,20 @@ public class NoticeQueryService {
     private final MemberRepository memberRepository;
     private final NoticeRepository noticeRepository;
 
-    public List<Notice> noticeList(String memberName){
+    public List<Notice> getNoticeList(String memberName){
         Optional<Member> member = memberRepository.findByMemberName(memberName);
         Branch branch = member.get().getUniversity().getBranch();
 
         List<Notice> noticeList = noticeRepository.findAllByBranch(branch);
+
+        if (noticeList == null || noticeList.isEmpty())
+            throw new NoticeHandler(ErrorStatus.NOTICE_NOT_EXIST);
         return noticeList;
+    }
+
+    public Notice getNoticeDetails(Long noticeId){
+        Notice notice = noticeRepository.findById(noticeId)
+                .orElseThrow(()->new NoticeHandler(ErrorStatus.NOTICE_NOT_EXIST));
+        return notice;
     }
 }
