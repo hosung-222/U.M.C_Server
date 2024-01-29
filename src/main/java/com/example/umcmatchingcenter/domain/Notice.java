@@ -26,4 +26,6 @@ public class Notice extends BaseEntity {
     @Column(nullable = false)
     private String body;
 
+    public void setBranch(Branch branch){this.branch = branch;}
+
 }

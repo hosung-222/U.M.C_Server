@@ -15,6 +15,16 @@ public class NoticeResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class AddNoticeDTO{
+        private String title;
+        private String body;
+        private LocalDateTime createdAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class NoticeListDTO{
         private List<NoticeResponseDTO.NoticeDetailsDTO> alarmList;
         private Integer listSize;

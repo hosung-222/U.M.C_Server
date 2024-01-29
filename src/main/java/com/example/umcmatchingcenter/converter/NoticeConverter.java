@@ -16,6 +16,14 @@ public class NoticeConverter {
                 .build();
     }
 
+    public static NoticeResponseDTO.AddNoticeDTO toAddNoticeDTO(Notice notice){
+        return NoticeResponseDTO.AddNoticeDTO.builder()
+                .title(notice.getTitle())
+                .body(notice.getBody())
+                .createdAt(notice.getCreatedAt())
+                .build();
+    }
+
     public static NoticeResponseDTO.NoticeDetailsDTO toNoticeDetailsDTO(Notice notice){
         return NoticeResponseDTO.NoticeDetailsDTO.builder()
                 .title(notice.getTitle())
