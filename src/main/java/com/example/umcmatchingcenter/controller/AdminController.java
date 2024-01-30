@@ -74,7 +74,7 @@ public class AdminController {
         return ApiResponse.onSuccess(matchingRoundDTOList);
     }
 
-    @Operation(summary = "챌린저 탈부 API")
+    @Operation(summary = "챌린저 탈부 처리 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),

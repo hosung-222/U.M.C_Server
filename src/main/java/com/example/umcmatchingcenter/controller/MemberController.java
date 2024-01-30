@@ -119,5 +119,11 @@ public class MemberController {
         return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/members/depart")
+    public ApiResponse<String> depart(Principal principal){
+        memberCommandService.memberDepart(principal.getName());
+        return ApiResponse.onSuccess("탈부처리되었습니다.");
+    }
 
 }
