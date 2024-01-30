@@ -119,5 +119,16 @@ public class MemberController {
         return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
     }
 
+    @Operation(summary = "자의 회원 탈퇴(탈부) API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 정보가 없습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping("/members/depart")
+    public ApiResponse<String> depart(Principal principal){
+        memberCommandService.memberDepart(principal.getName());
+        return ApiResponse.onSuccess("탈부처리되었습니다.");
+    }
 
 }
