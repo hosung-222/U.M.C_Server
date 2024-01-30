@@ -45,6 +45,8 @@ public class MemberRequestDTO {
     @Setter
     public static class UpdateMyInfoDTO{
 
+        MultipartFile image;
+
         String portfolio;
 
         @NotBlank
