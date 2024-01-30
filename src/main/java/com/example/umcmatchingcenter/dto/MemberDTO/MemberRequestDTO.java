@@ -40,18 +40,15 @@ public class MemberRequestDTO {
         private String portfolio;
     }
 
-    @Builder
+
     @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
+    @Setter
     public static class UpdateMyInfoDTO{
 
-        private String portfolio;
+        String portfolio;
 
         @NotBlank
-        private String phoneNumber;
-
-        private MultipartFile multipartFile;
+        String phoneNumber;
 
     }
 }
