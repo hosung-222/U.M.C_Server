@@ -46,8 +46,10 @@ public class MemberRequestDTO {
     @AllArgsConstructor
     public static class UpdateMyInfoDTO{
 
+        private String portfolio;
+
         @NotBlank
-        String phoneNumber;
+        private String phoneNumber;
 
         private MultipartFile multipartFile;
 
