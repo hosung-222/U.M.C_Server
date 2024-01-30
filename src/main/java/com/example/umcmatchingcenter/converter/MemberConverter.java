@@ -51,6 +51,10 @@ public class MemberConverter {
 
     public static MyInfoDTO toMyInfoDTO(Member member) {
         return MyInfoDTO.builder()
+                .name(member.getNameNickname())
+                .generation(member.getGeneration())
+                .profileImage(member.getProfileImage())
+                .email(member.getEmail())
                 .universityName(member.getUniversity().getName())
                 .part(member.getPart().name())
                 .phoneNumber(member.getPhoneNumber())
