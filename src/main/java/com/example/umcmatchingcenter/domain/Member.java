@@ -6,6 +6,8 @@ import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO.UpdateMyInfoDTO;
 import javax.persistence.*;
 
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
@@ -117,5 +119,10 @@ public class Member extends BaseEntity {
     }
 
     public void setRole(MemberRole role){this.role = role;}
-  
+
+    public void updateMyInfo(UpdateMyInfoDTO updateMyInfoDTO, String profileImage) {
+        this.phoneNumber = updateMyInfoDTO.getPhoneNumber();
+        this.portfolio = updateMyInfoDTO.getPortfolio();
+        this.profileImage = profileImage;
+    }
 }
