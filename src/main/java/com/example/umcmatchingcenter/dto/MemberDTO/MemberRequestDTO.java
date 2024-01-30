@@ -2,11 +2,15 @@ package com.example.umcmatchingcenter.dto.MemberDTO;
 
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.sun.istack.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
+import org.springframework.web.multipart.MultipartFile;
 
 public class MemberRequestDTO {
 
@@ -34,5 +38,17 @@ public class MemberRequestDTO {
         private Integer generation;
 
         private String portfolio;
+    }
+
+
+    @Getter
+    @Setter
+    public static class UpdateMyInfoDTO{
+
+        String portfolio;
+
+        @NotBlank
+        String phoneNumber;
+
     }
 }

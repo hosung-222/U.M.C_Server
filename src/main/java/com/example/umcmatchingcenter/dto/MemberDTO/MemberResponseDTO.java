@@ -23,7 +23,11 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MyInfoDTO {
+        private String profileImage;
+        private String email;
+        private String name;
         private String universityName;
+        private int generation;
         private String part;
         private String phoneNumber;
         private String portfolio;

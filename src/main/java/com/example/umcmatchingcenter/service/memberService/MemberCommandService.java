@@ -7,12 +7,14 @@ import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.Uuid;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO.UpdateMyInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
@@ -22,6 +24,9 @@ import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.UniversityRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.RedisService;
+import com.example.umcmatchingcenter.service.UuidService;
+import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
+import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -36,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +56,8 @@ public class MemberCommandService {
     private final MemberQueryService memberQueryService;
     private final AlarmCommandService alarmCommandService;
     private final RedisService redisService;
+    private final S3UploadService s3UploadService;
+    private final UuidService uuidService;
 
     public Member join(MemberRequestDTO.JoinDTO request){
         request.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -147,4 +155,12 @@ public class MemberCommandService {
     }
 
 
+    public void updateMyInfo(UpdateMyInfoDTO updateMyInfoDTO, MultipartFile file, String name) {
+        Member member = memberQueryService.findMemberByName(name);
+
+        String profileImage = s3UploadService.uploadFile(file);
+        member.updateMyInfo(updateMyInfoDTO, profileImage);
+        memberRepository.save(member);
+
+    }
 }

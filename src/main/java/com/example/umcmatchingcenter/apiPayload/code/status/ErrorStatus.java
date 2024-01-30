@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.apiPayload.code.status;
 
+import static org.springframework.http.HttpStatus.*;
+
 import com.example.umcmatchingcenter.apiPayload.code.BaseErrorCode;
 import com.example.umcmatchingcenter.apiPayload.code.ErrorReasonDTO;
 import lombok.AllArgsConstructor;
@@ -12,50 +14,51 @@ import org.springframework.http.HttpStatus;
 public enum ErrorStatus implements BaseErrorCode {
 
     // 가장 일반적인 응답
-    _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
-    _BAD_REQUEST(HttpStatus.BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
-    _UNAUTHORIZED(HttpStatus.UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
-    _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+    _INTERNAL_SERVER_ERROR(INTERNAL_SERVER_ERROR, "COMMON500", "서버 에러, 관리자에게 문의 바랍니다."),
+    _BAD_REQUEST(BAD_REQUEST,"COMMON400","잘못된 요청입니다."),
+    _UNAUTHORIZED(UNAUTHORIZED,"COMMON401","인증이 필요합니다."),
+    _FORBIDDEN(FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
 
     // 멤버 관려 에러
-    MEMBER_NOT_FOUND(HttpStatus.BAD_REQUEST, "MEMBER4001", "존재하지 않는 사용자입니다."),
-    MEMBER_WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "MEMBER4002", "잘못된 비밀번호 입니다"),
-    NICKNAME_NOT_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
-    MEMBER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MEMBER4004", "이미 등록된 사용자 입니다."),
+    MEMBER_NOT_FOUND(BAD_REQUEST, "MEMBER4001", "존재하지 않는 사용자입니다."),
+    MEMBER_WRONG_PASSWORD(BAD_REQUEST, "MEMBER4002", "잘못된 비밀번호 입니다"),
+    NICKNAME_NOT_EXIST(BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
+    MEMBER_ALREADY_EXIST(BAD_REQUEST, "MEMBER4004", "이미 등록된 사용자 입니다."),
+    MEMBER_PROFILE_ERROR(BAD_REQUEST, "MEMBER4005", "프로필사진 업로드에 실패했습니다."),
 
     // 내 프로젝트 에러
-    NO_SUCH_APPLICANT(HttpStatus.BAD_REQUEST, "MYPROJECT4001", "해당 프로젝트의 지원자가 없습니다."),
-    NO_MORE_APPLICANT(HttpStatus.BAD_REQUEST, "MYPROJECT4002", "더 이상 지원자를 받을 수 없습니다."),
+    NO_SUCH_APPLICANT(BAD_REQUEST, "MYPROJECT4001", "해당 프로젝트의 지원자가 없습니다."),
+    NO_MORE_APPLICANT(BAD_REQUEST, "MYPROJECT4002", "더 이상 지원자를 받을 수 없습니다."),
 
-    WRONG_AUTH_CODE(HttpStatus.BAD_REQUEST, "EMAIL4002", "잘못된 인증 코드 입니다"),
-    FAIL_CREATE_CODE(HttpStatus.BAD_REQUEST, "EMAIL4003", "코드 생성에 실패했습니다"),
-    FAIL_CREATE_EMAIL(HttpStatus.BAD_REQUEST, "EMAIL4004", "이메일 전송에 실패했습니다"),
+    WRONG_AUTH_CODE(BAD_REQUEST, "EMAIL4002", "잘못된 인증 코드 입니다"),
+    FAIL_CREATE_CODE(BAD_REQUEST, "EMAIL4003", "코드 생성에 실패했습니다"),
+    FAIL_CREATE_EMAIL(BAD_REQUEST, "EMAIL4004", "이메일 전송에 실패했습니다"),
 
     //jwt
-    JWT_FORBIDDEN(HttpStatus.FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다."),
-    JWT_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
-    JWT_EXPIRATION(HttpStatus.UNAUTHORIZED, "JWT4003", "만료된 jwt 토큰입니다"),
-    JWT_WRONG_SIGNATURE(HttpStatus.UNAUTHORIZED, "JWT4004", "잘못된 jwt 서명입니다"),
-    JWT_WRONG_REFRESHTOKEN(HttpStatus.UNAUTHORIZED, "JWT4005", "잘못된 refresh 토큰입니다."),
+    JWT_FORBIDDEN(FORBIDDEN, "JWT4001", "권한이 존재하지 않습니다."),
+    JWT_UNAUTHORIZED(UNAUTHORIZED, "JWT4002", "자격증명이 유효하지 않습니다."),
+    JWT_EXPIRATION(UNAUTHORIZED, "JWT4003", "만료된 jwt 토큰입니다"),
+    JWT_WRONG_SIGNATURE(UNAUTHORIZED, "JWT4004", "잘못된 jwt 서명입니다"),
+    JWT_WRONG_REFRESHTOKEN(UNAUTHORIZED, "JWT4005", "잘못된 refresh 토큰입니다."),
 
     //알림
-    NO_DELETE_ALARM(HttpStatus.BAD_REQUEST, "ALARM4001", "삭제할 알림이 존재하지 않습니다."),
-    NO_ALARM_LIST(HttpStatus.BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
+    NO_DELETE_ALARM(BAD_REQUEST, "ALARM4001", "삭제할 알림이 존재하지 않습니다."),
+    NO_ALARM_LIST(BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
     // 프로젝트 관련 에러
-    PROJECT_NOT_COMPLETE(HttpStatus.BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
-    PROJECT_NOT_PROCEEDING(HttpStatus.BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
+    PROJECT_NOT_COMPLETE(BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
+    PROJECT_NOT_PROCEEDING(BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 
     // 매칭 일정 관련 에러
-    MATCHINGSCHEDULE_NOT_EXIST(HttpStatus.BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
-    MATCHINGSCHEDULE_UNAUTHORIZED(HttpStatus.BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
+    MATCHINGSCHEDULE_NOT_EXIST(BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
+    MATCHINGSCHEDULE_UNAUTHORIZED(BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
 
     // 예시,,,
-    ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
+    ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
     // Ror test
-    TEMP_EXCEPTION(HttpStatus.BAD_REQUEST, "TEMP4001", "이거는 테스트");
+    TEMP_EXCEPTION(BAD_REQUEST, "TEMP4001", "이거는 테스트");
 
 
 
