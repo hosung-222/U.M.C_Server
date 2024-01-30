@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.dto.MatchingDTO;
 
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +37,13 @@ public class MatchingScheduleResponseDTO {
         private String title;
         private String description;
         private String scheduleColor;
-        private String startDate;
-        private String endDate;
+        private Integer startYear;
+        private Integer startMonth;
+        private Integer startDay;
+        private Integer endYear;
+        private Integer endMonth;
+        private Integer endDay;
+//        private String startDate;
+//        private String endDate;
     }
 }

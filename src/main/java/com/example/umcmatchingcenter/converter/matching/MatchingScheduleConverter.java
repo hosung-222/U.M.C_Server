@@ -2,7 +2,6 @@ package com.example.umcmatchingcenter.converter.matching;
 
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
-import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
 
@@ -22,8 +21,8 @@ public class MatchingScheduleConverter {
         return MatchingSchedule.builder()
                 .branch(branch)
                 .scheduleColor(request.getScheduleColor())
-                .startDate(request.getStartDate())
-                .endDate(request.getEndDate())
+                .startDate(MatchingSchedule.combineDate(request.getStartYear(), request.getStartMonth(), request.getStartDay()))
+                .endDate(MatchingSchedule.combineDate(request.getEndYear(), request.getEndMonth(), request.getEndDay()))
                 .name(request.getTitle())
                 .description(request.getDescription())
                 .build();
@@ -36,8 +35,14 @@ public class MatchingScheduleConverter {
                 .title(schedule.getName())
                 .description(schedule.getDescription())
                 .scheduleColor(schedule.getScheduleColor().getColor())
-                .startDate(schedule.getStartDate())
-                .endDate(schedule.getEndDate())
+                .startYear(MatchingSchedule.splitDate(schedule.getStartDate(), 0))
+                .startMonth(MatchingSchedule.splitDate(schedule.getStartDate(), 1))
+                .startDay(MatchingSchedule.splitDate(schedule.getStartDate(), 2))
+                .endYear(MatchingSchedule.splitDate(schedule.getEndDate(), 0))
+                .endMonth(MatchingSchedule.splitDate(schedule.getEndDate(), 1))
+                .endDay(MatchingSchedule.splitDate(schedule.getEndDate(), 2))
+//                .startDate(schedule.getStartDate())
+//                .endDate(schedule.getEndDate())
                 .build();
     }
 
@@ -51,4 +56,6 @@ public class MatchingScheduleConverter {
                 .scheduleList(schedulePreViewDTOList)
                 .build();
     }
+
+
 }
