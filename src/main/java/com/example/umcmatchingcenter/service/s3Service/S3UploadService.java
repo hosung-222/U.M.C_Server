@@ -21,7 +21,7 @@ import java.io.IOException;
 public class S3UploadService {
 
     private final AmazonS3 amazonS3;
-    private final UuidService uuidService
+    private final UuidService uuidService;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
