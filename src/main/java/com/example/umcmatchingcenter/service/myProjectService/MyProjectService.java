@@ -7,6 +7,7 @@ import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.ProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.TotalMatchingConverter;
 import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
@@ -15,6 +16,7 @@ import com.example.umcmatchingcenter.dto.ProjectDTO.ApplicantInfoResponseDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.PartMatchingResponseDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.TotalMatchingResponseDTO;
+import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.queryService.RecruitmentQueryService;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +39,7 @@ public class MyProjectService {
     private final MyProjectQueryService projectQueryService;
     private final MyProjectVolunteerQueryService projectVolunteerQueryService;
     private final RecruitmentQueryService recruitmentQueryService;
+    private final AlarmCommandService alarmCommandService;
 
     public MyProjectResponseDTO myProject() {
         return MyProjectConverter.toMyProjectResponseDto(
@@ -131,6 +134,11 @@ public class MyProjectService {
             if(projectQueryService.isFull(memberId)){
                 recruitment.setRecruitmentStatus(RecruitmentStatus.FULL);
             }
+
+            alarmCommandService.send(memberQueryService.getMember(memberId),
+                    AlarmType.MATCHING,
+                    projectQueryService.getProject().getName()+"팀과 매칭이 완료되었습니다.");
+
             return memberQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
