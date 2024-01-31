@@ -132,4 +132,8 @@ public class Member extends BaseEntity {
         this.profileImage = profileImage;
 
     }
+
+    public Branch getBranch(){
+        return this.university.getBranch();
+    }
 }

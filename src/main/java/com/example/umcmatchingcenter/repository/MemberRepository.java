@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.repository;
 
+import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
@@ -23,4 +24,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Page<Member> findByGenerationAndRoleAndMatchingStatus(int generation, MemberRole role, MemberMatchingStatus matchingStatus, Pageable pageable);
 
     Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
+
+    List<Member> findByUniversity_Branch(Branch branch);
 }

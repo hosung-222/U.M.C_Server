@@ -27,7 +27,7 @@ public class NoticeQueryService {
 
     public List<Notice> getNoticeList(String memberName){
         Optional<Member> member = memberRepository.findByMemberName(memberName);
-        Branch branch = member.get().getUniversity().getBranch();
+        Branch branch = member.get().getBranch();
 
         List<Notice> noticeList = noticeRepository.findAllByBranch(branch);
 

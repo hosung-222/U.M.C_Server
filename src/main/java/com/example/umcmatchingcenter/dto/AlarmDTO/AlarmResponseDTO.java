@@ -44,8 +44,6 @@ public class AlarmResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SseAlarmViewDTO {
-        String id;
-        String memberName;
         String title;
         String body;
         String createdAt;

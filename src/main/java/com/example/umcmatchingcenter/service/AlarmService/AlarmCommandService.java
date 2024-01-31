@@ -2,8 +2,10 @@ package com.example.umcmatchingcenter.service.AlarmService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.converter.AlarmConverter;
 import com.example.umcmatchingcenter.domain.Alarm;
+import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.repository.AlarmRepository;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -28,20 +31,26 @@ public class AlarmCommandService {
     private final MemberRepository memberRepository;
 
     public SseEmitter subscribe(String memberName) {
-        String emitterId = makeTimeIncludeId(memberName);
+        String emitterId = makeEmitterId(memberName);
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(DEFAULT_TIMEOUT));
 
         emitter.onCompletion(() -> emitterRepository.deleteById(emitterId));
         emitter.onTimeout(() -> emitterRepository.deleteById(emitterId));
 
-        String eventId = makeTimeIncludeId(memberName);
-        sendNotification(emitter, eventId, emitterId, "연결 성공 [멤버 닉네임 : " + memberName + "]");
+        String eventId = memberName + "_" + System.currentTimeMillis();
+        sendNotification(emitter, eventId, emitterId, "connected [memberName : " + memberName + "]");
 
         return emitter;
     }
 
-    private String makeTimeIncludeId(String memberName) {
-        return memberName + "_" + System.currentTimeMillis();
+    private String makeEmitterId(String memberName) {
+        Member member = memberRepository.findByMemberName(memberName)
+                .orElseThrow(()->new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+
+        Branch branch = member.getBranch();
+
+
+        return memberName + "_" + System.currentTimeMillis() + branch.getName();
     }
 
     private void sendNotification(SseEmitter emitter, String eventId, String emitterId, Object data) {
@@ -59,12 +68,24 @@ public class AlarmCommandService {
     public void send(Member receiver, AlarmType alarmType, String content) {
         Alarm alarm = alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content));
 
-        String memberName = receiver.getMemberName();
-        String eventId = memberName + "_" + System.currentTimeMillis();
-        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(memberName);
+        String eventId = receiver.getMemberName() + "_" + System.currentTimeMillis();
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(receiver.getMemberName());
         emitters.forEach(
                 (key, emitter) -> {
                     sendNotification(emitter, eventId, key, AlarmConverter.toSseAlarmViewDTO(alarm));
+                }
+        );
+    }
+
+    public void sendToBranch(Branch branch, AlarmType alarmType, String content) {
+        List<Member> memberList = memberRepository.findByUniversity_Branch(branch);
+        List<Alarm> alarmList = alarmRepository.saveAll(AlarmConverter.toAlarmList(memberList, alarmType, content));
+
+        String eventId = branch.getName() + "_" + System.currentTimeMillis();
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterEndWithBranchId(branch);
+        emitters.forEach(
+                (key, emitter) -> {
+                    sendNotification(emitter, eventId, key, AlarmConverter.toSseAlarmViewDTO(alarmList.get(0)));
                 }
         );
     }

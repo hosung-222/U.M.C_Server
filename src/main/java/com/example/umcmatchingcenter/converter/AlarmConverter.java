@@ -21,8 +21,6 @@ public class AlarmConverter {
 
     public static AlarmResponseDTO.AlarmViewDTO toAlarmViewDTO(Alarm alarm){
         return AlarmResponseDTO.AlarmViewDTO.builder()
-                .memberName(alarm.getMember().getMemberName())
-                .id(alarm.getId().toString())
                 .title(alarm.getAlarmType().getTitle())
                 .body(alarm.getBody())
                 .isConfirmed(alarm.getIsConfirmed())
@@ -32,8 +30,6 @@ public class AlarmConverter {
 
     public static AlarmResponseDTO.SseAlarmViewDTO toSseAlarmViewDTO(Alarm alarm){
         return AlarmResponseDTO.SseAlarmViewDTO.builder()
-                .memberName(alarm.getMember().getMemberName())
-                .id(alarm.getId().toString())
                 .title(alarm.getAlarmType().getTitle())
                 .body(alarm.getBody())
                 .createdAt(alarm.getCreatedAt().toString())
@@ -55,5 +51,13 @@ public class AlarmConverter {
                 .deleteCount(deleteCount)
                 .memberName(memberName)
                 .build();
+    }
+
+    public static List<Alarm> toAlarmList(List<Member> memberList, AlarmType alarmType, String content){
+        List<Alarm> alarmList = memberList.stream()
+                .map(member -> AlarmConverter.toAlarm(member, alarmType, content))
+                .collect(Collectors.toList());
+
+        return alarmList;
     }
 }

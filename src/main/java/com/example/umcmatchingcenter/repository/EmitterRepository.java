@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.repository;
 
+import com.example.umcmatchingcenter.domain.Branch;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -19,6 +20,12 @@ public class EmitterRepository {
     public Map<String, SseEmitter> findAllEmitterStartWithByMemberId(String memberName) {
         return emitters.entrySet().stream()
                 .filter(entry -> entry.getKey().startsWith(memberName))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public Map<String, SseEmitter> findAllEmitterEndWithBranchId(Branch branch) {
+        return emitters.entrySet().stream()
+                .filter(entry -> entry.getKey().endsWith(branch.getName()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
