@@ -155,11 +155,11 @@ public class MemberCommandService {
     }
 
 
-    public void updateMyInfo(UpdateMyInfoDTO updateMyInfoDTO, String name) {
+    public void updateMyInfo(UpdateMyInfoDTO updateMyInfoDTO, MultipartFile image, String name) {
         Member member = memberQueryService.findMemberByName(name);
         String profileImage = member.getProfileImage();
-        if (updateMyInfoDTO.getImage() != null) {
-            profileImage = s3UploadService.uploadFile(updateMyInfoDTO.getImage());
+        if (image != null) {
+            profileImage = s3UploadService.uploadFile(image);
         }
         member.updateMyInfo(updateMyInfoDTO, profileImage);
         memberRepository.save(member);
