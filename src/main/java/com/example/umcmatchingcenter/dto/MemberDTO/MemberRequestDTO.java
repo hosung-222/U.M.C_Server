@@ -45,12 +45,10 @@ public class MemberRequestDTO {
     @Setter
     public static class UpdateMyInfoDTO{
 
-        MultipartFile image;
-
-        String portfolio;
+        private String portfolio;
 
         @NotBlank
-        String phoneNumber;
+        private String phoneNumber;
 
     }
 }

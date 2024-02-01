@@ -112,9 +112,10 @@ public class MemberController {
     })
     @PreAuthorize("isAuthenticated()")
     @PatchMapping(value = "/members/mypage" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ApiResponse<String> updateMyInfo(@ModelAttribute @Valid UpdateMyInfoDTO updateMyInfoDTO,
+    public ApiResponse<String> updateMyInfo(@RequestPart @Valid UpdateMyInfoDTO updateMyInfoDTO,
+                                            @RequestPart(required = false) MultipartFile image,
                                             Principal principal) {
-        memberCommandService.updateMyInfo(updateMyInfoDTO, principal.getName());
+        memberCommandService.updateMyInfo(updateMyInfoDTO, image, principal.getName());
         return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
     }
 
