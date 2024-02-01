@@ -57,6 +57,9 @@ public enum ErrorStatus implements BaseErrorCode {
     // 지부 관련 에러
     BRANCH_NOT_FOUND(BAD_REQUEST, "BRANCH4001", "지부가 존재하지 않습니다."),
 
+    //학교 관련 에러
+    UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY4001", "학교가 존재하지 않습니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
