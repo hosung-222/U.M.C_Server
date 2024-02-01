@@ -56,6 +56,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //공지사항
     NOTICE_NOT_EXIST(HttpStatus.BAD_REQUEST, "NOTICE4001", "공지사항이 없습니다."),
+    NOTICE_IMAGE_ERROR(HttpStatus.BAD_REQUEST, "NOTICE4002", "이미지 업로드에 실패했습니다."),
 
     // 지부 관련 에러
     BRANCH_NOT_FOUND(BAD_REQUEST, "BRANCH4001", "지부가 존재하지 않습니다."),

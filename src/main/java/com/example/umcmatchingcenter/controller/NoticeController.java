@@ -15,8 +15,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -33,10 +35,12 @@ public class NoticeController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
     })
-    @PostMapping("/notices")
+    @PostMapping(value = "/notices", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ApiResponse<NoticeResponseDTO.AddNoticeDTO> addNotices(@RequestBody NoticeRequestDTO.AddNoticeDTO request, Principal principal){
-        Notice notice = noticeCommandService.addNotice(request, principal.getName());
+    public ApiResponse<NoticeResponseDTO.AddNoticeDTO> addNotices(@RequestPart NoticeRequestDTO.AddNoticeDTO request,
+                                                                  @RequestPart(required = false) List<MultipartFile> imageList,
+                                                                  Principal principal){
+        Notice notice = noticeCommandService.addNotice(request,imageList, principal.getName());
         return ApiResponse.onSuccess(NoticeConverter.toAddNoticeDTO(notice));
     }
 
