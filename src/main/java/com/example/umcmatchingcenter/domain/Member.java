@@ -125,4 +125,8 @@ public class Member extends BaseEntity {
         this.portfolio = updateMyInfoDTO.getPortfolio();
         this.profileImage = profileImage;
     }
+
+    public Branch getBranch(){
+        return this.university.getBranch();
+    }
 }
