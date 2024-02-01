@@ -54,6 +54,9 @@ public enum ErrorStatus implements BaseErrorCode {
     MATCHINGSCHEDULE_NOT_EXIST(BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
     MATCHINGSCHEDULE_UNAUTHORIZED(BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
 
+    // 지부 관련 에러
+    BRANCH_NOT_FOUND(BAD_REQUEST, "BRANCH4001", "지부가 존재하지 않습니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
