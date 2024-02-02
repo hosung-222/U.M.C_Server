@@ -5,6 +5,8 @@ import com.example.umcmatchingcenter.apiPayload.exception.handler.MyProjectHandl
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -50,6 +52,20 @@ public class MyProjectQueryService {
             return true;
         }
         return false;
+    }
+
+    public void isComplete() {
+
+        long completeRecruitments = getProject().getRecruitments()
+                .stream()
+                .filter(recruitment -> recruitment.getRecruitmentStatus().equals(RecruitmentStatus.FULL))
+                .count();
+
+        int recruitments = getProject().getRecruitments().size();
+
+        if (completeRecruitments == recruitments) {
+            getProject().setStatus(ProjectStatus.COMPLETE);
+        }
     }
 
 }
