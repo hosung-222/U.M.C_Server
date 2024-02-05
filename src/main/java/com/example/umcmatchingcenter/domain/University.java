@@ -27,4 +27,8 @@ public class University extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     private Branch branch;
+
+    public void updateBranch(Branch newBranch) {
+        this.branch = newBranch;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
@@ -18,16 +19,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.security.Principal;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -146,5 +153,22 @@ public class AdminController {
         RejectResultDTO rejectResultDTO = memberCommandService.requestMemberReject(id);
 
         return ApiResponse.onSuccess(rejectResultDTO);
+    }
+
+    @Operation(summary = "관리자 정보 수정 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4005", description = "사진 업로드에 실패했습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "415 Unsupported Media Type", description = "UpdateMyInfoDTO JSON 전송시 Content-Type에 application/json 을 명시해 주세요", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PatchMapping(value = "/info" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ApiResponse<String> updateMyInfo(@RequestPart @Valid MemberRequestDTO.UpdateAdminInfoDTO updateAdminInfoDTO,
+                                            @RequestPart(required = false) MultipartFile image,
+                                            Principal principal) {
+
+        memberCommandService.updateAdminInfo(updateAdminInfoDTO, image, principal.getName());
+        return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
     }
 }

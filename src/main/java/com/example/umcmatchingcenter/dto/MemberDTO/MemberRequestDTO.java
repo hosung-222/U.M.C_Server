@@ -51,4 +51,16 @@ public class MemberRequestDTO {
         private String phoneNumber;
 
     }
+
+    @Getter
+    @Setter
+    public static class UpdateAdminInfoDTO{
+
+        @NotBlank
+        private String phoneNumber;
+
+        @NotBlank
+        private String branch;
+
+    }
 }
