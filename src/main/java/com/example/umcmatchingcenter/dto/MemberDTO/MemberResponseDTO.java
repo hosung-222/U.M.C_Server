@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.dto.MemberDTO;
 
+import com.example.umcmatchingcenter.domain.Branch;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class MemberResponseDTO {
         private String part;
         private String phoneNumber;
         private String portfolio;
+        private String branch;
 
     }
 

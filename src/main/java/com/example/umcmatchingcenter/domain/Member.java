@@ -130,5 +130,6 @@ public class Member extends BaseEntity {
     public void updateAdminInfo(String newPhoneNumber, String profileImage) {
         this.phoneNumber = newPhoneNumber;
         this.profileImage = profileImage;
+
     }
 }
