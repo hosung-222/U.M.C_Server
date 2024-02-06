@@ -1,7 +1,6 @@
 package com.example.umcmatchingcenter.service.qnaService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.domain.Project;
@@ -24,11 +23,11 @@ public class QnACommandServiceImpl implements QnACommandService {
     private final MatchingRepository matchingRepository;
 
     @Override
-    public QnA postQnA(QnARequestDTO.QnADTO request, Long projectId) {
+    public QnA postQuestion(QnARequestDTO.questionDTO request, Long projectId) {
         Optional<Project> findProject = matchingRepository.findById(projectId);
         if (findProject.isPresent()) {
             Project project = findProject.get();
-            QnA newQnA = QnAConverter.toQnA(request, project);
+            QnA newQnA = QnAConverter.toQuestion(request, project);
             return qnaRepository.save(newQnA);
         } else {
             throw new ProjectHandler(ErrorStatus.PROJECT_NOT_PROCEEDING);

@@ -7,5 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface QnACommandService {
 
     @Transactional
-    public abstract QnA postQnA(QnARequestDTO.QnADTO request, Long projectId);
+    public abstract QnA postQuestion(QnARequestDTO.questionDTO request, Long projectId);
 }

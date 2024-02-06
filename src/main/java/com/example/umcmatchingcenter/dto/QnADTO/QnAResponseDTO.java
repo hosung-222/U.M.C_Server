@@ -11,7 +11,7 @@ public class QnAResponseDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class QnAResultDTO {
+    public static class questionResultDTO {
         private Long questionId;
     }
 

@@ -2,12 +2,7 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.QnAConverter;
-import com.example.umcmatchingcenter.converter.matching.MatchingScheduleConverter;
-import com.example.umcmatchingcenter.domain.Branch;
-import com.example.umcmatchingcenter.domain.MatchingSchedule;
 import com.example.umcmatchingcenter.domain.QnA;
-import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
-import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
 import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
 import com.example.umcmatchingcenter.dto.QnADTO.QnAResponseDTO;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -51,13 +46,13 @@ public class QnAController {
     @Parameters({
             @Parameter(name = "projectId", description = "매칭 프로젝트 아이디")
     })
-    public ApiResponse<QnAResponseDTO.QnAResultDTO> postQnA (
+    public ApiResponse<QnAResponseDTO.questionResultDTO> postQuestion(
             @PathVariable(name = "projectId") Long projectId,
-            @RequestBody @Valid QnARequestDTO.QnADTO request,
+            @RequestBody @Valid QnARequestDTO.questionDTO request,
             @Valid @ExistMember Principal principal
     ){
-        QnA qna = qnaCommandService.postQnA(request, projectId);
+        QnA qna = qnaCommandService.postQuestion(request, projectId);
 
-        return ApiResponse.onSuccess(QnAConverter.toPostQnAResultDTO(qna));
+        return ApiResponse.onSuccess(QnAConverter.toPostQuestionResultDTO(qna));
     }
 }

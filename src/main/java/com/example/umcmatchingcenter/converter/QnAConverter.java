@@ -5,17 +5,15 @@ import com.example.umcmatchingcenter.domain.QnA;
 import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
 import com.example.umcmatchingcenter.dto.QnADTO.QnAResponseDTO;
 
-import java.util.Optional;
-
 public class QnAConverter {
-    // Q&A 생성
-    public static QnAResponseDTO.QnAResultDTO toPostQnAResultDTO(QnA qna) {
-        return QnAResponseDTO.QnAResultDTO.builder()
+    // Q&A 생성 (질문하기)
+    public static QnAResponseDTO.questionResultDTO toPostQuestionResultDTO(QnA qna) {
+        return QnAResponseDTO.questionResultDTO.builder()
                 .questionId(qna.getId())
                 .build();
     }
 
-    public static QnA toQnA(QnARequestDTO.QnADTO request, Project project) {
+    public static QnA toQuestion(QnARequestDTO.questionDTO request, Project project) {
 
         return QnA.builder()
                 .project(project)

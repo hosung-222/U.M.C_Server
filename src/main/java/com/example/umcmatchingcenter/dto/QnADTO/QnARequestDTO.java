@@ -7,11 +7,9 @@ import javax.validation.constraints.NotNull;
 
 public class QnARequestDTO {
     @Getter
-    public static class QnADTO {
-
+    public static class questionDTO {
         @NotNull
         @Schema(description = "질문 내용", example = "질문 내용")
         String question;
-
     }
 }
