@@ -59,7 +59,7 @@ public class MemberConverter {
                 .part(member.getPart().name())
                 .phoneNumber(member.getPhoneNumber())
                 .portfolio(member.getPortfolio())
-                .branch(member.getBranch().getName())
+                .branch(member.getUniversity().getBranch().getName())
                 .build();
     }
 
