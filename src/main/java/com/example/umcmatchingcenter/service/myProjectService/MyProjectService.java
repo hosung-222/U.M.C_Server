@@ -139,6 +139,8 @@ public class MyProjectService {
                     AlarmType.MATCHING,
                     projectQueryService.getProject().getName()+"팀과 매칭이 완료되었습니다.");
 
+            projectQueryService.isComplete();
+
             return memberQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
