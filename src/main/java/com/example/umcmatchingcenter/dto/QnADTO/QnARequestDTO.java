@@ -12,4 +12,11 @@ public class QnARequestDTO {
         @Schema(description = "질문 내용", example = "질문 내용")
         String question;
     }
+
+    @Getter
+    public static class answerDTO {
+        @NotNull
+        @Schema(description = "답변 내용", example = "답변 내용")
+        String answer;
+    }
 }

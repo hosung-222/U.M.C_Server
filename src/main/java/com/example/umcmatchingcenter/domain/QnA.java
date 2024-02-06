@@ -37,4 +37,8 @@ public class QnA extends BaseEntity {
     @Column
     private String answer;
 
+    public void updateAnswer(String answer) {
+        this.answer = answer;
+    }
+
 }
