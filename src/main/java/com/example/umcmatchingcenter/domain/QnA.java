@@ -19,9 +19,13 @@ public class QnA extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "pm_id")
+//    private Member pm;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pm_id")
-    private Member pm;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inquirer_id")
