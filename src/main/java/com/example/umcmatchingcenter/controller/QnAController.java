@@ -35,7 +35,7 @@ public class QnAController {
     /**
      * Q&A 질문 생성
      */
-    @Operation(summary = "Q&A 생성 API")
+    @Operation(summary = "Q&A 질문 생성 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
@@ -60,7 +60,7 @@ public class QnAController {
     /**
      * Q&A 답변 생성
      */
-    @Operation(summary = "Q&A 답변 API")
+    @Operation(summary = "Q&A 답변 생성 API")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
