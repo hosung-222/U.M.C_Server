@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.converter;
 
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
 import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
@@ -13,11 +14,11 @@ public class QnAConverter {
                 .build();
     }
 
-    public static QnA toQuestion(QnARequestDTO.questionDTO request, Project project) {
+    public static QnA toQuestion(QnARequestDTO.questionDTO request, Project project, Member inquirer) {
 
         return QnA.builder()
                 .project(project)
-//                .pm(project.getPm())
+                .inquirer(inquirer)
                 .question(request.getQuestion())
                 .build();
     }

@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.QnAConverter;
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.QnA;
 import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
 import com.example.umcmatchingcenter.dto.QnADTO.QnAResponseDTO;
@@ -51,7 +52,7 @@ public class QnAController {
             @RequestBody @Valid QnARequestDTO.questionDTO request,
             @Valid @ExistMember Principal principal
     ){
-        QnA qna = qnaCommandService.postQuestion(request, projectId);
+        QnA qna = qnaCommandService.postQuestion(request, projectId, principal.getName());
 
         return ApiResponse.onSuccess(QnAConverter.toPostQuestionResultDTO(qna));
     }
