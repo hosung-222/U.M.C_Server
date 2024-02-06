@@ -81,4 +81,28 @@ public class QnAController {
 
         return ApiResponse.onSuccess(questionId + "번 질문에 답변했습니다.");
     }
+
+    /**
+     * Q&A 답변 삭제
+     */
+    @Operation(summary = "Q&A 답변 삭제 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4001", description = "JWT 토큰을 주세요!",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "JWT4002", description = "JWT 토큰 만료",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "name 에 맞는 사용자가 없습니다.",content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @DeleteMapping("/{questionId}")
+    @Parameters({
+            @Parameter(name = "questionId", description = "질문 아이디")
+    })
+    public ApiResponse<String> deleteAnswer(
+            @PathVariable(name = "questionId") Long questionId,
+            @Valid @ExistMember Principal principal
+    ){
+        qnaCommandService.deleteAnswer(questionId, principal.getName());
+
+        return ApiResponse.onSuccess(questionId + "번 질문에 대한 답변을 삭제했습니다.");
+    }
 }

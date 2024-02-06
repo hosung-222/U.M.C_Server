@@ -54,6 +54,17 @@ public class QnACommandServiceImpl implements QnACommandService {
     }
 
     @Override
+    public void deleteAnswer(Long questionId, String respondentName) {
+        Member respondent = memberRepository.findByMemberName(respondentName)
+                .orElseThrow(()-> new ProjectHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        // 답변 권한 확인
+        QnA findQuestion = checkIsAuthorized(questionId, respondent);
+        // 답변 삭제
+        findQuestion.deleteAnswer();
+        qnaRepository.save(findQuestion);
+    }
+
+    @Override
     public QnA checkIsAuthorized(Long questionId, Member member) {
         Optional<QnA> findOptionalQuestion = qnaRepository.findById(questionId);
 

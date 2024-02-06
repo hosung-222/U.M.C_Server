@@ -15,5 +15,8 @@ public interface QnACommandService {
     @Transactional
     public abstract void postAnswer(QnARequestDTO.answerDTO request, Long questionId, String respondentName);
 
+    @Transactional
+    public abstract void deleteAnswer(Long questionId, String respondentName);
+
     public abstract QnA checkIsAuthorized(Long questionId, Member member);
 }
