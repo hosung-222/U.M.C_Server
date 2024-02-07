@@ -41,8 +41,4 @@ public class QnA extends BaseEntity {
         this.answer = answer;
     }
 
-    public void deleteAnswer() {
-        this.answer = null;
-    }
-
 }
