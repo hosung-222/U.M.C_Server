@@ -131,7 +131,7 @@ public class QnAController {
             @PathVariable(name = "projectId") Long projectId,
             @Valid @ExistMember Principal principal
     ){
-        Project project = matchingQueryService.findProjectByProjectId(projectId);
+        Project project = matchingQueryService.findProject(projectId);
         List<QnA> qnaList = qnaQueryService.getQnAList(project);
 
         return ApiResponse.onSuccess(QnAConverter.toQnAPreViewListDTO(qnaList));

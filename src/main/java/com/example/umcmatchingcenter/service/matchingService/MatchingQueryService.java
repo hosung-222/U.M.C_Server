@@ -8,9 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MatchingQueryService {
-    Optional<Project> findProject(Long id);
-
-    Project findProjectByProjectId(Long id);
+    Project findProject(Long id);
 
     List<Project> getProjectList(Branch branch, ProjectStatus status, Integer page);
 

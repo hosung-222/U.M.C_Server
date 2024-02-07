@@ -16,5 +16,5 @@ public interface QnACommandService {
     @Transactional
     public abstract void deleteQuestion(Long questionId, String respondentName);
 
-    public abstract QnA checkIsAuthorized(Long questionId, Member member);
+    public QnA checkIsAuthorized(Long questionId, Member member);
 }
