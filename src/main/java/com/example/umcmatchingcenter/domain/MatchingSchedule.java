@@ -14,7 +14,9 @@ import javax.persistence.*;
 @Builder
 public class MatchingSchedule extends BaseEntity {
 
+    public static final String CENTURY_PREFIX = "20";
     public static final String DATE_DIVIDER = "-";
+    public static final String DATE_PATTERN = "%02d";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +49,7 @@ public class MatchingSchedule extends BaseEntity {
     }
 
     public static String combineDate(Integer year, Integer month, Integer day) {
-        return "20" + year + DATE_DIVIDER + String.format("%02d", month) + DATE_DIVIDER + String.format("%02d", day);
+        return CENTURY_PREFIX + year + DATE_DIVIDER + String.format(DATE_PATTERN, month) + DATE_DIVIDER + String.format(DATE_PATTERN, day);
     }
 
     public static Integer splitDate(String str, int i) {
