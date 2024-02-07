@@ -1,5 +1,8 @@
 package com.example.umcmatchingcenter.domain.enums;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
+
 public enum ScheduleColor {
     WHITE("#DCDEEE"),
     RED("#FF7676"),
@@ -17,7 +20,17 @@ public enum ScheduleColor {
         this.hexColor = color;
     }
 
-    public String getColor() {
+    public String getHexColor() {
         return hexColor;
     }
+
+    public static ScheduleColor fromHexCode(String hexCode) {
+        for (ScheduleColor color : values()) {
+            if (color.getHexColor().equalsIgnoreCase(hexCode)) {
+                return color;
+            }
+        }
+        throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_COLOR_NOT_EXIST);
+    }
+
 }

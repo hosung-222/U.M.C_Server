@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.converter.matching;
 
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
+import com.example.umcmatchingcenter.domain.enums.ScheduleColor;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
 
@@ -20,7 +21,7 @@ public class MatchingScheduleConverter {
 
         return MatchingSchedule.builder()
                 .branch(branch)
-                .scheduleColor(request.getScheduleColor())
+                .scheduleColor(ScheduleColor.fromHexCode(request.getScheduleColor()))
                 .startDate(MatchingSchedule.combineDate(request.getStartYear(), request.getStartMonth(), request.getStartDay()))
                 .endDate(MatchingSchedule.combineDate(request.getEndYear(), request.getEndMonth(), request.getEndDay()))
                 .name(request.getTitle())
@@ -34,7 +35,7 @@ public class MatchingScheduleConverter {
                 .scheduleId(schedule.getId())
                 .title(schedule.getName())
                 .description(schedule.getDescription())
-                .scheduleColor(schedule.getScheduleColor().getColor())
+                .scheduleColor(schedule.getScheduleColor().getHexColor())
                 .startYear(MatchingSchedule.splitDate(schedule.getStartDate(), 0))
                 .startMonth(MatchingSchedule.splitDate(schedule.getStartDate(), 1))
                 .startDay(MatchingSchedule.splitDate(schedule.getStartDate(), 2))

@@ -43,7 +43,7 @@ public class MatchingSchedule extends BaseEntity {
     public void updateSchedule(MatchingScheduleRequestDTO.MatchingScheduleDTO schedule) {
         this.name = schedule.getTitle();
         this.description = schedule.getDescription();
-        this.scheduleColor = schedule.getScheduleColor();
+        this.scheduleColor = ScheduleColor.fromHexCode(schedule.getScheduleColor());
         this.startDate = combineDate(schedule.getStartYear(), schedule.getStartMonth(), schedule.getStartDay());
         this.endDate = combineDate(schedule.getEndYear(), schedule.getEndMonth(), schedule.getEndDay());
     }
