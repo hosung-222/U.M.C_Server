@@ -12,6 +12,7 @@ import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.QnARepository;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +24,14 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class QnACommandServiceImpl implements QnACommandService {
 
-    private final MemberRepository memberRepository;
     private final QnARepository qnaRepository;
     private final MatchingRepository matchingRepository;
 
+    private final MemberQueryService memberQueryService;
+
     @Override
     public QnA postQuestion(QnARequestDTO.questionDTO request, Long projectId, String memberName) {
-        Member inquirer = memberRepository.findByMemberName(memberName)
-                .orElseThrow(()-> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member inquirer = memberQueryService.findMemberByName(memberName);
         Optional<Project> findProject = matchingRepository.findById(projectId);
 
         if (findProject.isPresent()) {
@@ -44,8 +45,7 @@ public class QnACommandServiceImpl implements QnACommandService {
 
     @Override
     public void postAnswer(QnARequestDTO.answerDTO request, Long questionId, String respondentName) {
-        Member respondent = memberRepository.findByMemberName(respondentName)
-                .orElseThrow(()-> new ProjectHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member respondent = memberQueryService.findMemberByName(respondentName);
         // 답변 권한 확인
         QnA findQuestion = checkIsAuthorized(questionId, respondent);
         // 답변 생성
@@ -55,8 +55,7 @@ public class QnACommandServiceImpl implements QnACommandService {
 
     @Override
     public void deleteQuestion(Long questionId, String respondentName) {
-        Member respondent = memberRepository.findByMemberName(respondentName)
-                .orElseThrow(()-> new ProjectHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member respondent = memberQueryService.findMemberByName(respondentName);
         // 답변 권한 확인
         checkIsAuthorized(questionId, respondent);
         // Q&A 질문 삭제
