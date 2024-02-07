@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.NoticeHandler;
 import com.example.umcmatchingcenter.domain.Uuid;
 import com.example.umcmatchingcenter.service.UuidService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -58,6 +62,15 @@ public class S3UploadService {
         }
 
         return amazonS3.getUrl(bucket, newName).toString();
+    }
+
+    public List<String> uploadFileList(List<MultipartFile> fileList){
+        List<String> urlList = new ArrayList<>();
+        for(MultipartFile file : fileList){
+            urlList.add(uploadFile(file));
+        }
+
+        return urlList;
     }
 
 }
