@@ -35,15 +35,13 @@ public class MatchingScheduleRequestDTO {
         @Schema(description = "종료일", example = "01")
         Integer endDay;
 
-
-
 //        @Schema(description = "시작일", example = "2024-01-25")
 //        String startDate;
 //
 //        @Schema(description = "종료일", example = "2024-02-01")
 //        String endDate;
 
-        @Schema(description = "일정 색상", example = "일정 색상 (WHITE, RED, ORANGE, ..)")
-        ScheduleColor scheduleColor;
+        @Schema(description = "일정 색상", example = "#DCDEEE")
+        String scheduleColor;
     }
 }
