@@ -29,6 +29,11 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
     }
 
     @Override
+    public Project findProjectByProjectId(Long id) {
+        return matchingRepository.findById(id).get();
+    }
+
+    @Override
     public List<Project> getProjectList(Branch branch, ProjectStatus status, Integer page) {
         try {
             return matchingRepository.findAllByBranchAndStatusOrderByCreatedAt(branch, status, PageRequest.of(page, PAGING_SIZE)).getContent();

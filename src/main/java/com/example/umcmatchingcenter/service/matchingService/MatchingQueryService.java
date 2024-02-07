@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface MatchingQueryService {
     Optional<Project> findProject(Long id);
 
+    Project findProjectByProjectId(Long id);
+
     List<Project> getProjectList(Branch branch, ProjectStatus status, Integer page);
 
     // TODO: 작성자(pm)가 나인지 확인
