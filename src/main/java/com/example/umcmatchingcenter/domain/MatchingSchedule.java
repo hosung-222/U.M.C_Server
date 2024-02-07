@@ -14,6 +14,10 @@ import javax.persistence.*;
 @Builder
 public class MatchingSchedule extends BaseEntity {
 
+    public static final String CENTURY_PREFIX = "20";
+    public static final String DATE_DIVIDER = "-";
+    public static final String DATE_PATTERN = "%02d";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,18 +44,18 @@ public class MatchingSchedule extends BaseEntity {
         this.name = schedule.getTitle();
         this.description = schedule.getDescription();
         this.scheduleColor = schedule.getScheduleColor();
-        this.startDate = combineDate(schedule.getStartYear(), schedule.getStartMonth(), schedule.getEndYear());
+        this.startDate = combineDate(schedule.getStartYear(), schedule.getStartMonth(), schedule.getStartDay());
         this.endDate = combineDate(schedule.getEndYear(), schedule.getEndMonth(), schedule.getEndDay());
     }
 
     public static String combineDate(Integer year, Integer month, Integer day) {
-        return "20" + year + "-" + month + "-" + day;
+        return CENTURY_PREFIX + year + DATE_DIVIDER + String.format(DATE_PATTERN, month) + DATE_DIVIDER + String.format(DATE_PATTERN, day);
     }
 
     public static Integer splitDate(String str, int i) {
-        String[] date = str.split("-");
+        String[] date = str.split(DATE_DIVIDER);
         String current = date[i];
-        current = current.substring(current.length()-2, current.length());
+        current = current.substring(current.length()-2);
         return Integer.parseInt(current);
     }
 }
