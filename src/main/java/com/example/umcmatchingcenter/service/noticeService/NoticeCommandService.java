@@ -32,12 +32,15 @@ public class NoticeCommandService {
     private final AlarmCommandService alarmCommandService;
     private final S3UploadService s3UploadService;
     private final MemberQueryService memberQueryService;
+    private final NoticeQueryService noticeQueryService;
 
     public Notice addNotice(NoticeRequestDTO.AddNoticeDTO request, List<MultipartFile> imageListString, String memberName){
 
         Notice notice = NoticeConverter.toNotice(request);
 
         Member member = memberQueryService.findMemberByName(memberName);
+
+        s3UploadService.uploadFileList(imageListString);
 
         Branch branch = member.getUniversity().getBranch();
         alarmCommandService.sendToBranch(branch, AlarmType.NOTICE, "새로운 공지사항이 등록되었습니다.");
@@ -47,8 +50,7 @@ public class NoticeCommandService {
     }
 
     public Notice updateNotice(Long noticeId,NoticeRequestDTO.UpdateNoticeDTO request){
-        Notice notice = noticeRepository.findById(noticeId)
-                        .orElseThrow(()->new NoticeHandler(ErrorStatus.NOTICE_NOT_EXIST));
+        Notice notice = noticeQueryService.findNotice(noticeId);
         notice.update(request.getTitle(), request.getBody());
         return notice;
     }

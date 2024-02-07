@@ -69,8 +69,7 @@ public class NoticeController {
     })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<NoticeResponseDTO.NoticeDetailsDTO> notice(@PathVariable(name = "noticeId") Long noticeId){
-        Notice notice = noticeQueryService.getNoticeDetails(noticeId);
-        return ApiResponse.onSuccess(NoticeConverter.toNoticeDetailsDTO(notice));
+        return ApiResponse.onSuccess(noticeQueryService.getNoticeDetails(noticeId));
     }
 
     @Operation(summary = "공지 수정 API")

@@ -37,8 +37,13 @@ public class NoticeQueryService {
         return noticeList;
     }
 
-    public Notice getNoticeDetails(Long noticeId){
-        Notice notice = noticeRepository.findById(noticeId)
+    public NoticeResponseDTO.NoticeDetailsDTO getNoticeDetails(Long noticeId){
+        Notice notice = findNotice(noticeId);
+        return NoticeConverter.toNoticeDetailsDTO(notice);
+    }
+
+    public Notice findNotice(Long id){
+        Notice notice = noticeRepository.findById(id)
                 .orElseThrow(()->new NoticeHandler(ErrorStatus.NOTICE_NOT_EXIST));
         return notice;
     }
