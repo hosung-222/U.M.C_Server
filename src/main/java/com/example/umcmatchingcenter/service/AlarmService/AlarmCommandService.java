@@ -11,6 +11,7 @@ import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.repository.AlarmRepository;
 import com.example.umcmatchingcenter.repository.EmitterRepository;
 import com.example.umcmatchingcenter.repository.MemberRepository;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +30,7 @@ public class AlarmCommandService {
     private final EmitterRepository emitterRepository;
     private final AlarmRepository alarmRepository;
     private final MemberRepository memberRepository;
+    private final MemberQueryService memberQueryService;
 
     public SseEmitter subscribe(String memberName) {
         String emitterId = makeEmitterId(memberName);
@@ -44,8 +46,7 @@ public class AlarmCommandService {
     }
 
     private String makeEmitterId(String memberName) {
-        Member member = memberRepository.findByMemberName(memberName)
-                .orElseThrow(()->new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member member = memberQueryService.findMemberByName(memberName);
 
         Branch branch = member.getBranch();
 
@@ -91,8 +92,7 @@ public class AlarmCommandService {
     }
 
     public int deleteAlarms(String memberName){
-        Member member = memberRepository.findByMemberName(memberName)
-                .orElseThrow(()-> new AlarmHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member member = memberQueryService.findMemberByName(memberName);;
 
         int deletecout = alarmRepository.deleteAllByIds(member);
         if(deletecout==0){

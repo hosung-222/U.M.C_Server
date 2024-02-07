@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.domain.Notice;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeResponseDTO;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.NoticeRepository;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,12 +23,12 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class NoticeQueryService {
 
-    private final MemberRepository memberRepository;
     private final NoticeRepository noticeRepository;
+    private final MemberQueryService memberQueryService;
 
     public List<Notice> getNoticeList(String memberName){
-        Optional<Member> member = memberRepository.findByMemberName(memberName);
-        Branch branch = member.get().getBranch();
+        Member member = memberQueryService.findMemberByName(memberName);
+        Branch branch = member.getBranch();
 
         List<Notice> noticeList = noticeRepository.findAllByBranch(branch);
 

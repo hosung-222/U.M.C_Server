@@ -11,6 +11,7 @@ import com.example.umcmatchingcenter.dto.noticeDTO.NoticeRequestDTO;
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.NoticeRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +28,18 @@ import java.util.Optional;
 @Slf4j
 public class NoticeCommandService {
 
-    private final MemberRepository memberRepository;
     private final NoticeRepository noticeRepository;
     private final AlarmCommandService alarmCommandService;
     private final S3UploadService s3UploadService;
+    private final MemberQueryService memberQueryService;
 
     public Notice addNotice(NoticeRequestDTO.AddNoticeDTO request, List<MultipartFile> imageListString, String memberName){
 
-        log.info(request.getBody());
         Notice notice = NoticeConverter.toNotice(request);
 
-        Optional<Member> member = memberRepository.findByMemberName(memberName);
+        Member member = memberQueryService.findMemberByName(memberName);
 
-        List<String> urlList = s3UploadService.uploadFileList(imageListString);
-
-        Branch branch = member.get().getUniversity().getBranch();
+        Branch branch = member.getUniversity().getBranch();
         alarmCommandService.sendToBranch(branch, AlarmType.NOTICE, "새로운 공지사항이 등록되었습니다.");
 
         notice.setBranch(branch);
