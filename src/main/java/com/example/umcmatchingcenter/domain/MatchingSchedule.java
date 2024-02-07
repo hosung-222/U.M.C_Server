@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Builder
 public class MatchingSchedule extends BaseEntity {
 
+    public static final String DATE_DIVIDER = "-";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,13 +47,13 @@ public class MatchingSchedule extends BaseEntity {
     }
 
     public static String combineDate(Integer year, Integer month, Integer day) {
-        return "20" + year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day);
+        return "20" + year + DATE_DIVIDER + String.format("%02d", month) + DATE_DIVIDER + String.format("%02d", day);
     }
 
     public static Integer splitDate(String str, int i) {
-        String[] date = str.split("-");
+        String[] date = str.split(DATE_DIVIDER);
         String current = date[i];
-        current = current.substring(current.length()-2, current.length());
+        current = current.substring(current.length()-2);
         return Integer.parseInt(current);
     }
 }
