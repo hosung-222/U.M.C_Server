@@ -24,6 +24,9 @@ public class Branch extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private int matchRound;
+
     @OneToMany(mappedBy = "branch")
     private List<University> universities;
 
