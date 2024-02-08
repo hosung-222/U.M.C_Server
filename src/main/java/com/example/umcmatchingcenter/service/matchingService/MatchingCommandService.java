@@ -115,15 +115,8 @@ public class MatchingCommandService {
     }
 
     private void updateRecruitment(Map<MemberPart, Integer> partCount, Project project){
-        List<Recruitment> recruitmentList = new ArrayList<>();
-        partCount.forEach(
-                (memberPart, count) ->{
-                    Recruitment recruitment = recruitmentRepository.findByPartAndProject(memberPart, project)
-                            .orElse(RecruitmentConverter.toRecruitment(project, memberPart,count));
-                    recruitment.updateTotalRecruitment(count);
-                    recruitmentList.add(recruitment);
-                }
-        );
+        List<Recruitment> recruitmentList = getRecruitmentList(partCount, project);
+        recruitmentRepository.deleteAllByProject(project);
         recruitmentRepository.saveAll(recruitmentList);
     }
 }
