@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Project;
 
+import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 
 
@@ -9,6 +10,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class  ProjectConverter {
+
+    public static Project toProject(ProjectRequestDTO.AddProjectRequestDto request){
+        return Project.builder()
+                .body(request.getBody())
+                .image(request.getImage())
+                .name(request.getName())
+                .introduction(request.getIntroduction())
+                .build();
+    }
     // 프로젝트 전체 조회
     public static ProjectResponseDTO.ProjectPreViewDTO toProjectPreViewDTO(Project project){
         return ProjectResponseDTO.ProjectPreViewDTO.builder()
