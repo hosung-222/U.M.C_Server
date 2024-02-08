@@ -66,9 +66,14 @@ public enum ErrorStatus implements BaseErrorCode {
     //학교 관련 에러
     UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY4001", "학교가 존재하지 않습니다."),
 
+
+    //지원 정보 에러
+    RECRUITMENT_NOT_FOUNT(BAD_REQUEST, "RECRUITMENT4001", "지원 정보가 없습니다."),
+
     // Q&A 관련 에러
     QUESTION_NOT_FOUNT(BAD_REQUEST, "QUESTION4001", "질문이 존재하지 않습니다."),
     ANSWER_UNAUTHORIZED(BAD_REQUEST, "ANSWER4002", "질문에 대한 답변 권한이 없습니다."),
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
