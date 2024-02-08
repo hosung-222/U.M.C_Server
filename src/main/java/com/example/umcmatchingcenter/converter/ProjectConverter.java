@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class  ProjectConverter {
 
-    public static Project toProject(MatchingRequestDTO.AddMatchingProjectRequestDto request, Member pm, Branch branch, String image){
+    public static Project toProject(MatchingRequestDTO.AddMatchingProjectRequestDTO request, Member pm, Branch branch, String image){
         return Project.builder()
                 .body(request.getBody())
                 .name(request.getName())

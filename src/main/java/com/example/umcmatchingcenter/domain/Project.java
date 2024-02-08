@@ -69,7 +69,7 @@ public class Project extends BaseEntity {
         this.image = image;
     }
 
-    public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDto request){
+    public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
         this.name = request.getName();
         this.body = request.getBody();
         this.introduction = request.getIntroduction();

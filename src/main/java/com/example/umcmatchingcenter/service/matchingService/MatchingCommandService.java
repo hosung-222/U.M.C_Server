@@ -68,7 +68,7 @@ public class MatchingCommandService {
         }
     }
 
-    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDto request, String memberName, MultipartFile image){
+    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDTO request, String memberName, MultipartFile image){
         Member pm = memberQueryService.findMemberByName(memberName);
         String imageUrl = s3UploadService.uploadFile(image);
 
@@ -91,7 +91,7 @@ public class MatchingCommandService {
         return recruitmentList;
     }
 
-    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDto request,MultipartFile image){
+    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request,MultipartFile image){
 
         Project project = matchingQueryService.findProject(projectId);
 
