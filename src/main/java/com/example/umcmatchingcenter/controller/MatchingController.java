@@ -82,7 +82,7 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
                                                    Principal principal) {
         Project project = matchingCommandService.addMatchingProjects(request, principal.getName(),image);
@@ -90,14 +90,14 @@ public class MatchingController {
     }
 
     @PatchMapping(value = "/projects/{projectId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(summary = "아이디어 페이지 작성")
+    @Operation(summary = "아이디어 페이지 수정")
     @ApiResponses({ // API 응답
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestPart MatchingRequestDTO.UpdateMatchingProjectRequestDto request,
                                                       @RequestPart(required = false) MultipartFile image) {
         matchingCommandService.updateMatchingProjects(projectId,request,image);
