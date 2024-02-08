@@ -17,4 +17,15 @@ public class MatchingRequestDTO {
 
 
     }
+
+    @Getter
+    @Setter
+    public static class UpdateMatchingProjectRequestDto{
+        private String body;
+        private String introduction;
+        private String name;
+        private Map<MemberPart, Integer> partCounts;
+
+
+    }
 }
