@@ -47,12 +47,14 @@ public enum ErrorStatus implements BaseErrorCode {
     NO_ALARM_LIST(BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
     // 프로젝트 관련 에러
+    PROJECT_NOT_EXIST(BAD_REQUEST, "PROJECT4001", "프로젝트가 존재하지 않습니다."),
     PROJECT_NOT_COMPLETE(BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
     PROJECT_NOT_PROCEEDING(BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 
     // 매칭 일정 관련 에러
     MATCHINGSCHEDULE_NOT_EXIST(BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
     MATCHINGSCHEDULE_UNAUTHORIZED(BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
+    MATCHINGSCHEDULE_COLOR_NOT_EXIST(BAD_REQUEST, "SCHEDULE4003", "유효하지 않은 색상입니다."),
 
     //공지사항
     NOTICE_NOT_EXIST(HttpStatus.BAD_REQUEST, "NOTICE4001", "공지사항이 없습니다."),
@@ -64,8 +66,14 @@ public enum ErrorStatus implements BaseErrorCode {
     //학교 관련 에러
     UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY4001", "학교가 존재하지 않습니다."),
 
+
     //지원 정보 에러
     RECRUITMENT_NOT_FOUNT(BAD_REQUEST, "RECRUITMENT4001", "지원 정보가 없습니다."),
+
+    // Q&A 관련 에러
+    QUESTION_NOT_FOUNT(BAD_REQUEST, "QUESTION4001", "질문이 존재하지 않습니다."),
+    ANSWER_UNAUTHORIZED(BAD_REQUEST, "ANSWER4002", "질문에 대한 답변 권한이 없습니다."),
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
