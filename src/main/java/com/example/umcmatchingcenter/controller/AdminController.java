@@ -173,6 +173,15 @@ public class AdminController {
         return ApiResponse.onSuccess("내 정보 수정에 성공했습니다.");
     }
 
+    @Operation(summary = "랜덤매칭 API")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4001", description = "사용자가 없습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MEMBER4005", description = "사진 업로드에 실패했습니다.", content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
+    })
+    @Parameters({
+            @Parameter(name = "generation", description = "랜덤 매칭 돌리는 기수 번호입니다.")
+    })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/match/random/{generation}")
     public ApiResponse<String> randomMatching(@PathVariable(name = "generation")int generation){
