@@ -71,14 +71,11 @@ public class MatchingCommandService {
     }
 
     public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDto request, String memberName, MultipartFile image){
-        Project project = ProjectConverter.toProject(request);
-
         Member pm = memberQueryService.findMemberByName(memberName);
-        project.setPm(pm);
-        project.setBranch(pm.getUniversity().getBranch());
-
         String imageUrl = s3UploadService.uploadFile(image);
-        project.setImage(imageUrl);
+
+        Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch(), imageUrl);
+
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
