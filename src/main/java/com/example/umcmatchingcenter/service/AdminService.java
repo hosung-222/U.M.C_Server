@@ -46,12 +46,25 @@ public class AdminService {
     private final UniversityRepository universityRepository;
     private final MemberCommandService memberCommandService;
 
-    public List<ChallengerInfoDTO> getChallengerList(MemberMatchingStatus memberMatchingStatus, int page) {
-        Page<Member> members = memberRepository.findByGenerationAndRoleAndMatchingStatus(NOW_GENERATION, ROLE_CHALLENGER,
-                memberMatchingStatus, PageRequest.of(page, PAGING_SIZE));
+    public List<ChallengerInfoDTO> getChallengerList(MemberMatchingStatus memberMatchingStatus, int page, String name) {
+        Member admin = memberQueryService.findMemberByName(name);
+        int currentMatchRound = admin.getUniversity().getBranch().getMatchRound();
+
+        Branch branch = admin.getUniversity().getBranch();
+        List<University> universityList = branch.getUniversities();
+
+        Page<Member> members;
+        if (memberMatchingStatus != null) {
+            // 특정 MemberMatchingStatus가 주어진 경우 해당 조건으로 회원 조회
+            members = memberRepository.findByGenerationAndRoleAndMatchingStatusAndUniversityIn(
+                    NOW_GENERATION, ROLE_CHALLENGER, memberMatchingStatus, PageRequest.of(page, PAGING_SIZE), universityList);
+        } else {
+            // MemberMatchingStatus가 주어지지 않은 경우 모든 회원 조회
+            members = memberRepository.findByGenerationAndRoleAndUniversityIn(NOW_GENERATION, ROLE_CHALLENGER, PageRequest.of(page, PAGING_SIZE),universityList);
+        }
 
         return members.stream()
-                .map(MemberConverter::toChallengerInfoDTO)
+                .map(member -> MemberConverter.toChallengerInfoDTO(member, currentMatchRound))
                 .toList();
     }
 

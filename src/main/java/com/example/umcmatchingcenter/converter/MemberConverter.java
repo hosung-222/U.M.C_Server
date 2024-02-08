@@ -3,6 +3,7 @@ package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO.RenewalAccessTokenResponseDTO;
@@ -15,8 +16,6 @@ import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -69,17 +68,35 @@ public class MemberConverter {
                 .build();
     }
 
-    public static ChallengerInfoDTO toChallengerInfoDTO(Member member){
+    public static ChallengerInfoDTO toChallengerInfoDTO(Member member, int currentMatchRound){
+        List<ProjectVolunteer> projectVolunteerList = member.getProjectVolunteerList();
+        boolean isApply = projectVolunteerList.stream()
+                .map(ProjectVolunteer::getRound)
+                .anyMatch(round -> round == currentMatchRound);
+
+        String matchStatus;
+        int matchCount;
+        if (member.getMatchingStatus().equals(MemberMatchingStatus.MATCH)){
+            matchStatus = "매칭 완료";
+            matchCount = member.getProjectVolunteerList().stream()
+                    .map(ProjectVolunteer::getRound)
+                    .max(Comparator.naturalOrder())
+                    .orElse(0);
+        } else if (isApply) {
+            matchStatus = "지원 완료";
+            matchCount = currentMatchRound;
+        }else {
+            matchStatus = "미지원";
+            matchCount = currentMatchRound;
+        }
+
         return ChallengerInfoDTO.builder()
                 .name(member.getMemberName())
                 .generation(member.getGeneration())
                 .nameNickname(member.getNameNickname())
                 .part(member.getPart().toString())
-                .matchCount(member.getProjectVolunteerList().stream()
-                        .map(ProjectVolunteer::getRound)
-                        .max(Comparator.naturalOrder())
-                        .orElse(0))
-                .matchingStatus(member.getMatchingStatus().toString())
+                .matchCount(matchCount)
+                .matchingStatus(matchStatus)
                 .build();
     }
 
