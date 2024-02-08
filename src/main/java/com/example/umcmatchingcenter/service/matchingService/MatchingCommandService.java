@@ -68,11 +68,10 @@ public class MatchingCommandService {
         }
     }
 
-    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDTO request, String memberName, MultipartFile image){
+    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDTO request, String memberName){
         Member pm = memberQueryService.findMemberByName(memberName);
-        String imageUrl = s3UploadService.uploadFile(image);
 
-        Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch(), imageUrl);
+        Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch());
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
@@ -91,19 +90,12 @@ public class MatchingCommandService {
         return recruitmentList;
     }
 
-    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request,MultipartFile image){
+    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
 
         project.updateProject(request);
         updateRecruitment(request.getPartCounts(), project);
-
-        String projectImage = project.getImage();
-        if (image != null) {
-            projectImage = s3UploadService.uploadFile(image);
-        }
-
-        project.updateImage(projectImage);
 
         matchingRepository.save(project);
     }

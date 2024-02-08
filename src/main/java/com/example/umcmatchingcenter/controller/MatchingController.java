@@ -83,9 +83,8 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("hasRole('ROLE_PM')")
-    public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDTO request, @RequestPart(required = false) MultipartFile image,
-                                                                                              Principal principal) {
-        Project project = matchingCommandService.addMatchingProjects(request, principal.getName(),image);
+    public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDTO request,Principal principal) {
+        Project project = matchingCommandService.addMatchingProjects(request, principal.getName());
         return ApiResponse.onSuccess(MatchingConverter.toAddMatchingProjectResponseDTO(project));
     }
 
@@ -98,9 +97,8 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("hasRole('ROLE_PM')")
-    public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestPart MatchingRequestDTO.UpdateMatchingProjectRequestDTO request,
-                                                      @RequestPart(required = false) MultipartFile image) {
-        matchingCommandService.updateMatchingProjects(projectId,request,image);
+    public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestPart MatchingRequestDTO.UpdateMatchingProjectRequestDTO request) {
+        matchingCommandService.updateMatchingProjects(projectId,request);
         return ApiResponse.onSuccess("아이디어 수정에 성공하였습니다.");
     }
 }
