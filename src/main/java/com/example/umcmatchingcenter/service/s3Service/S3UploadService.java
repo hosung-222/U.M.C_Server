@@ -34,14 +34,14 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveFile(MultipartFile file) throws IOException {
+    public Image saveFile(MultipartFile file) throws IOException {
         String originalImage = file.getOriginalFilename();
         String s3Image = uploadFile(file);
         Image image = ImageConverter.toImage(originalImage, s3Image);
 
         imageRepository.save(image);
 
-        return null;
+        return image;
     }
 
     public void delete(String path) {
