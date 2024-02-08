@@ -55,9 +55,11 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private List<Recruitment> recruitments;
 
-
     @OneToMany(mappedBy = "project")
     private List<ProjectVolunteer> projectVolunteerList;
+
+    @OneToMany(mappedBy = "project")
+    private List<Image> images;
 
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
