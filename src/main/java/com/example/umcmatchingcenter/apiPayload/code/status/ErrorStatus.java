@@ -65,6 +65,11 @@ public enum ErrorStatus implements BaseErrorCode {
     //학교 관련 에러
     UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY4001", "학교가 존재하지 않습니다."),
 
+    //상호평가 관련 에러
+    EVALUATION_NOT_FOUND(BAD_REQUEST, "EVALUATION4001", "평가가 존재하지 않습니다."),
+    TEAMMATE_NOT_FOUND(BAD_REQUEST, "EVALUATION4002", "해당 프로젝트의 멤버가 아닙니다."),
+    ALREADY_EVALUATED_MEMBER(BAD_REQUEST, "EVALUATION4003", "이미 평가가 완료된 멤버입니다."),
+
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
 
