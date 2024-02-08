@@ -19,10 +19,10 @@ public class Image extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String imageUrl;
+    private String originalImage;
 
     @Column(nullable = false)
-    private String s3ImageUrl;
+    private String s3Image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "projectId")

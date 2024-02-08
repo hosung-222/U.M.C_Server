@@ -35,9 +35,9 @@ public class S3UploadService {
     private String bucket;
 
     public String saveFile(MultipartFile file) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        String s3Filename = uploadFile(file);
-        Image image = ImageConverter.toImage(originalFilename, s3Filename);
+        String originalImage = file.getOriginalFilename();
+        String s3Image = uploadFile(file);
+        Image image = ImageConverter.toImage(originalImage, s3Image);
 
         imageRepository.save(image);
 
