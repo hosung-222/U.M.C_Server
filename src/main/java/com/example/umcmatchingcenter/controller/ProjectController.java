@@ -7,6 +7,7 @@ import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
+import com.example.umcmatchingcenter.service.projectService.ProjectCommandService;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +18,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +34,7 @@ import java.util.Map;
 public class ProjectController {
 
     private final ProjectQueryService projectQueryService;
+    private final ProjectCommandService projectCommandService;
 
     // 프로젝트 목록 조회
     @GetMapping("")
@@ -66,7 +70,7 @@ public class ProjectController {
         return ApiResponse.onSuccess(ProjectConverter.toProjectDetailDTO(project));
     }
 
-    @PostMapping("/projects")
+    @PostMapping(value = "/projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "아이디어 페이지 작성")
     @ApiResponses({ // API 응답
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -74,12 +78,11 @@ public class ProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<ProjectResponseDTO.ProjectDTO> addProjects(@RequestPart ProjectRequestDTO.AddProjectRequestDto request,
-                                                                  @RequestPart Map<MemberPart, Integer> partCount,
-                                                                  @RequestPart(required = false) MultipartFile image,
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<String> addProjects(@RequestPart ProjectRequestDTO.AddProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
                                                                   Principal principal) {
-
-        return null;
+        projectCommandService.addProject(request, principal.getName(),image);
+        return ApiResponse.onSuccess("아이디어 등록에 성공하였습니다.");
     }
 }
 

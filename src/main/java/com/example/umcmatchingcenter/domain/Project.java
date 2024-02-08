@@ -63,4 +63,16 @@ public class Project extends BaseEntity {
         this.status = projectStatus;
     }
 
+    public void setPm(Member pm){
+        this.pm = pm;
+    }
+
+    public void setBranch(Branch branch){
+        this.branch = branch;
+    }
+
+    public void setImage(String image){
+        this.image = image;
+    }
+
 }

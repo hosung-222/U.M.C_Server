@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.dto.ProjectDTO;
 
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +13,8 @@ public class ProjectRequestDTO {
         private String body;
         private String introduction;
         private String name;
+        private Map<MemberPart, Integer> partCounts;
+
 
     }
 }
