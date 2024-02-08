@@ -58,8 +58,10 @@ public class AdminController {
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/challenger")
-    public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(@RequestParam("matchingStatus") MemberMatchingStatus memberMatchingStatus, @RequestParam("page") int page){
-        List<ChallengerInfoDTO> challengerList = adminService.getChallengerList(memberMatchingStatus, page - 1 );
+    public ApiResponse<List<MemberResponseDTO.ChallengerInfoDTO>> challengerList(@RequestParam(value = "matchingStatus", required = false) MemberMatchingStatus memberMatchingStatus,
+                                                                                 @RequestParam("page") int page,
+                                                                                 Principal principal){
+        List<ChallengerInfoDTO> challengerList = adminService.getChallengerList(memberMatchingStatus, page - 1 , principal.getName());
 
         return ApiResponse.onSuccess(challengerList);
     }
