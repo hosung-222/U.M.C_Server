@@ -1,22 +1,30 @@
 package com.example.umcmatchingcenter.service.matchingService;
 
+import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
+import com.example.umcmatchingcenter.converter.RecruitmentConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
-import com.example.umcmatchingcenter.repository.MatchingRepository;
-import com.example.umcmatchingcenter.repository.MemberRepository;
-import com.example.umcmatchingcenter.repository.ProjectVolunteerRepository;
+import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
+import com.example.umcmatchingcenter.repository.*;
 import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +35,8 @@ public class MatchingCommandService {
     private final ProjectVolunteerRepository projectVolunteerRepository;
     private final BranchQueryService branchQueryService;
     private final MemberQueryService memberQueryService;
+    private final S3UploadService s3UploadService;
+    private final RecruitmentRepository recruitmentRepository;
 
     public void processBranch(Branch branch) {
         List<Recruitment> branchRecruitments = branchQueryService.getBranchRecruitments(branch);
@@ -55,6 +65,34 @@ public class MatchingCommandService {
             projectVolunteerRepository.save(projectVolunteer);
             recruitment.minusRecruitment();
         }
+    }
+
+    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDto request, String memberName, MultipartFile image){
+        Project project = ProjectConverter.toProject(request);
+
+        Member pm = memberQueryService.findMemberByName(memberName);
+        project.setPm(pm);
+        project.setBranch(pm.getUniversity().getBranch());
+
+        String imageUrl = s3UploadService.uploadFile(image);
+        project.setImage(imageUrl);
+
+        List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
+        recruitmentRepository.saveAll(recruitmentList);
+
+        return matchingRepository.save(project);
+    }
+
+    public List<Recruitment> getRecruitmentList(Map<MemberPart, Integer> partCount, Project project){
+        List<Recruitment> recruitmentList = new ArrayList<>();
+        partCount.forEach(
+                (memberPart, count) ->{
+                    Recruitment recruitment = RecruitmentConverter.toRecruitment(project, memberPart,count);
+                    recruitmentList.add(recruitment);
+                }
+        );
+        System.out.println(recruitmentList);
+        return recruitmentList;
     }
 
 }

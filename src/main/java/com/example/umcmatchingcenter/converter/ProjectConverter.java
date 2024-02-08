@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Project;
 
-import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectRequestDTO;
+import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 
 
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class  ProjectConverter {
 
-    public static Project toProject(ProjectRequestDTO.AddProjectRequestDto request){
+    public static Project toProject(MatchingRequestDTO.AddMatchingProjectRequestDto request){
         return Project.builder()
                 .body(request.getBody())
                 .name(request.getName())

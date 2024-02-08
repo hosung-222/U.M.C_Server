@@ -7,14 +7,4 @@ import lombok.Setter;
 import java.util.Map;
 
 public class ProjectRequestDTO {
-    @Getter
-    @Setter
-    public static class AddProjectRequestDto{
-        private String body;
-        private String introduction;
-        private String name;
-        private Map<MemberPart, Integer> partCounts;
-
-
-    }
 }
