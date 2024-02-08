@@ -83,10 +83,10 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    public ApiResponse<String> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
+    public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
                                                    Principal principal) {
-        matchingCommandService.addMatchingProjects(request, principal.getName(),image);
-        return ApiResponse.onSuccess("아이디어 등록에 성공하였습니다.");
+        Project project = matchingCommandService.addMatchingProjects(request, principal.getName(),image);
+        return ApiResponse.onSuccess(MatchingConverter.toAddMatchingProjectResponseDTO(project));
     }
 
     @PatchMapping(value = "/projects/{projectId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
