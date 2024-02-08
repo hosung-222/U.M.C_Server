@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
 import com.example.umcmatchingcenter.converter.RecruitmentConverter;
 import com.example.umcmatchingcenter.domain.Branch;
+import com.example.umcmatchingcenter.domain.Image;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
@@ -35,9 +36,9 @@ public class MatchingCommandService {
     private final ProjectVolunteerRepository projectVolunteerRepository;
     private final BranchQueryService branchQueryService;
     private final MemberQueryService memberQueryService;
-    private final S3UploadService s3UploadService;
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
+    private final ImageRepository imageRepository;
 
     public void processBranch(Branch branch) {
         List<Recruitment> branchRecruitments = branchQueryService.getBranchRecruitments(branch);
@@ -72,6 +73,7 @@ public class MatchingCommandService {
         Member pm = memberQueryService.findMemberByName(memberName);
 
         Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch());
+        mappingProjectAndImage(request.getImageList(), project);
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
@@ -88,6 +90,11 @@ public class MatchingCommandService {
                 }
         );
         return recruitmentList;
+    }
+
+    private void mappingProjectAndImage(List<Long> imageList, Project project){
+        List<Image> images = imageRepository.findAllById(imageList);
+        images.forEach(image -> image.setProject(project));
     }
 
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){

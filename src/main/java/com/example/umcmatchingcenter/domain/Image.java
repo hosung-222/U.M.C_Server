@@ -28,4 +28,8 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "projectId")
     private Project project;
 
+    public void setProject(Project project){
+        this.project = project;
+    }
+
 }
