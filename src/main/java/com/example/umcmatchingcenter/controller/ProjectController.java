@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -73,8 +74,9 @@ public class ProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
-    public ApiResponse<ProjectResponseDTO.ProjectDTO> addProjects(@RequestBody ProjectRequestDTO.AddProjectRequestDto request,
-                                                                  @RequestBody Map<MemberPart, Integer> partCount,
+    public ApiResponse<ProjectResponseDTO.ProjectDTO> addProjects(@RequestPart ProjectRequestDTO.AddProjectRequestDto request,
+                                                                  @RequestPart Map<MemberPart, Integer> partCount,
+                                                                  @RequestPart(required = false) MultipartFile image,
                                                                   Principal principal) {
 
         return null;

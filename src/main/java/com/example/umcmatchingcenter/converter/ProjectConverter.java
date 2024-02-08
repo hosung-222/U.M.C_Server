@@ -14,7 +14,6 @@ public class  ProjectConverter {
     public static Project toProject(ProjectRequestDTO.AddProjectRequestDto request){
         return Project.builder()
                 .body(request.getBody())
-                .image(request.getImage())
                 .name(request.getName())
                 .introduction(request.getIntroduction())
                 .build();

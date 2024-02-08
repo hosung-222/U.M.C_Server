@@ -10,7 +10,6 @@ public class ProjectRequestDTO {
     @Setter
     public static class AddProjectRequestDto{
         private String body;
-        private String image;
         private String introduction;
         private String name;
 
