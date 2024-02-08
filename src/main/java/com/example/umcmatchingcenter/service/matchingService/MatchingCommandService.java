@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.example.umcmatchingcenter.service.recruitmentService.RecruitmentQueryService;
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class MatchingCommandService {
     private final MemberQueryService memberQueryService;
     private final S3UploadService s3UploadService;
     private final RecruitmentRepository recruitmentRepository;
+    private final RecruitmentQueryService recruitmentQueryService;
+    private final MatchingQueryServiceImpl matchingQueryService;
 
     public void processBranch(Branch branch) {
         List<Recruitment> branchRecruitments = branchQueryService.getBranchRecruitments(branch);
@@ -83,7 +86,7 @@ public class MatchingCommandService {
         return matchingRepository.save(project);
     }
 
-    public List<Recruitment> getRecruitmentList(Map<MemberPart, Integer> partCount, Project project){
+    private List<Recruitment> getRecruitmentList(Map<MemberPart, Integer> partCount, Project project){
         List<Recruitment> recruitmentList = new ArrayList<>();
         partCount.forEach(
                 (memberPart, count) ->{
@@ -91,8 +94,36 @@ public class MatchingCommandService {
                     recruitmentList.add(recruitment);
                 }
         );
-        System.out.println(recruitmentList);
         return recruitmentList;
     }
 
+    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDto request,MultipartFile image){
+
+        Project project = matchingQueryService.findProject(projectId);
+
+        project.updateProject(request);
+        updateRecruitment(request.getPartCounts(), project);
+
+        String projectImage = project.getImage();
+        if (image != null) {
+            projectImage = s3UploadService.uploadFile(image);
+        }
+
+        project.setImage(projectImage);
+
+        matchingRepository.save(project);
+    }
+
+    private void updateRecruitment(Map<MemberPart, Integer> partCount, Project project){
+        List<Recruitment> recruitmentList = new ArrayList<>();
+        partCount.forEach(
+                (memberPart, count) ->{
+                    Recruitment recruitment = recruitmentRepository.findByPartAndProject(memberPart, project)
+                            .orElse(RecruitmentConverter.toRecruitment(project, memberPart,count));
+                    recruitment.updateTotalRecruitment(count);
+                    recruitmentList.add(recruitment);
+                }
+        );
+        recruitmentRepository.saveAll(recruitmentList);
+    }
 }

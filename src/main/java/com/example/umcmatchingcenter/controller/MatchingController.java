@@ -89,7 +89,7 @@ public class MatchingController {
         return ApiResponse.onSuccess("아이디어 등록에 성공하였습니다.");
     }
 
-    @PatchMapping(value = "/projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping(value = "/projects/{projectId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Operation(summary = "아이디어 페이지 작성")
     @ApiResponses({ // API 응답
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -98,9 +98,9 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("isAuthenticated()")
-    public ApiResponse<String> updateMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
-                                                   Principal principal) {
-        matchingCommandService.updateMatchingProjects(request, principal.getName(),image);
-        return null;
+    public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestPart MatchingRequestDTO.UpdateMatchingProjectRequestDto request,
+                                                      @RequestPart(required = false) MultipartFile image) {
+        matchingCommandService.updateMatchingProjects(projectId,request,image);
+        return ApiResponse.onSuccess("아이디어 수정에 성공하였습니다.");
     }
 }

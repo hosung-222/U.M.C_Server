@@ -6,6 +6,7 @@ import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
+import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -73,6 +74,12 @@ public class Project extends BaseEntity {
 
     public void setImage(String image){
         this.image = image;
+    }
+
+    public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDto request){
+        this.name = request.getName();
+        this.body = request.getBody();
+        this.introduction = request.getIntroduction();
     }
 
 }
