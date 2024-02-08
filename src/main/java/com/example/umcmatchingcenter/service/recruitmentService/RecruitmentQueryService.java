@@ -23,11 +23,8 @@ public class RecruitmentQueryService {
     private final RecruitmentRepository recruitmentRepository;
 
     public Recruitment getRecruitment(MemberPart part, Project project) {
-        Optional<Recruitment> byPartAndProject = recruitmentRepository.findByPartAndProject(part, project);
-        if (byPartAndProject.isEmpty()){
-            throw new RecruitmentHandler(ErrorStatus.RECRUITMENT_NOT_FOUNT);
-        }
-        return byPartAndProject.get();
+        return recruitmentRepository.findByPartAndProject(part, project)
+                .orElseThrow(() -> new RecruitmentHandler(ErrorStatus.RECRUITMENT_NOT_FOUNT));
     }
 
 }
