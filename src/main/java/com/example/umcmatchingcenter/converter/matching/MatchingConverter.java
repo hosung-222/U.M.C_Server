@@ -76,4 +76,11 @@ public class MatchingConverter {
                 .createAt(project.getCreatedAt())
                 .build();
     }
+
+    public static MatchingResponseDTO.AddMatchingProjectResponseDTO toAddMatchingProjectResponseDTO(Project project){
+        return MatchingResponseDTO.AddMatchingProjectResponseDTO.builder()
+                .ProjectId(project.getId())
+                .name(project.getName())
+                .build();
+    }
 }

@@ -3,7 +3,9 @@ package com.example.umcmatchingcenter.controller;
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
@@ -61,3 +63,4 @@ public class ProjectController {
         return ApiResponse.onSuccess(ProjectConverter.toProjectDetailDTO(project));
     }
 }
+

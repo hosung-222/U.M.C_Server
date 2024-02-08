@@ -14,4 +14,6 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, Long> 
     Optional<Recruitment> findByPartAndProject(MemberPart part, Project project);
 
     List<Recruitment> findByProjectAndRecruitmentStatus(Project project, RecruitmentStatus recruitmentStatus);
+
+    void deleteAllByProject(Project project);
 }

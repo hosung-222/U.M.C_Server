@@ -77,4 +77,13 @@ public class MatchingResponseDTO {
         private String profileImage;
         private String part;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AddMatchingProjectResponseDTO{
+        private Long ProjectId;
+        private String name;
+    }
 }
