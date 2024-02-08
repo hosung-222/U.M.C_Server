@@ -39,6 +39,7 @@ public class MatchingCommandService {
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
     private final ImageRepository imageRepository;
+    private final S3UploadService s3UploadService;
 
     public void processBranch(Branch branch) {
         List<Recruitment> branchRecruitments = branchQueryService.getBranchRecruitments(branch);
@@ -100,6 +101,8 @@ public class MatchingCommandService {
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
+        deleteImages(request.getDeleteImageList());
+        mappingProjectAndImage(request.getImageList(), project);
 
         project.updateProject(request);
         updateRecruitment(request.getPartCounts(), project);
@@ -111,5 +114,11 @@ public class MatchingCommandService {
         List<Recruitment> recruitmentList = getRecruitmentList(partCount, project);
         recruitmentRepository.deleteAllByProject(project);
         recruitmentRepository.saveAll(recruitmentList);
+    }
+
+    private void deleteImages(List<Long> deleteImageList){
+        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
+        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3Image()));
+        imageRepository.deleteAllById(deleteImageList);
     }
 }
