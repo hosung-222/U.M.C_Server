@@ -3,7 +3,9 @@ package com.example.umcmatchingcenter.controller;
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
 import com.example.umcmatchingcenter.validation.annotation.CompleteProject;
@@ -17,7 +19,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -60,4 +64,20 @@ public class ProjectController {
         Project project = projectQueryService.getProjectDetail(projectId);
         return ApiResponse.onSuccess(ProjectConverter.toProjectDetailDTO(project));
     }
+
+    @PostMapping("/projects")
+    @Operation(summary = "아이디어 페이지 작성")
+    @ApiResponses({ // API 응답
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH003", description = "access 토큰을 주세요!",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH004", description = "access 토큰 만료",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+    })
+    public ApiResponse<ProjectResponseDTO.ProjectDTO> addProjects(@RequestBody ProjectRequestDTO.AddProjectRequestDto request,
+                                                                  @RequestBody Map<MemberPart, Integer> partCount,
+                                                                  Principal principal) {
+
+        return null;
+    }
 }
+
