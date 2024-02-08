@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.example.umcmatchingcenter.service.recruitmentService.RecruitmentQueryService;
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,6 @@ public class MatchingCommandService {
     private final MemberQueryService memberQueryService;
     private final S3UploadService s3UploadService;
     private final RecruitmentRepository recruitmentRepository;
-    private final RecruitmentQueryService recruitmentQueryService;
     private final MatchingQueryServiceImpl matchingQueryService;
 
     public void processBranch(Branch branch) {
@@ -76,7 +74,6 @@ public class MatchingCommandService {
 
         Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch(), imageUrl);
 
-
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
 
@@ -106,7 +103,7 @@ public class MatchingCommandService {
             projectImage = s3UploadService.uploadFile(image);
         }
 
-        project.setImage(projectImage);
+        project.updateImage(projectImage);
 
         matchingRepository.save(project);
     }

@@ -13,7 +13,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -64,15 +63,7 @@ public class Project extends BaseEntity {
         this.status = projectStatus;
     }
 
-    public void setPm(Member pm){
-        this.pm = pm;
-    }
-
-    public void setBranch(Branch branch){
-        this.branch = branch;
-    }
-
-    public void setImage(String image){
+    public void updateImage(String image){
         this.image = image;
     }
 
