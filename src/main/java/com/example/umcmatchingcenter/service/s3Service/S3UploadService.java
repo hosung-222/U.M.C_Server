@@ -6,7 +6,10 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.NoticeHandler;
+import com.example.umcmatchingcenter.converter.ImageConverter;
+import com.example.umcmatchingcenter.domain.Image;
 import com.example.umcmatchingcenter.domain.Uuid;
+import com.example.umcmatchingcenter.repository.ImageRepository;
 import com.example.umcmatchingcenter.service.UuidService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,20 +29,19 @@ public class S3UploadService {
 
     private final AmazonS3 amazonS3;
     private final UuidService uuidService;
+    private final ImageRepository imageRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String saveFile(MultipartFile multipartFile) throws IOException {
-        String originalFilename = multipartFile.getOriginalFilename();
-        Uuid uuid = uuidService.makeUuid();
-        String newName = uuid.getUuid() + "/" + originalFilename;
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentLength(multipartFile.getSize());
-        metadata.setContentType(multipartFile.getContentType());
+    public String saveFile(MultipartFile file) throws IOException {
+        String originalFilename = file.getOriginalFilename();
+        String s3Filename = uploadFile(file);
+        Image image = ImageConverter.toImage(originalFilename, s3Filename);
 
-        amazonS3.putObject(bucket, newName, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, newName).toString();
+        imageRepository.save(image);
+
+        return null;
     }
 
     public void delete(String path) {
