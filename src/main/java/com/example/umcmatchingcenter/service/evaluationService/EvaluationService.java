@@ -38,11 +38,7 @@ public class EvaluationService {
                     Evaluation evaluation = evaluationQueryService.getEvaluation(currentLoginMember, member);
                     Double rate = (evaluation == null) ? 0.0 : evaluation.getRate();
 
-                    return EvaluationConverter.toEvaluationResponseDTO(member.getProfileImage(),
-                            member.getNameNickname(),
-                            member.getPart(),
-                            member.getUniversity().getName(),
-                            rate);
+                    return EvaluationConverter.toEvaluationResponseDTO(member,rate);
                 })
                 .collect(Collectors.toList());
     }
@@ -54,10 +50,7 @@ public class EvaluationService {
         Project project = evaluator.getProject();
 
         evaluationQueryService.isExist(evaluator, evaluatee);
-
-        if (!project.getMembers().contains(evaluatee)) {
-            throw new EvaluationHandler(ErrorStatus.TEAMMATE_NOT_FOUND);
-        }
+        evaluationQueryService.contains(project, evaluatee);
 
         evaluationRepository.save(Evaluation.builder()
                 .project(project)
