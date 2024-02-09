@@ -30,6 +30,7 @@ public class S3UploadService {
     private final AmazonS3 amazonS3;
     private final UuidService uuidService;
     private final ImageRepository imageRepository;
+    private static final String GET_UUID_KEY = "https://umc-matching-center.s3.ap-northeast-2.amazonaws.com/";
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -44,8 +45,10 @@ public class S3UploadService {
         return image;
     }
 
-    public void delete(String path) {
-        amazonS3.deleteObject(bucket, path);
+    public void delete(String s3Image) {
+        String deletePath = s3Image.substring(GET_UUID_KEY.length());
+        amazonS3.deleteObject(bucket, deletePath);
+
     }
 
     public String uploadFile(MultipartFile file){
@@ -54,6 +57,8 @@ public class S3UploadService {
         String originalFilename = file.getOriginalFilename();
         Uuid uuid = uuidService.makeUuid();
         String newName = uuid.getUuid() + "/" + originalFilename;
+
+        System.out.println(newName);
 
         metadata.setContentLength(file.getSize());
         try {
@@ -74,5 +79,4 @@ public class S3UploadService {
 
         return urlList;
     }
-
 }

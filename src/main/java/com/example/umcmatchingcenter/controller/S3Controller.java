@@ -27,9 +27,9 @@ public class S3Controller {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<String> fileDelete(@RequestParam("path") String path) {
+    public ApiResponse<String> fileDelete(@RequestParam("path") String path) {
         s3UploadService.delete(path);
-        return ResponseEntity.ok("File deleted successfully");
+        return ApiResponse.onSuccess("삭제 성공");
     }
 
 }
