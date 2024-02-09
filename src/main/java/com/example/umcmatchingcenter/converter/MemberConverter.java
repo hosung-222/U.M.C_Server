@@ -1,19 +1,24 @@
 package com.example.umcmatchingcenter.converter;
 
+
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.University;
-import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
+import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO;
-
+import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO.RenewalAccessTokenResponseDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO.JoinDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.AcceptResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.DepartResultDTO;
+import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.JoinResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.RejectResultDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+
 
 
 public class MemberConverter {
@@ -29,13 +34,13 @@ public class MemberConverter {
 
 
     }
-    public static MemberResponseDTO.JoinResultDTO toJoinResultDTO(Member member){
-        return MemberResponseDTO.JoinResultDTO.builder()
+    public static JoinResultDTO toJoinResultDTO(Member member){
+        return JoinResultDTO.builder()
                 .id(member.getId())
                 .createdAt(LocalDateTime.now())
                 .build();
     }
-    public static Member toMember(MemberRequestDTO.JoinDTO request, University university){
+    public static Member toMember(JoinDTO request, University university){
         return Member.builder()
                 .memberName(request.getMemberName())
                 .email(request.getEmail())
@@ -63,14 +68,35 @@ public class MemberConverter {
                 .build();
     }
 
-    public static ChallengerInfoDTO toChallengerInfoDTO(Member member){
+    public static ChallengerInfoDTO toChallengerInfoDTO(Member member, int currentMatchRound){
+        List<ProjectVolunteer> projectVolunteerList = member.getProjectVolunteerList();
+        boolean isApply = projectVolunteerList.stream()
+                .map(ProjectVolunteer::getRound)
+                .anyMatch(round -> round == currentMatchRound);
+
+        String matchStatus;
+        int matchCount;
+        if (member.getMatchingStatus().equals(MemberMatchingStatus.MATCH)){
+            matchStatus = "매칭 완료";
+            matchCount = member.getProjectVolunteerList().stream()
+                    .map(ProjectVolunteer::getRound)
+                    .max(Comparator.naturalOrder())
+                    .orElse(0);
+        } else if (isApply) {
+            matchStatus = "지원 완료";
+            matchCount = currentMatchRound;
+        }else {
+            matchStatus = "미지원";
+            matchCount = currentMatchRound;
+        }
+
         return ChallengerInfoDTO.builder()
                 .name(member.getMemberName())
                 .generation(member.getGeneration())
                 .nameNickname(member.getNameNickname())
                 .part(member.getPart().toString())
-                .matchCount(member.getProjectVolunteerList().size())
-                .matchingStatus(member.getMatchingStatus().toString())
+                .matchCount(matchCount)
+                .matchingStatus(matchStatus)
                 .build();
     }
 
@@ -105,8 +131,8 @@ public class MemberConverter {
                 .build();
     }
 
-    public static LoginResponseDTO.RenewalAccessTokenResponseDTO toRenewalAccessTokenResponseDTO(String memberName, String memberRole, String newAccessToken){
-        return LoginResponseDTO.RenewalAccessTokenResponseDTO.builder()
+    public static RenewalAccessTokenResponseDTO toRenewalAccessTokenResponseDTO(String memberName, String memberRole, String newAccessToken){
+        return RenewalAccessTokenResponseDTO.builder()
                 .memberName(memberName)
                 .memberRole(memberRole)
                 .accessToken(newAccessToken)

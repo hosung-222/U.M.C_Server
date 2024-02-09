@@ -47,6 +47,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NO_ALARM_LIST(BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
     // 프로젝트 관련 에러
+    PROJECT_NOT_EXIST(BAD_REQUEST, "PROJECT4001", "프로젝트가 존재하지 않습니다."),
     PROJECT_NOT_COMPLETE(BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
     PROJECT_NOT_PROCEEDING(BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 
@@ -59,16 +60,25 @@ public enum ErrorStatus implements BaseErrorCode {
     NOTICE_NOT_EXIST(HttpStatus.BAD_REQUEST, "NOTICE4001", "공지사항이 없습니다."),
     NOTICE_IMAGE_ERROR(HttpStatus.BAD_REQUEST, "NOTICE4002", "이미지 업로드에 실패했습니다."),
 
+    //상호평가 관련 에러
+    EVALUATION_NOT_FOUND(BAD_REQUEST, "EVALUATION4001", "평가가 존재하지 않습니다."),
+    TEAMMATE_NOT_FOUND(BAD_REQUEST, "EVALUATION4002", "해당 프로젝트의 멤버가 아닙니다."),
+    ALREADY_EVALUATED_MEMBER(BAD_REQUEST, "EVALUATION4003", "이미 평가가 완료된 멤버입니다."),
+
     // 지부 관련 에러
     BRANCH_NOT_FOUND(BAD_REQUEST, "BRANCH4001", "지부가 존재하지 않습니다."),
 
     //학교 관련 에러
     UNIVERSITY_NOT_FOUND(BAD_REQUEST, "UNIVERSITY4001", "학교가 존재하지 않습니다."),
 
-    //상호평가 관련 에러
-    EVALUATION_NOT_FOUND(BAD_REQUEST, "EVALUATION4001", "평가가 존재하지 않습니다."),
-    TEAMMATE_NOT_FOUND(BAD_REQUEST, "EVALUATION4002", "해당 프로젝트의 멤버가 아닙니다."),
-    ALREADY_EVALUATED_MEMBER(BAD_REQUEST, "EVALUATION4003", "이미 평가가 완료된 멤버입니다."),
+
+    //지원 정보 에러
+    RECRUITMENT_NOT_FOUNT(BAD_REQUEST, "RECRUITMENT4001", "지원 정보가 없습니다."),
+
+    // Q&A 관련 에러
+    QUESTION_NOT_FOUNT(BAD_REQUEST, "QUESTION4001", "질문이 존재하지 않습니다."),
+    ANSWER_UNAUTHORIZED(BAD_REQUEST, "ANSWER4002", "질문에 대한 답변 권한이 없습니다."),
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),

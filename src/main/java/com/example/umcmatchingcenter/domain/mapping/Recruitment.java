@@ -48,4 +48,14 @@ public class Recruitment extends BaseEntity {
         this.recruitmentStatus = recruitmentStatus;
     }
 
+    public void minusRecruitment(){
+        -- this.nowRecruitment;
+        if (this.nowRecruitment == 0){
+            this.recruitmentStatus = RecruitmentStatus.FULL;
+        }
+    }
+
+    public void updateTotalRecruitment(int count){
+        this.totalRecruitment = count;
+    }
 }
