@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
 import com.example.umcmatchingcenter.converter.RecruitmentConverter;
 import com.example.umcmatchingcenter.domain.Branch;
+import com.example.umcmatchingcenter.domain.Image;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
@@ -35,9 +36,10 @@ public class MatchingCommandService {
     private final ProjectVolunteerRepository projectVolunteerRepository;
     private final BranchQueryService branchQueryService;
     private final MemberQueryService memberQueryService;
-    private final S3UploadService s3UploadService;
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
+    private final ImageRepository imageRepository;
+    private final S3UploadService s3UploadService;
 
     public void processBranch(Branch branch) {
         List<Recruitment> branchRecruitments = branchQueryService.getBranchRecruitments(branch);
@@ -68,11 +70,11 @@ public class MatchingCommandService {
         }
     }
 
-    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDto request, String memberName, MultipartFile image){
+    public Project addMatchingProjects(MatchingRequestDTO.AddMatchingProjectRequestDTO request, String memberName){
         Member pm = memberQueryService.findMemberByName(memberName);
-        String imageUrl = s3UploadService.uploadFile(image);
 
-        Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch(), imageUrl);
+        Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch());
+        mappingProjectAndImage(request.getImageList(), project);
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
@@ -91,19 +93,19 @@ public class MatchingCommandService {
         return recruitmentList;
     }
 
-    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDto request,MultipartFile image){
+    private void mappingProjectAndImage(List<Long> imageList, Project project){
+        List<Image> images = imageRepository.findAllById(imageList);
+        images.forEach(image -> image.setProject(project));
+    }
+
+    public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
+        deleteImages(request.getDeleteImageList());
+        mappingProjectAndImage(request.getImageList(), project);
 
         project.updateProject(request);
         updateRecruitment(request.getPartCounts(), project);
-
-        String projectImage = project.getImage();
-        if (image != null) {
-            projectImage = s3UploadService.uploadFile(image);
-        }
-
-        project.updateImage(projectImage);
 
         matchingRepository.save(project);
     }
@@ -112,5 +114,11 @@ public class MatchingCommandService {
         List<Recruitment> recruitmentList = getRecruitmentList(partCount, project);
         recruitmentRepository.deleteAllByProject(project);
         recruitmentRepository.saveAll(recruitmentList);
+    }
+
+    private void deleteImages(List<Long> deleteImageList){
+        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
+        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3Image()));
+        imageRepository.deleteAllById(deleteImageList);
     }
 }

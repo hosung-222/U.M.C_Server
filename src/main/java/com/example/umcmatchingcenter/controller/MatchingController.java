@@ -74,7 +74,7 @@ public class MatchingController {
         return ApiResponse.onSuccess(MatchingConverter.toMatchingProjectDetailDTO(project));
     }
 
-    @PostMapping(value = "/projects", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping("/projects")
     @Operation(summary = "아이디어 페이지 작성")
     @ApiResponses({ // API 응답
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -83,13 +83,12 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("hasRole('ROLE_PM')")
-    public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestPart MatchingRequestDTO.AddMatchingProjectRequestDto request, @RequestPart(required = false) MultipartFile image,
-                                                   Principal principal) {
-        Project project = matchingCommandService.addMatchingProjects(request, principal.getName(),image);
+    public ApiResponse<MatchingResponseDTO.AddMatchingProjectResponseDTO> addMatchingProjects(@RequestBody MatchingRequestDTO.AddMatchingProjectRequestDTO request,Principal principal) {
+        Project project = matchingCommandService.addMatchingProjects(request, principal.getName());
         return ApiResponse.onSuccess(MatchingConverter.toAddMatchingProjectResponseDTO(project));
     }
 
-    @PatchMapping(value = "/projects/{projectId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PatchMapping( "/projects/{projectId}")
     @Operation(summary = "아이디어 페이지 수정")
     @ApiResponses({ // API 응답
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
@@ -98,9 +97,8 @@ public class MatchingController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "AUTH006", description = "access 토큰 모양이 이상함",content = @Content(schema = @Schema(implementation = ApiResponse.class))),
     })
     @PreAuthorize("hasRole('ROLE_PM')")
-    public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestPart MatchingRequestDTO.UpdateMatchingProjectRequestDto request,
-                                                      @RequestPart(required = false) MultipartFile image) {
-        matchingCommandService.updateMatchingProjects(projectId,request,image);
+    public ApiResponse<String> updateMatchingProjects(@PathVariable(name = "projectId") Long projectId, @RequestBody MatchingRequestDTO.UpdateMatchingProjectRequestDTO request) {
+        matchingCommandService.updateMatchingProjects(projectId,request);
         return ApiResponse.onSuccess("아이디어 수정에 성공하였습니다.");
     }
 }

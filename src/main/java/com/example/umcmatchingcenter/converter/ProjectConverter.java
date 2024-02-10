@@ -13,14 +13,13 @@ import java.util.stream.Collectors;
 
 public class  ProjectConverter {
 
-    public static Project toProject(MatchingRequestDTO.AddMatchingProjectRequestDto request, Member pm, Branch branch, String image){
+    public static Project toProject(MatchingRequestDTO.AddMatchingProjectRequestDTO request, Member pm, Branch branch){
         return Project.builder()
                 .body(request.getBody())
                 .name(request.getName())
                 .introduction(request.getIntroduction())
                 .pm(pm)
                 .branch(branch)
-                .image(image)
                 .build();
     }
     // 프로젝트 전체 조회

@@ -55,9 +55,11 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private List<Recruitment> recruitments;
 
-
     @OneToMany(mappedBy = "project")
     private List<ProjectVolunteer> projectVolunteerList;
+
+    @OneToMany(mappedBy = "project")
+    private List<Image> images;
 
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
@@ -67,7 +69,7 @@ public class Project extends BaseEntity {
         this.image = image;
     }
 
-    public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDto request){
+    public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
         this.name = request.getName();
         this.body = request.getBody();
         this.introduction = request.getIntroduction();
