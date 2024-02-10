@@ -32,7 +32,7 @@ public class Evaluation extends BaseEntity {
     private Member evaluatee;
 
     @Column(nullable = false)
-    private int rate;
+    private double rate;
 
     @Column(nullable = false)
     private String content;
