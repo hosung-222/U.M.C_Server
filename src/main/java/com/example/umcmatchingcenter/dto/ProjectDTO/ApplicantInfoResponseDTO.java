@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApplicantInfoResponseDTO {
 
+    private Long memberId;
     private String nameNickname;
     private String university;
     private MemberPart memberPart;
