@@ -59,11 +59,10 @@ public class MatchingResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MatchingProjectRecruitmentDTO {
-        private Long id;
         private MemberPart part;
         private boolean isRecruitmentFinished;
-//        private int nowRecruitment;
-//        private int totalRecruitment;
+        private int nowRecruitment;
+        private int totalRecruitment;
     }
 
     // 프로젝트 참여 멤버

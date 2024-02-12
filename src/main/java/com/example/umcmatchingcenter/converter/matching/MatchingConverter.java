@@ -13,7 +13,6 @@ public class MatchingConverter {
         // 모집 현황 조회
         List<MatchingResponseDTO.MatchingProjectRecruitmentDTO> recruitmentDTOs = project.getRecruitments().stream()
                 .map(recruitment -> MatchingResponseDTO.MatchingProjectRecruitmentDTO.builder()
-                        .id(recruitment.getId())
                         .part(recruitment.getPart())
                         .isRecruitmentFinished(recruitment.getRecruitmentStatus() == RecruitmentStatus.FULL)
 //                        .nowRecruitment(recruitment.getNowRecruitment())
@@ -46,11 +45,10 @@ public class MatchingConverter {
         // 모집 현황 조회
         List<MatchingResponseDTO.MatchingProjectRecruitmentDTO> recruitmentDTOs = project.getRecruitments().stream()
                 .map(recruitment -> MatchingResponseDTO.MatchingProjectRecruitmentDTO.builder()
-                        .id(recruitment.getId())
                         .part(recruitment.getPart())
                         .isRecruitmentFinished(recruitment.getRecruitmentStatus() == RecruitmentStatus.FULL)
-//                        .nowRecruitment(recruitment.getNowRecruitment())
-//                        .totalRecruitment(recruitment.getTotalRecruitment())
+                        .nowRecruitment(recruitment.getNowRecruitment())
+                        .totalRecruitment(recruitment.getTotalRecruitment())
                         .build())
                 .collect(Collectors.toList());
 
