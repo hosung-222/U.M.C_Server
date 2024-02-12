@@ -36,9 +36,10 @@ public class EvaluationService {
         return members.stream()
                 .map(member -> {
                     Evaluation evaluation = evaluationQueryService.getEvaluation(currentLoginMember, member);
-                    Double rate = (evaluation == null) ? 0.0 : evaluation.getRate();
-
-                    return EvaluationConverter.toEvaluationResponseDTO(member,rate);
+                    if(evaluation == null){
+                        return EvaluationConverter.toEvaluationResponseDTO(member,0.0,null);
+                    }
+                    return EvaluationConverter.toEvaluationResponseDTO(member,evaluation.getRate(),evaluation.getContent());
                 })
                 .collect(Collectors.toList());
     }
