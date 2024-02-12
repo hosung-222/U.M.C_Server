@@ -27,7 +27,7 @@ public class  ProjectConverter {
         return ProjectResponseDTO.ProjectPreViewDTO.builder()
                 .projectId((project.getId()))
                 .name(project.getName())
-                .image(project.getImage())
+                .image(project.getProfileImageUrl())
                 .introduction(project.getIntroduction())
                 .build();
     }
@@ -58,7 +58,7 @@ public class  ProjectConverter {
         return ProjectResponseDTO.ProjectDTO.builder()
                 .projectId(project.getId())
                 .name(project.getName())
-                .image(project.getImage())
+                .image(project.getProfileImageUrl())
                 .introduction(project.getIntroduction())
                 .body(project.getBody())
                 .members(memberDTOs)

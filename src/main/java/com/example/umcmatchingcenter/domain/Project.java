@@ -38,7 +38,7 @@ public class Project extends BaseEntity {
 
     private String introduction;
 
-    private String image;
+    private String profileImageUrl;
 
     private String body;
 
@@ -63,10 +63,6 @@ public class Project extends BaseEntity {
 
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
-    }
-
-    public void updateImage(String image){
-        this.image = image;
     }
 
     public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){

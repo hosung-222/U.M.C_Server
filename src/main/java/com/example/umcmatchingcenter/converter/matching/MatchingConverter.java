@@ -24,7 +24,7 @@ public class MatchingConverter {
         return MatchingResponseDTO.MatchingProjectPreViewDTO.builder()
                 .projectId((project.getId()))
                 .name(project.getName())
-                .image(project.getImage())
+                .image(project.getProfileImageUrl())
                 .introduction(project.getIntroduction())
                 .recruitments(recruitmentDTOs)
                 .build();
@@ -68,7 +68,7 @@ public class MatchingConverter {
                 .projectId(project.getId())
                 .pmId(project.getPm().getId())
                 .name(project.getName())
-                .image(project.getImage())
+                .image(project.getProfileImageUrl())
                 .introduction(project.getIntroduction())
                 .body(project.getBody())
                 .recruitments(recruitmentDTOs)
