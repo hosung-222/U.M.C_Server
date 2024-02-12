@@ -8,13 +8,15 @@ import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationResponseDTO;
 public class EvaluationConverter {
 
     public static EvaluationResponseDTO toEvaluationResponseDTO(Member member,
-                                                                double rate) {
+                                                                double rate,
+                                                                String content) {
         return EvaluationResponseDTO.builder()
                 .profileImage(member.getProfileImage())
                 .nameNickname(member.getNameNickname())
                 .memberPart(member.getPart())
                 .university(member.getUniversity().getName())
                 .rate(rate)
+                .content(content)
                 .build();
 
     }
