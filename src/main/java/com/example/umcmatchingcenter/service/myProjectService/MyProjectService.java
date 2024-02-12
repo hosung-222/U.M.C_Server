@@ -102,12 +102,7 @@ public class MyProjectService {
             List<ProjectVolunteer> projectVolunteer = projectQueryService.getProject().getProjectVolunteerList();
 
             return projectVolunteer.stream()
-                    .map(application -> ApplicantsConverter.toProjectApplicantsResponseDto(
-                            application.getMember().getNameNickname(),
-                            application.getMember().getUniversity().getName(),
-                            application.getMember().getPart(),
-                            application.getMember().getProfileImage(),
-                            application.getMember().getMatchingStatus()))
+                    .map(application -> ApplicantsConverter.toProjectApplicantsResponseDto(application.getMember()))
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
