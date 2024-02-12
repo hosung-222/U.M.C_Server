@@ -25,7 +25,6 @@ import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -118,7 +117,7 @@ public class MatchingCommandService {
 
     private void deleteImages(List<Long> deleteImageList){
         List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
-        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3Image()));
+        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
         imageRepository.deleteAllById(deleteImageList);
     }
 }
