@@ -17,5 +17,6 @@ public class EvaluationResponseDTO {
     private MemberPart memberPart;
     private String university;
     private double rate;
+    private String content;
 
 }
