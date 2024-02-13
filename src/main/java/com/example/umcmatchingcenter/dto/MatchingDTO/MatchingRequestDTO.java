@@ -24,6 +24,7 @@ public class MatchingRequestDTO {
     @Getter
     @Setter
     public static class UpdateMatchingProjectRequestDTO {
+        private Long profileImageId;
         private String body;
         private String introduction;
         private String name;

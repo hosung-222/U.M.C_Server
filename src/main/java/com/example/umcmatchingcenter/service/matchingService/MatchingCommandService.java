@@ -116,6 +116,7 @@ public class MatchingCommandService {
 
         Project project = matchingQueryService.findProject(projectId);
         deleteImages(request.getDeleteImageIdList());
+        setProfileImage(request.getProfileImageId(),project);
         mappingProjectAndImage(request.getImageIdList(), project);
 
         project.updateProject(request);
