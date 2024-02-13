@@ -11,6 +11,7 @@ public class EvaluationConverter {
                                                                 double rate,
                                                                 String content) {
         return EvaluationResponseDTO.builder()
+                .memberId(member.getId())
                 .profileImage(member.getProfileImage())
                 .nameNickname(member.getNameNickname())
                 .memberPart(member.getPart())
