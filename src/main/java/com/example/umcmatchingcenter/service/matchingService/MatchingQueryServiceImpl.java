@@ -61,10 +61,11 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
                 .orElseThrow(()->new ProjectHandler(ErrorStatus.PROJECT_NOT_PROCEEDING));
         Member member = memberQueryService.findMemberByName(memberName);
 
-        Map<Long, String> Images = project.getImages().stream()
+        Map<Long, String> images = project.getImages().stream()
+                .filter(image -> !image.isProfile())
                 .collect(Collectors.toMap(Image::getId, Image::getS3ImageUrl));
 
-        return MatchingConverter.toMatchingProjectDetailDTO(project, member.getId(), Images);
+        return MatchingConverter.toMatchingProjectDetailDTO(project, member.getId(), images);
 
     }
 

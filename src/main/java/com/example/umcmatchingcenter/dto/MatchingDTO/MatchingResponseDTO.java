@@ -47,7 +47,8 @@ public class MatchingResponseDTO {
         private Long memberId;
         private Long pmId;
         private String name;
-        private String profileImage;
+        private Long profileImageId;
+        private String profileImageUrl;
         private String introduction;
         private String body;
         private List<MatchingProjectRecruitmentDTO> recruitments;

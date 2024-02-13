@@ -37,4 +37,5 @@ public class Image extends BaseEntity {
 
     public void setProfile(){this.isProfile = true;}
 
+
 }
