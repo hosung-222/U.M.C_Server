@@ -79,6 +79,8 @@ public enum ErrorStatus implements BaseErrorCode {
     QUESTION_NOT_FOUNT(BAD_REQUEST, "QUESTION4001", "질문이 존재하지 않습니다."),
     ANSWER_UNAUTHORIZED(BAD_REQUEST, "ANSWER4002", "질문에 대한 답변 권한이 없습니다."),
 
+    IMAGE_NOT_EXIST(NOT_FOUND, "IMAGE4001", "이미지가 존재하지 않습니다."),
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),

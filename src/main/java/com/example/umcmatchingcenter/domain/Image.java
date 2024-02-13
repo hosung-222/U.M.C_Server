@@ -28,8 +28,13 @@ public class Image extends BaseEntity {
     @JoinColumn(name = "projectId")
     private Project project;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isProfile;
+
     public void setProject(Project project){
         this.project = project;
     }
+
+    public void setProfile(){this.isProfile = true;}
 
 }

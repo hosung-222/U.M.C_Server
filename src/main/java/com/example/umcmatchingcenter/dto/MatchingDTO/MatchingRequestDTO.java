@@ -11,11 +11,12 @@ public class MatchingRequestDTO {
     @Getter
     @Setter
     public static class AddMatchingProjectRequestDTO {
+        private Long profileImageId;
         private String body;
         private String introduction;
         private String name;
         private Map<MemberPart, Integer> partCounts;
-        private List<Long> imageList;
+        private List<Long> imageIdList;
 
 
     }
@@ -27,7 +28,7 @@ public class MatchingRequestDTO {
         private String introduction;
         private String name;
         private Map<MemberPart, Integer> partCounts;
-        private List<Long> imageList;
-        private List<Long> deleteImageList;
+        private List<Long> imageIdList;
+        private List<Long> deleteImageIdList;
     }
 }
