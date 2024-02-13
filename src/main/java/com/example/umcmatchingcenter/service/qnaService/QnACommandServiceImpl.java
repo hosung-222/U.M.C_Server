@@ -1,16 +1,14 @@
 package com.example.umcmatchingcenter.service.qnaService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.QnAHandler;
 import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
-import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
-import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.QnARepository;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.service.qnaService;
 
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.QnA;
-import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
 import org.springframework.transaction.annotation.Transactional;
 
 public interface QnACommandService {
