@@ -38,8 +38,6 @@ public class Project extends BaseEntity {
 
     private String introduction;
 
-    private String image;
-
     private String body;
 
     @Enumerated(EnumType.STRING)
@@ -65,14 +63,17 @@ public class Project extends BaseEntity {
         this.status = projectStatus;
     }
 
-    public void updateImage(String image){
-        this.image = image;
-    }
-
     public void updateProject(MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
         this.name = request.getName();
         this.body = request.getBody();
         this.introduction = request.getIntroduction();
+    }
+
+    public Image getProfileImage(){
+        return this.getImages().stream()
+                .filter(Image::isProfile)
+                .findFirst()
+                .orElse(null);
     }
 
 }

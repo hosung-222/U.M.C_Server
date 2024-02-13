@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class MatchingResponseDTO {
     // 매칭 프로젝트 목록 조회
@@ -43,13 +44,15 @@ public class MatchingResponseDTO {
     @AllArgsConstructor
     public static class MatchingProjectDTO {
         private Long projectId;
+        private Long memberId;
         private Long pmId;
         private String name;
-        private String image;
+        private Long profileImageId;
+        private String profileImageUrl;
         private String introduction;
         private String body;
         private List<MatchingProjectRecruitmentDTO> recruitments;
-        private List<ProjectMemberDTO> members;
+        private Map<Long, String> Images;
         private LocalDateTime createAt;
     }
 
@@ -59,11 +62,10 @@ public class MatchingResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class MatchingProjectRecruitmentDTO {
-        private Long id;
         private MemberPart part;
         private boolean isRecruitmentFinished;
-//        private int nowRecruitment;
-//        private int totalRecruitment;
+        private int nowRecruitment;
+        private int totalRecruitment;
     }
 
     // 프로젝트 참여 멤버

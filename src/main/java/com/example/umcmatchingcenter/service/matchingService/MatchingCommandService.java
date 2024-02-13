@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.service.matchingService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
 import com.example.umcmatchingcenter.converter.RecruitmentConverter;
@@ -25,7 +27,7 @@ import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 @RequiredArgsConstructor
@@ -74,12 +76,14 @@ public class MatchingCommandService {
         Member pm = memberQueryService.findMemberByName(memberName);
 
         Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch());
-        mappingProjectAndImage(request.getImageList(), project);
+        matchingRepository.save(project);
+        setProfileImage(request.getProfileImageId(), project);
+        mappingProjectAndImage(request.getImageIdList(), project);
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);
 
-        return matchingRepository.save(project);
+        return project;
     }
 
     private List<Recruitment> getRecruitmentList(Map<MemberPart, Integer> partCount, Project project){
@@ -96,13 +100,24 @@ public class MatchingCommandService {
     private void mappingProjectAndImage(List<Long> imageList, Project project){
         List<Image> images = imageRepository.findAllById(imageList);
         images.forEach(image -> image.setProject(project));
+        imageRepository.saveAll(images);
+    }
+
+    private void setProfileImage(Long profilImageId, Project project){
+        Image image = imageRepository.findById(profilImageId)
+                .orElseThrow(() -> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST));
+        image.setProject(project);
+        image.setProfile();
+        imageRepository.save(image);
+
     }
 
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
-        deleteImages(request.getDeleteImageList());
-        mappingProjectAndImage(request.getImageList(), project);
+        deleteImages(request.getDeleteImageIdList());
+        setProfileImage(request.getProfileImageId(),project);
+        mappingProjectAndImage(request.getImageIdList(), project);
 
         project.updateProject(request);
         updateRecruitment(request.getPartCounts(), project);
@@ -118,7 +133,7 @@ public class MatchingCommandService {
 
     private void deleteImages(List<Long> deleteImageList){
         List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
-        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3Image()));
+        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
         imageRepository.deleteAllById(deleteImageList);
     }
 }

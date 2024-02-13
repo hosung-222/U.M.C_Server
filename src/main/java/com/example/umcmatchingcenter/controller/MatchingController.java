@@ -69,9 +69,9 @@ public class MatchingController {
     @Parameters({
             @Parameter(name = "projectId", description = "프로젝트 아이디")
     })
-    public ApiResponse<MatchingResponseDTO.MatchingProjectDTO> getProject(@PathVariable(name = "projectId") Long projectId){
-        Project project = matchingQueryService.getProjectDetail(projectId);
-        return ApiResponse.onSuccess(MatchingConverter.toMatchingProjectDetailDTO(project));
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<MatchingResponseDTO.MatchingProjectDTO> getProject(@PathVariable(name = "projectId") Long projectId, Principal principal){
+        return ApiResponse.onSuccess( matchingQueryService.getProjectDetail(projectId, principal.getName()));
     }
 
     @PostMapping("/projects")
