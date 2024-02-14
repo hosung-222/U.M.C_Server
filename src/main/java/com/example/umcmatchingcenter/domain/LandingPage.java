@@ -3,6 +3,7 @@ package com.example.umcmatchingcenter.domain;
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
@@ -41,6 +42,14 @@ public class LandingPage extends BaseEntity {
         this.title = request.getTitle();
         this.body = request.getBody();
         this.introduction = request.getIntroduction();
+    }
+
+    public Image getProfileImage(){
+        LandingPageImage landingPageImage = this.getImages().stream()
+                .filter(LandingPageImage::isProfile)
+                .findFirst()
+                .orElse(null);
+        return landingPageImage.getImage();
     }
 
 }

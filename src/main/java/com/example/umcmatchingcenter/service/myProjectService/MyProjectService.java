@@ -198,13 +198,15 @@ public class MyProjectService {
 
     public LandingPage UpdateLandingPage(MyProjectRequestDTO.UpdateLandingPageRequestDTO request, Long landingPageId){
         LandingPage landingPage = landingPageRepository.findById(landingPageId).get();
+        if(landingPage.getProfileImage().getId() != request.getProfileImageId()){
+            setProfileImage(request.getProfileImageId(),landingPage);
+        }
         deleteImages(request.getDeleteImageIdList());
-        setProfileImage(request.getProfileImageId(),landingPage);
         mappingLandingPageAndImage(request.getImageIdList(), landingPage);
+
 
         landingPage.updateLandingPage(request);
 
-        landingPageRepository.save(landingPage);
         return landingPage;
     }
 
