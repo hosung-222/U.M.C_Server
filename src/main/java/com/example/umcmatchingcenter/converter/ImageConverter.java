@@ -1,6 +1,10 @@
 package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Image;
+import com.example.umcmatchingcenter.domain.LandingPage;
+import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.dto.ImageDTO;
 
 public class ImageConverter {
@@ -9,6 +13,20 @@ public class ImageConverter {
         return Image.builder()
                 .originalFilename(originalFilename)
                 .s3ImageUrl(s3ImageUrl)
+                .build();
+    }
+
+    public static ProjectImage toProjectImage(Project project, Image image){
+        return ProjectImage.builder()
+                .project(project)
+                .image(image)
+                .build();
+    }
+
+    public static LandingPageImage toLandingPageImage(LandingPage landingPage, Image image){
+        return LandingPageImage.builder()
+                .landingPage(landingPage)
+                .image(image)
                 .build();
     }
 
