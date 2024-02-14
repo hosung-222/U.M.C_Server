@@ -69,7 +69,10 @@ public class MyProjectQueryService {
             project.getProjectVolunteerList().stream()
                     .map(ProjectVolunteer::getMember)
                     .filter(member -> member.getMatchingStatus() == MemberMatchingStatus.APPLY)
-                    .forEach(member -> member.setMatchingStatus(MemberMatchingStatus.NON));
+                    .forEach(member -> {
+                        member.setMatchingStatus(MemberMatchingStatus.NON);
+                        member.addRound();
+                    });
         }
     }
 
