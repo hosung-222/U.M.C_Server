@@ -18,6 +18,8 @@ public class ApplicantInfoResponseDTO {
     private String university;
     private MemberPart memberPart;
     private String profileImage;
+    private String portfolio;
+    private String phoneNumber;
     private MemberMatchingStatus memberMatchingStatus;
 
 }

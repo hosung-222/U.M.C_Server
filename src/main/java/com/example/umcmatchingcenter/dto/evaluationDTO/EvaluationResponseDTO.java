@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class EvaluationResponseDTO {
 
+    private Long memberId;
     private String profileImage;
     private String nameNickname;
     private MemberPart memberPart;

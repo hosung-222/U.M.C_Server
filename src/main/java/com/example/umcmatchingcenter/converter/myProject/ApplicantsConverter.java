@@ -14,6 +14,8 @@ public class ApplicantsConverter {
                 .university(member.getUniversity().getName())
                 .memberPart(member.getPart())
                 .profileImage(member.getProfileImage())
+                .portfolio(member.getPortfolio())
+                .phoneNumber(member.getPhoneNumber())
                 .memberMatchingStatus(member.getMatchingStatus())
                 .build();
     }
