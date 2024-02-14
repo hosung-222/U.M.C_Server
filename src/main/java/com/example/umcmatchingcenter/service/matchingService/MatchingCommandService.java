@@ -20,10 +20,7 @@ import com.example.umcmatchingcenter.repository.*;
 import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
@@ -122,8 +119,8 @@ public class MatchingCommandService {
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
-        deleteImages(request.getDeleteImageIdList());
         setProfileImage(request.getProfileImageId(),project);
+        deleteImages(request.getDeleteImageIdList());
         mappingProjectAndImage(request.getImageIdList(), project);
 
         project.updateProject(request);
@@ -138,9 +135,15 @@ public class MatchingCommandService {
         recruitmentRepository.saveAll(recruitmentList);
     }
 
-    private void deleteImages(List<Long> deleteImageList){
-        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
-        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
-        imageRepository.deleteAllById(deleteImageList);
+    private void deleteImages(List<Long> deleteImageIdList){
+        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageIdList);
+
+        List<ProjectImage> deleteProjectImageList = deleteS3ImageList.stream()
+                .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
+                .map(image -> projectImageRepository.findByImage(image))
+                .collect(Collectors.toList());
+
+        projectImageRepository.deleteAll(deleteProjectImageList);
     }
+
 }
