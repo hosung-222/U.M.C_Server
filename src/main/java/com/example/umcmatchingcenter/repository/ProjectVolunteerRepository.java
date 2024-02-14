@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.repository;
 
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import java.util.List;
 import java.util.Optional;
@@ -15,5 +16,7 @@ public interface ProjectVolunteerRepository extends JpaRepository<ProjectVolunte
     List<ProjectVolunteer> findAllByMemberOrderByRound(Member member);
 
     Optional<ProjectVolunteer> findByMemberId(Long memberId);
+
+    Optional<ProjectVolunteer> findByMemberAndProject(Member member, Project project);
 
 }
