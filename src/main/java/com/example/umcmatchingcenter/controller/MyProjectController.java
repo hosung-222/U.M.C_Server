@@ -77,7 +77,7 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
-    public ApiResponse<String> updateLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+    public ApiResponse<String> updateLandingPage(@RequestBody MyProjectRequestDTO.UpdateLandingPageRequestDTO request) {
         return null;
     }
 }

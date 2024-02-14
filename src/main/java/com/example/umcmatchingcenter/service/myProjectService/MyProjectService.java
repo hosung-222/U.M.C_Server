@@ -22,6 +22,7 @@ import com.example.umcmatchingcenter.repository.LandingPageRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.recruitmentService.RecruitmentQueryService;
+import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class MyProjectService {
     private final AlarmCommandService alarmCommandService;
     private final LandingPageRepository landingPageRepository;
     private final ImageRepository imageRepository;
+    private final S3UploadService s3UploadService;
 
     public MyProjectResponseDTO myProject() {
         return MyProjectConverter.toMyProjectResponseDto(
@@ -184,6 +186,24 @@ public class MyProjectService {
         List<Image> images = imageRepository.findAllById(imageList);
         images.forEach(image -> image.setLandingPage(landingPage));
         imageRepository.saveAll(images);
+    }
+
+    public LandingPage UpdateLandingPage(MyProjectRequestDTO.UpdateLandingPageRequestDTO request, Long landingPageId){
+        LandingPage landingPage = landingPageRepository.findById(landingPageId).get();
+        deleteImages(request.getDeleteImageIdList());
+        setProfileImage(request.getProfileImageId(),landingPage);
+        mappingLandingPageAndImage(request.getImageIdList(), landingPage);
+
+        landingPage.updateLandingPage(request);
+
+        landingPageRepository.save(landingPage);
+        return landingPage;
+    }
+
+    private void deleteImages(List<Long> deleteImageList){
+        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
+        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
+        imageRepository.deleteAllById(deleteImageList);
     }
 
 }
