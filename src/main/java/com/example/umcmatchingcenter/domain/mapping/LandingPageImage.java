@@ -30,4 +30,6 @@ public class LandingPageImage extends BaseEntity {
     private LandingPage landingPage;
 
     private boolean isProfile;
+
+    public void setProfile(){this.isProfile = true;}
 }
