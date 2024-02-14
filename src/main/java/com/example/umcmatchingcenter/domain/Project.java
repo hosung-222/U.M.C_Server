@@ -71,10 +71,11 @@ public class Project extends BaseEntity {
     }
 
     public Image getProfileImage(){
-        return this.getImages().stream()
-                .filter(Image::isProfile)
+        ProjectImage projectImage = this.getImages().stream()
+                .filter(ProjectImage::isProfile)
                 .findFirst()
                 .orElse(null);
+        return projectImage.getImage();
     }
 
 }
