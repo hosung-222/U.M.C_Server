@@ -86,4 +86,13 @@ public class MemberQueryService {
 
         return memberRepository.findByUniversityInAndMatchingStatusInAndPartAndMemberStatus(universities, matchingStatuses, part, MemberStatus.ACTIVE);
     }
+
+    public List<Member> getCurrentProjectMembers() {
+        Member currentLoginMember = getCurrentLoginMember();
+        List<Member> members = currentLoginMember.getProject().getMembers();
+        if(members.isEmpty()){
+            throw new MemberHandler(MEMBER_NOT_FOUND);
+        }
+        return members;
+    }
 }

@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,7 @@ public class MyProjectController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<MyProjectResponseDTO> myProject() {
         return ApiResponse.onSuccess(myProjectService.myProject());
     }
@@ -37,6 +39,7 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<String> pass(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.pass(memberId));
     }
@@ -49,6 +52,7 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<String> fail(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.fail(memberId));
     }

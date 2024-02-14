@@ -59,6 +59,9 @@ public class Member extends BaseEntity {
     private int generation;
 
     @Column(nullable = false)
+    private int round;
+
+    @Column(nullable = false)
     private String memberName;
 
     @Enumerated(EnumType.STRING)
@@ -106,6 +109,10 @@ public class Member extends BaseEntity {
         this.matchingStatus = matchingStatus;
     }
 
+    public void addRound() {
+        this.round++;
+    }
+
 
     public void depart(){
         this.memberStatus = MemberStatus.INACTIVE;
@@ -135,5 +142,10 @@ public class Member extends BaseEntity {
 
     public Branch getBranch(){
         return this.university.getBranch();
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.round = 1;
     }
 }

@@ -22,4 +22,12 @@ public class ProjectVolunteerConverter {
                 .round(round)
                 .build();
     }
+
+    public static ProjectVolunteer toProjectVolunteer(Project project, Member member) {
+        return ProjectVolunteer.builder()
+                .project(project)
+                .member(member)
+                .round(member.getRound())
+                .build();
+    }
 }

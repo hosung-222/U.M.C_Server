@@ -6,6 +6,7 @@ import com.example.umcmatchingcenter.converter.myProject.ApplicantsConverter;
 import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.ProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.TotalMatchingConverter;
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
@@ -147,7 +148,9 @@ public class MyProjectService {
         Optional<ProjectVolunteer> foundApplication = projectVolunteerQueryService.getProjectVolunteer(memberId);
 
         if (foundApplication != null && foundApplication.isPresent()) {
-            memberQueryService.getMember(memberId).setMatchingStatus(MemberMatchingStatus.NON);
+            Member member = memberQueryService.getMember(memberId);
+            member.setMatchingStatus(MemberMatchingStatus.NON);
+            member.addRound();
             return memberQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);

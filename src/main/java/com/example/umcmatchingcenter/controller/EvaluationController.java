@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class EvaluationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4002", description = "해당 프로젝트의 멤버가 아닙니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4003", description = "이미 평가가 완료된 멤버입니다."),
     })
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<List<EvaluationResponseDTO>> getEvaluations() {
         return ApiResponse.onSuccess(evaluationService.getTeammates());
     }
@@ -45,6 +47,7 @@ public class EvaluationController {
     @Parameters({
             @Parameter(name = "memberId", description = "피평가자 아이디")
     })
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<String> saveEvaluation(@RequestBody EvaluationRequestDTO dto,
                                               @PathVariable Long memberId) {
         evaluationService.saveEvaluation(dto, memberId);
