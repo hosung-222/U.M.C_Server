@@ -50,7 +50,10 @@ public class EvaluationService {
         Member evaluatee = memberQueryService.findMember(memberId);
         Project project = evaluator.getProject();
 
-        evaluationQueryService.isExist(evaluator, evaluatee);
+        Evaluation evaluation = evaluationQueryService.isExist(evaluator, evaluatee);
+        if (evaluation != null) {
+            evaluationRepository.delete(evaluation);
+        }
         evaluationQueryService.contains(project, evaluatee);
 
         evaluationRepository.save(Evaluation.builder()
