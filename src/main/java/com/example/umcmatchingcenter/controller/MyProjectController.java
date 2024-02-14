@@ -66,6 +66,7 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
         LandingPage landingPage = myProjectService.AddLandingPage(request);
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
@@ -77,6 +78,7 @@ public class MyProjectController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
 
     })
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> updateLandingPage(@PathVariable(name = "landingPageId") Long landingPageId,@RequestBody MyProjectRequestDTO.UpdateLandingPageRequestDTO request) {
         LandingPage landingPage = myProjectService.UpdateLandingPage(request, landingPageId);
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
