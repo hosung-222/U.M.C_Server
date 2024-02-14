@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
@@ -34,7 +35,7 @@ public class LandingPage extends BaseEntity {
     private Project project;
 
     @OneToMany(mappedBy = "landingPage")
-    private List<Image> images;
+    private List<LandingPageImage> images;
 
     public void updateLandingPage(MyProjectRequestDTO.UpdateLandingPageRequestDTO request){
         this.title = request.getTitle();

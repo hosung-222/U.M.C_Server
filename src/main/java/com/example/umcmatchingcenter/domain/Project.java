@@ -3,6 +3,7 @@ package com.example.umcmatchingcenter.domain;
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
@@ -57,7 +58,7 @@ public class Project extends BaseEntity {
     private List<ProjectVolunteer> projectVolunteerList;
 
     @OneToMany(mappedBy = "project")
-    private List<Image> images;
+    private List<ProjectImage> images;
 
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
