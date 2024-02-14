@@ -138,9 +138,9 @@ public class MatchingCommandService {
     }
 
     private void deleteImages(List<Long> deleteImageIdList){
-        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageIdList);
+        List<Image> deleteImageList = imageRepository.findAllById(deleteImageIdList);
 
-        List<ProjectImage> deleteProjectImageList = deleteS3ImageList.stream()
+        List<ProjectImage> deleteProjectImageList = deleteImageList.stream()
                 .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
                 .map(image -> projectImageRepository.findByImage(image))
                 .collect(Collectors.toList());

@@ -210,10 +210,15 @@ public class MyProjectService {
         return landingPage;
     }
 
-    private void deleteImages(List<Long> deleteImageList){
-        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
-        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
-        imageRepository.deleteAllById(deleteImageList);
+    private void deleteImages(List<Long> deleteImageIdList){
+        List<Image> deleteImageList = imageRepository.findAllById(deleteImageIdList);
+
+        List<LandingPageImage> deleteLandingPageImageList = deleteImageList.stream()
+                .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
+                .map(image -> landingPageImageRepository.findByImage(image))
+                .collect(Collectors.toList());
+
+        landingPageImageRepository.deleteAll(deleteLandingPageImageList);
     }
 
 }
