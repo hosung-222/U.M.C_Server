@@ -119,7 +119,9 @@ public class MatchingCommandService {
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
-        setProfileImage(request.getProfileImageId(),project);
+        if(project.getProfileImage().getId() != request.getProfileImageId()){
+            setProfileImage(request.getProfileImageId(),project);
+        }
         deleteImages(request.getDeleteImageIdList());
         mappingProjectAndImage(request.getImageIdList(), project);
 
