@@ -33,7 +33,7 @@ public class LandingPage extends BaseEntity {
     @JoinColumn(name = "projectId")
     private Project project;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "landingPage")
     private List<Image> images;
 
     public void updateLandingPage(MyProjectRequestDTO.UpdateLandingPageRequestDTO request){
