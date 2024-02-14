@@ -81,6 +81,9 @@ public enum ErrorStatus implements BaseErrorCode {
 
     IMAGE_NOT_EXIST(NOT_FOUND, "IMAGE4001", "이미지가 존재하지 않습니다."),
 
+    PART_IS_FULL(BAD_REQUEST, "APPLY4001", "해당 파트는 모집 완료되었습니다."),
+    ALREADY_APPLY(BAD_REQUEST, "APPLY4002", "이미 지원한 프로젝트입니다."),
+
 
     // 예시,,,
     ARTICLE_NOT_FOUND(NOT_FOUND, "ARTICLE4001", "게시글이 없습니다."),
