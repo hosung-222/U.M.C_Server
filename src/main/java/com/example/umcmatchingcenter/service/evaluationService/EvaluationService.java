@@ -30,7 +30,7 @@ public class EvaluationService {
 
     public List<EvaluationResponseDTO> getTeammates() {
         Member currentLoginMember = memberQueryService.getCurrentLoginMember();
-        List<Member> members = currentLoginMember.getProject().getMembers();
+        List<Member> members = memberQueryService.getCurrentProjectMembers();
         members.removeIf(member -> member.equals(currentLoginMember));
 
         return members.stream()
