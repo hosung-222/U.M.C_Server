@@ -31,4 +31,6 @@ public class ProjectImage extends BaseEntity {
 
     private boolean isProfile;
 
+    public void setProfile(){ this.isProfile = true; }
+
 }

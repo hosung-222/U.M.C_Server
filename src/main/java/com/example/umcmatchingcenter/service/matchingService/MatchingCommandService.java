@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.service.matchingService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
+import com.example.umcmatchingcenter.converter.ImageConverter;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
 import com.example.umcmatchingcenter.converter.RecruitmentConverter;
@@ -11,6 +12,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
@@ -22,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +44,7 @@ public class MatchingCommandService {
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
     private final ImageRepository imageRepository;
+    private final ProjectImageRepository projectImageRepository;
     private final S3UploadService s3UploadService;
 
     public void processBranch(Branch branch) {
@@ -99,16 +103,19 @@ public class MatchingCommandService {
 
     private void mappingProjectAndImage(List<Long> imageList, Project project){
         List<Image> images = imageRepository.findAllById(imageList);
-        images.forEach(image -> image.setProject(project));
-        imageRepository.saveAll(images);
+        List<ProjectImage> projectImages = images.stream()
+                .map(image -> ImageConverter.toProjectImage(project, image))
+                .collect(Collectors.toList());
+        projectImageRepository.saveAll(projectImages);
+
     }
 
     private void setProfileImage(Long profilImageId, Project project){
         Image image = imageRepository.findById(profilImageId)
                 .orElseThrow(() -> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST));
-        image.setProject(project);
-        image.setProfile();
-        imageRepository.save(image);
+        ProjectImage profileImage = ImageConverter.toProjectImage(project, image);
+        profileImage.setProfile();
+        projectImageRepository.save(profileImage);
 
     }
 
