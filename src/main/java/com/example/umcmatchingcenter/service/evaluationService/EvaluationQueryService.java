@@ -32,11 +32,12 @@ public class EvaluationQueryService {
         return null;
     }
 
-    public void isExist(Member evaluator, Member evaluatee) {
+    public Evaluation isExist(Member evaluator, Member evaluatee) {
         Evaluation evaluation = getEvaluation(evaluator, evaluatee);
         if (evaluation != null) {
-            throw new EvaluationHandler(ALREADY_EVALUATED_MEMBER);
+            return evaluation;
         }
+        return null;
     }
 
     public void contains(Project project, Member evaluatee) {
