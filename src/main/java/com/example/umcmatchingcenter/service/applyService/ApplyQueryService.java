@@ -36,10 +36,9 @@ public class ApplyQueryService {
         }
     }
 
-    public void alreadyApply(Long projectId) {
+    public void alreadyApply() {
         Member member = memberQueryService.getCurrentLoginMember();
-        Project project = matchingQueryService.findProject(projectId);
-        Optional<ProjectVolunteer> projectVolunteer = projectVolunteerRepository.findByMemberAndProject(member, project);
+        Optional<ProjectVolunteer> projectVolunteer = projectVolunteerRepository.findByMemberId(member.getId());
 
         if (projectVolunteer.isPresent()) {
             throw new ApplyHandler(ErrorStatus.ALREADY_APPLY);
