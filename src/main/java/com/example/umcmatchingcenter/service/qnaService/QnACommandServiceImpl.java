@@ -7,9 +7,11 @@ import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
+import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
 import com.example.umcmatchingcenter.repository.QnARepository;
+import com.example.umcmatchingcenter.service.matchingService.MatchingQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,22 +25,17 @@ import java.util.Optional;
 public class QnACommandServiceImpl implements QnACommandService {
 
     private final QnARepository qnaRepository;
-    private final MatchingRepository matchingRepository;
 
     private final MemberQueryService memberQueryService;
+    private final MatchingQueryService matchingQueryService;
 
     @Override
     public QnA postQuestion(QnARequestDTO.questionDTO request, Long projectId, String memberName) {
         Member inquirer = memberQueryService.findMemberByName(memberName);
-        Optional<Project> findProject = matchingRepository.findById(projectId);
+        Project findProject = matchingQueryService.findProcedingProject(projectId);
 
-        if (findProject.isPresent()) {
-            Project project = findProject.get();
-            QnA newQnA = QnAConverter.toQuestion(request, project, inquirer);
-            return qnaRepository.save(newQnA);
-        } else {
-            throw new ProjectHandler(ErrorStatus.PROJECT_NOT_PROCEEDING);
-        }
+        QnA newQnA = QnAConverter.toQuestion(request, findProject, inquirer);
+        return qnaRepository.save(newQnA);
     }
 
     @Override
