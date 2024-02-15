@@ -17,6 +17,7 @@ import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.repository.*;
+import com.example.umcmatchingcenter.service.ImageQueryService;
 import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 
@@ -40,7 +41,7 @@ public class MatchingCommandService {
     private final MemberQueryService memberQueryService;
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
-    private final ImageRepository imageRepository;
+    private final ImageQueryService imageQueryService;
     private final ProjectImageRepository projectImageRepository;
     private final S3UploadService s3UploadService;
 
@@ -99,7 +100,7 @@ public class MatchingCommandService {
     }
 
     private void mappingProjectAndImage(List<Long> imageList, Project project){
-        List<Image> images = imageRepository.findAllById(imageList);
+        List<Image> images = imageQueryService.findAllImageById(imageList);
         List<ProjectImage> projectImages = images.stream()
                 .map(image -> ImageConverter.toProjectImage(project, image))
                 .collect(Collectors.toList());
@@ -108,8 +109,7 @@ public class MatchingCommandService {
     }
 
     private void setProfileImage(Long profilImageId, Project project){
-        Image image = imageRepository.findById(profilImageId)
-                .orElseThrow(() -> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST));
+        Image image = imageQueryService.findImageById(profilImageId);
         ProjectImage profileImage = ImageConverter.toProjectImage(project, image);
         profileImage.setProfile();
         projectImageRepository.save(profileImage);
@@ -138,7 +138,7 @@ public class MatchingCommandService {
     }
 
     private void deleteImages(List<Long> deleteImageIdList){
-        List<Image> deleteImageList = imageRepository.findAllById(deleteImageIdList);
+        List<Image> deleteImageList = imageQueryService.findAllImageById(deleteImageIdList);
 
         List<ProjectImage> deleteProjectImageList = deleteImageList.stream()
                 .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
