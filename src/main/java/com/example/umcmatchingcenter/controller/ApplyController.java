@@ -25,7 +25,7 @@ public class ApplyController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "APPLY4001", description = "해당 파트는 모집 완료입니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "APPLY4002", description = "이미 지원한 프로젝트입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "APPLY4002", description = "이미 지원하였습니다."),
     })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<String> apply(@PathVariable Long projectId) {
