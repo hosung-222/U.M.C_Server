@@ -142,7 +142,8 @@ public class MatchingCommandService {
 
         List<ProjectImage> deleteProjectImageList = deleteImageList.stream()
                 .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
-                .map(image -> projectImageRepository.findByImage(image))
+                .map(image -> projectImageRepository.findByImage(image)
+                        .orElseThrow(()-> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST)))
                 .collect(Collectors.toList());
 
         projectImageRepository.deleteAll(deleteProjectImageList);

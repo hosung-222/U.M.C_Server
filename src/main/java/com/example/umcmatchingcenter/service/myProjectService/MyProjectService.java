@@ -215,7 +215,8 @@ public class MyProjectService {
 
         List<LandingPageImage> deleteLandingPageImageList = deleteImageList.stream()
                 .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
-                .map(image -> landingPageImageRepository.findByImage(image))
+                .map(image -> landingPageImageRepository.findByImage(image)
+                        .orElseThrow(()->new MyProjectHandler(ErrorStatus.IMAGE_NOT_EXIST)))
                 .collect(Collectors.toList());
 
         landingPageImageRepository.deleteAll(deleteLandingPageImageList);
