@@ -1,6 +1,9 @@
 package com.example.umcmatchingcenter.controller;
 
 import com.example.umcmatchingcenter.apiPayload.ApiResponse;
+import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
+import com.example.umcmatchingcenter.domain.LandingPage;
+import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
 import io.swagger.annotations.ApiParam;
@@ -55,5 +58,29 @@ public class MyProjectController {
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<String> fail(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.fail(memberId));
+    }
+
+    @PostMapping("/landingpage")
+    @Operation(summary = "랜딩 페이지 작성 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+
+    })
+    @PreAuthorize("hasRole('ROLE_PM')")
+    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
+        LandingPage landingPage = myProjectService.AddLandingPage(request);
+        return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
+    }
+
+    @PatchMapping("/landingpage/{landingPageId}")
+    @Operation(summary = "랜딩 페이지 수정 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+
+    })
+    @PreAuthorize("hasRole('ROLE_PM')")
+    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> updateLandingPage(@PathVariable(name = "landingPageId") Long landingPageId,@RequestBody MyProjectRequestDTO.UpdateLandingPageRequestDTO request) {
+        LandingPage landingPage = myProjectService.UpdateLandingPage(request, landingPageId);
+        return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 }

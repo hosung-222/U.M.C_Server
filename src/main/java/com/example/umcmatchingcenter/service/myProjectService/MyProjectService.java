@@ -1,25 +1,32 @@
 package com.example.umcmatchingcenter.service.myProjectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MyProjectHandler;
+import com.example.umcmatchingcenter.converter.ImageConverter;
 import com.example.umcmatchingcenter.converter.myProject.ApplicantsConverter;
 import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.ProjectConverter;
 import com.example.umcmatchingcenter.converter.myProject.TotalMatchingConverter;
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.Image;
+import com.example.umcmatchingcenter.domain.LandingPage;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.RecruitmentStatus;
+import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
-import com.example.umcmatchingcenter.dto.ProjectDTO.ApplicantInfoResponseDTO;
-import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
-import com.example.umcmatchingcenter.dto.ProjectDTO.PartMatchingResponseDTO;
-import com.example.umcmatchingcenter.dto.ProjectDTO.TotalMatchingResponseDTO;
+import com.example.umcmatchingcenter.dto.ProjectDTO.*;
+import com.example.umcmatchingcenter.repository.ImageRepository;
+import com.example.umcmatchingcenter.repository.LandingPageImageRepository;
+import com.example.umcmatchingcenter.repository.LandingPageRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
+import com.example.umcmatchingcenter.service.ImageQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.recruitmentService.RecruitmentQueryService;
+import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,6 +48,10 @@ public class MyProjectService {
     private final MyProjectVolunteerQueryService projectVolunteerQueryService;
     private final RecruitmentQueryService recruitmentQueryService;
     private final AlarmCommandService alarmCommandService;
+    private final LandingPageRepository landingPageRepository;
+    private final ImageQueryService imageQueryService;
+    private final LandingPageImageRepository landingPageImageRepository;
+    private final S3UploadService s3UploadService;
 
     public MyProjectResponseDTO myProject() {
         return MyProjectConverter.toMyProjectResponseDto(
@@ -158,6 +169,56 @@ public class MyProjectService {
 
     private double calculateCompetitionRate(int totalRecruitment, int totalApplicants) {
         return Math.ceil((double) totalApplicants / totalRecruitment * 100) / 100.0;
+    }
+
+    public LandingPage AddLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
+        Project project = projectQueryService.getProject();
+        LandingPage landingPage = MyProjectConverter.toLandingPage(request, project);
+        landingPageRepository.save(landingPage);
+        setProfileImage(request.getProfileImageId(), landingPage);
+        mappingLandingPageAndImage(request.getImageIdList(), landingPage);
+        return landingPage;
+    }
+
+    public void setProfileImage(Long profileImageId, LandingPage landingPage){
+        Image image = imageQueryService.findImageById(profileImageId);
+        LandingPageImage profileImage = ImageConverter.toLandingPageImage(landingPage, image);
+        profileImage.setProfile();
+        landingPageImageRepository.save(profileImage);
+    }
+
+    public void mappingLandingPageAndImage(List<Long> imageList, LandingPage landingPage){
+        List<Image> images = imageQueryService.findAllImageById(imageList);
+        List<LandingPageImage> landingPageImages = images.stream()
+                .map(image -> ImageConverter.toLandingPageImage(landingPage, image))
+                .collect(Collectors.toList());
+        landingPageImageRepository.saveAll(landingPageImages);
+    }
+
+    public LandingPage UpdateLandingPage(MyProjectRequestDTO.UpdateLandingPageRequestDTO request, Long landingPageId){
+        LandingPage landingPage = landingPageRepository.findById(landingPageId).get();
+        if(landingPage.getProfileImage().getId() != request.getProfileImageId()){
+            setProfileImage(request.getProfileImageId(),landingPage);
+        }
+        deleteImages(request.getDeleteImageIdList());
+        mappingLandingPageAndImage(request.getImageIdList(), landingPage);
+
+
+        landingPage.updateLandingPage(request);
+
+        return landingPage;
+    }
+
+    private void deleteImages(List<Long> deleteImageIdList){
+        List<Image> deleteImageList = imageQueryService.findAllImageById(deleteImageIdList);
+
+        List<LandingPageImage> deleteLandingPageImageList = deleteImageList.stream()
+                .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
+                .map(image -> landingPageImageRepository.findByImage(image)
+                        .orElseThrow(()->new MyProjectHandler(ErrorStatus.IMAGE_NOT_EXIST)))
+                .collect(Collectors.toList());
+
+        landingPageImageRepository.deleteAll(deleteLandingPageImageList);
     }
 
 }

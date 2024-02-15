@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingResponseDTO;
 import com.example.umcmatchingcenter.repository.ImageRepository;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
@@ -62,8 +63,11 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
         Member member = memberQueryService.findMemberByName(memberName);
 
         Map<Long, String> images = project.getImages().stream()
-                .filter(image -> !image.isProfile())
-                .collect(Collectors.toMap(Image::getId, Image::getS3ImageUrl));
+                .filter(projectImage -> !projectImage.isProfile())
+                .collect(Collectors.toMap(
+                        projectImage -> projectImage.getImage().getId(),
+                        projectImage -> projectImage.getImage().getS3ImageUrl()
+                ));
 
         return MatchingConverter.toMatchingProjectDetailDTO(project, member.getId(), images);
 

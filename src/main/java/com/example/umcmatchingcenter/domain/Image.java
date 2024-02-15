@@ -23,19 +23,4 @@ public class Image extends BaseEntity {
 
     @Column(nullable = false)
     private String s3ImageUrl;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
-    private Project project;
-
-    @Column(columnDefinition = "boolean default false")
-    private boolean isProfile;
-
-    public void setProject(Project project){
-        this.project = project;
-    }
-
-    public void setProfile(){this.isProfile = true;}
-
-
 }

@@ -2,6 +2,7 @@ package com.example.umcmatchingcenter.service.matchingService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
+import com.example.umcmatchingcenter.converter.ImageConverter;
 import com.example.umcmatchingcenter.converter.ProjectConverter;
 import com.example.umcmatchingcenter.converter.ProjectVolunteerConverter;
 import com.example.umcmatchingcenter.converter.RecruitmentConverter;
@@ -11,17 +12,17 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.repository.*;
+import com.example.umcmatchingcenter.service.ImageQueryService;
 import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import com.example.umcmatchingcenter.service.s3Service.S3UploadService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +41,8 @@ public class MatchingCommandService {
     private final MemberQueryService memberQueryService;
     private final RecruitmentRepository recruitmentRepository;
     private final MatchingQueryServiceImpl matchingQueryService;
-    private final ImageRepository imageRepository;
+    private final ImageQueryService imageQueryService;
+    private final ProjectImageRepository projectImageRepository;
     private final S3UploadService s3UploadService;
 
     public void processBranch(Branch branch) {
@@ -98,25 +100,29 @@ public class MatchingCommandService {
     }
 
     private void mappingProjectAndImage(List<Long> imageList, Project project){
-        List<Image> images = imageRepository.findAllById(imageList);
-        images.forEach(image -> image.setProject(project));
-        imageRepository.saveAll(images);
+        List<Image> images = imageQueryService.findAllImageById(imageList);
+        List<ProjectImage> projectImages = images.stream()
+                .map(image -> ImageConverter.toProjectImage(project, image))
+                .collect(Collectors.toList());
+        projectImageRepository.saveAll(projectImages);
+
     }
 
     private void setProfileImage(Long profilImageId, Project project){
-        Image image = imageRepository.findById(profilImageId)
-                .orElseThrow(() -> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST));
-        image.setProject(project);
-        image.setProfile();
-        imageRepository.save(image);
+        Image image = imageQueryService.findImageById(profilImageId);
+        ProjectImage profileImage = ImageConverter.toProjectImage(project, image);
+        profileImage.setProfile();
+        projectImageRepository.save(profileImage);
 
     }
 
     public void updateMatchingProjects(Long projectId, MatchingRequestDTO.UpdateMatchingProjectRequestDTO request){
 
         Project project = matchingQueryService.findProject(projectId);
+        if(project.getProfileImage().getId() != request.getProfileImageId()){
+            setProfileImage(request.getProfileImageId(),project);
+        }
         deleteImages(request.getDeleteImageIdList());
-        setProfileImage(request.getProfileImageId(),project);
         mappingProjectAndImage(request.getImageIdList(), project);
 
         project.updateProject(request);
@@ -131,9 +137,16 @@ public class MatchingCommandService {
         recruitmentRepository.saveAll(recruitmentList);
     }
 
-    private void deleteImages(List<Long> deleteImageList){
-        List<Image> deleteS3ImageList = imageRepository.findAllById(deleteImageList);
-        deleteS3ImageList.forEach(image -> s3UploadService.delete(image.getS3ImageUrl()));
-        imageRepository.deleteAllById(deleteImageList);
+    private void deleteImages(List<Long> deleteImageIdList){
+        List<Image> deleteImageList = imageQueryService.findAllImageById(deleteImageIdList);
+
+        List<ProjectImage> deleteProjectImageList = deleteImageList.stream()
+                .peek(image -> s3UploadService.delete(image.getS3ImageUrl()))
+                .map(image -> projectImageRepository.findByImage(image)
+                        .orElseThrow(()-> new MatchingHandler(ErrorStatus.IMAGE_NOT_EXIST)))
+                .collect(Collectors.toList());
+
+        projectImageRepository.deleteAll(deleteProjectImageList);
     }
+
 }
