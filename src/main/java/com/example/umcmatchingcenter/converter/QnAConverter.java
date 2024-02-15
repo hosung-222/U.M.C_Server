@@ -3,8 +3,8 @@ package com.example.umcmatchingcenter.converter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
-import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
-import com.example.umcmatchingcenter.dto.QnADTO.QnAResponseDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnAResponseDTO;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;

@@ -4,8 +4,8 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
-import com.example.umcmatchingcenter.dto.QnADTO.QnARequestDTO;
-import com.example.umcmatchingcenter.dto.QnADTO.QnAResponseDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
+import com.example.umcmatchingcenter.dto.qnaDTO.QnAResponseDTO;
 import com.example.umcmatchingcenter.service.matchingService.MatchingQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.qnaService.QnACommandService;
@@ -131,7 +131,7 @@ public class QnAController {
             @PathVariable(name = "projectId") Long projectId,
             @Valid @ExistMember Principal principal
     ){
-        Project project = matchingQueryService.findProject(projectId);
+        Project project = matchingQueryService.findProcedingProject(projectId);
         List<QnA> qnaList = qnaQueryService.getQnAList(project);
 
         return ApiResponse.onSuccess(QnAConverter.toQnAPreViewListDTO(qnaList));

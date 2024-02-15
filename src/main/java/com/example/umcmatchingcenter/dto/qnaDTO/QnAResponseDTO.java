@@ -1,6 +1,5 @@
-package com.example.umcmatchingcenter.dto.QnADTO;
+package com.example.umcmatchingcenter.dto.qnaDTO;
 
-import com.example.umcmatchingcenter.domain.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

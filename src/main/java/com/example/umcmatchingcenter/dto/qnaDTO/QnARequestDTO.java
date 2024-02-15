@@ -1,4 +1,4 @@
-package com.example.umcmatchingcenter.dto.QnADTO;
+package com.example.umcmatchingcenter.dto.qnaDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;

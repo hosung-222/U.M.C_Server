@@ -3,11 +3,9 @@ package com.example.umcmatchingcenter.service.matchingService;
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
+import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.converter.matching.MatchingConverter;
-import com.example.umcmatchingcenter.domain.Branch;
-import com.example.umcmatchingcenter.domain.Image;
-import com.example.umcmatchingcenter.domain.Member;
-import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.*;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
@@ -43,6 +41,16 @@ public class MatchingQueryServiceImpl implements MatchingQueryService {
             throw new ProjectHandler(ErrorStatus.PROJECT_NOT_EXIST);
         }
         return project.get();
+    }
+
+    @Override
+    public Project findProcedingProject(Long id) {
+        Project findProject = this.findProject(id);
+        if (findProject.getStatus() != ProjectStatus.PROCEEDING) {
+            throw new ProjectHandler(ErrorStatus.PROJECT_NOT_PROCEEDING);
+        } else {
+            return findProject;
+        }
     }
 
 
