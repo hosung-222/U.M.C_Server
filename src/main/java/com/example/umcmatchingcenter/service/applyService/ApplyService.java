@@ -26,7 +26,7 @@ public class ApplyService {
         Project project = matchingQueryService.findProject(projectId);
 
         applyQueryService.isFull(projectId);
-        applyQueryService.alreadyApply(projectId);
+        applyQueryService.alreadyApply();
 
         member.setMatchingStatus(MemberMatchingStatus.APPLY);
         projectVolunteerRepository.save(ProjectVolunteerConverter.toProjectVolunteer(project, member));
