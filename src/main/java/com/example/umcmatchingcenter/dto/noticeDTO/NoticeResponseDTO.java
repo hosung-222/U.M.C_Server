@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public class NoticeResponseDTO {
 
@@ -27,7 +28,7 @@ public class NoticeResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class NoticeListDTO{
-        private List<NoticeResponseDTO.NoticeDetailsDTO> alarmList;
+        private List<NoticeResponseDTO.NoticeViewDTO> noticeList;
         private Integer listSize;
     }
 
@@ -39,6 +40,7 @@ public class NoticeResponseDTO {
         private Long noticeId;
         private String title;
         private String body;
+        private Map<Long, String> images;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -51,6 +53,18 @@ public class NoticeResponseDTO {
         private Long noticeId;
         private String title;
         private String body;
+        private LocalDateTime updatedAt;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class NoticeViewDTO{
+        private Long noticeId;
+        private String title;
+        private String body;
+        private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
 }

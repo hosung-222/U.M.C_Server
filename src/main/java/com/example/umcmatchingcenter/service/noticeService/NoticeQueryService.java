@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,12 @@ public class NoticeQueryService {
 
     public NoticeResponseDTO.NoticeDetailsDTO getNoticeDetails(Long noticeId){
         Notice notice = findNotice(noticeId);
-        return NoticeConverter.toNoticeDetailsDTO(notice);
+        Map<Long, String> images = notice.getImages().stream()
+                .collect(Collectors.toMap(
+                        noticeImage -> noticeImage.getImage().getId(),
+                        noticeImage -> noticeImage.getImage().getS3ImageUrl()
+                ));
+        return NoticeConverter.toNoticeDetailsDTO(notice, images);
     }
 
     public Notice findNotice(Long id){
