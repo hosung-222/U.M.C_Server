@@ -1,9 +1,12 @@
 package com.example.umcmatchingcenter.domain;
 
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
+import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
+import com.example.umcmatchingcenter.domain.mapping.NoticeImage;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -25,6 +28,9 @@ public class Notice extends BaseEntity {
 
     @Column(nullable = false)
     private String body;
+
+    @OneToMany(mappedBy = "notice")
+    private List<NoticeImage> images;
 
     public void setBranch(Branch branch){this.branch = branch;}
 
