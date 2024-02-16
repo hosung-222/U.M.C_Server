@@ -60,6 +60,10 @@ public class Project extends BaseEntity {
     @OneToMany(mappedBy = "project")
     private List<ProjectImage> images;
 
+    @OneToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "landingPageId")
+    private LandingPage landingPage;
+
     public void setStatus(ProjectStatus projectStatus) {
         this.status = projectStatus;
     }

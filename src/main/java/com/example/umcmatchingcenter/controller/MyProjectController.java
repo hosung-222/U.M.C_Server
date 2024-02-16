@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/myProject")
 @RequiredArgsConstructor
@@ -86,7 +88,7 @@ public class MyProjectController {
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 
-    @GetMapping("/landingpage/{landingPageId}")
+    @GetMapping("/landingpage")
     @Operation(summary = "랜딩 페이지 조회 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
@@ -95,7 +97,7 @@ public class MyProjectController {
 
     })
     @PreAuthorize("isAuthenticated()")
-    public ApiResponse<MyProjectResponseDTO.LandingPageDetailsResponseDTO> getLandingPage(@PathVariable(name = "landingPageId") Long landingPageId) {
-        return ApiResponse.onSuccess(myProjectQueryService.getLandingPage(landingPageId));
+    public ApiResponse<MyProjectResponseDTO.LandingPageDetailsResponseDTO> getLandingPage(Principal principal) {
+        return ApiResponse.onSuccess(myProjectQueryService.getLandingPage(principal.getName()));
     }
 }

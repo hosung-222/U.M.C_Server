@@ -11,6 +11,7 @@ import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
 import com.example.umcmatchingcenter.repository.LandingPageRepository;
+import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -32,7 +33,6 @@ public class MyProjectQueryService {
 
     private final MemberQueryService memberQueryService;
     private final ProjectRepository projectRepository;
-    private final LandingPageRepository landingPageRepository;
 
     //현재 로그인된 PM 아이디에 해당하는 프로젝트 찾기
     public Project getProject() {
@@ -82,9 +82,9 @@ public class MyProjectQueryService {
         }
     }
 
-    public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(Long landingPageId){
-       LandingPage landingPage = landingPageRepository.findById(landingPageId)
-               .orElseThrow(()->new MyProjectHandler(ErrorStatus.LANDINGPAGE_NOT_EXIST));
+    public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(String memberName){
+       Member member = memberQueryService.findMemberByName(memberName);
+       LandingPage landingPage = member.getProject().getLandingPage();
 
         Map<Long, String> images = landingPage.getImages().stream()
                 .filter(landingPageImage -> !landingPageImage.isProfile())
