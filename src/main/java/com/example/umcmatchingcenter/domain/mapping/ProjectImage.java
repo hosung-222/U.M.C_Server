@@ -25,7 +25,7 @@ public class ProjectImage extends BaseEntity {
     @JoinColumn(name = "imageId")
     private Image image;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "projectId")
     private Project project;
 
