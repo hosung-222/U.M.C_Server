@@ -83,8 +83,10 @@ public class NoticeController {
             @Parameter(name = "noticeId", description = "공지사항 아이디(PathVariable)")
     })
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ApiResponse<NoticeResponseDTO.UpdateNoticeDetailsDTO> updateNotice(@PathVariable(name = "noticeId") Long noticeId,@RequestBody NoticeRequestDTO.UpdateNoticeDTO request){
-        Notice notice = noticeCommandService.updateNotice(noticeId, request);
+    public ApiResponse<NoticeResponseDTO.UpdateNoticeDetailsDTO> updateNotice(@PathVariable(name = "noticeId") Long noticeId,
+                                                                              @RequestPart NoticeRequestDTO.UpdateNoticeDTO request,
+                                                                              @RequestPart(required = false) List<MultipartFile> imageList){
+        Notice notice = noticeCommandService.updateNotice(noticeId, request, imageList);
         return ApiResponse.onSuccess(NoticeConverter.toUpdateNoticeDetailsDTO(notice));
     }
 }
