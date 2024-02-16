@@ -24,7 +24,7 @@ public class NoticeImage extends BaseEntity{
     @JoinColumn(name = "imageId")
     private Image image;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "noticeId")
     private Notice notice;
 }
