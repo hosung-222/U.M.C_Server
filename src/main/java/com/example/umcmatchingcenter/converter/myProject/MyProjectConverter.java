@@ -37,4 +37,9 @@ public class MyProjectConverter {
                 .createdAt(landingPage.getCreatedAt())
                 .build();
     }
+
+    public static MyProjectResponseDTO.LandingPageDetailsResponseDTO toLandingPageDetailsResponseDTO(LandingPage landingPage){
+        return MyProjectResponseDTO.LandingPageDetailsResponseDTO.builder()
+                .build();
+    }
 }

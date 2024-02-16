@@ -83,4 +83,15 @@ public class MyProjectController {
         LandingPage landingPage = myProjectService.UpdateLandingPage(request, landingPageId);
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
+
+    @GetMapping("/landingpage/{landingPageId}")
+    @Operation(summary = "랜딩 페이지 수정 api")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+
+    })
+    @PreAuthorize("hasRole('ROLE_PM')")
+    public ApiResponse<MyProjectResponseDTO.LandingPageDetailsResponseDTO> getLandingPage(@PathVariable(name = "landingPageId") Long landingPageId) {
+        return ApiResponse.onSuccess(MyProjectConverter.toLandingPageDetailsResponseDTO(null));
+    }
 }
