@@ -5,6 +5,7 @@ import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
 import com.example.umcmatchingcenter.domain.LandingPage;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.service.myProjectService.MyProjectQueryService;
 import com.example.umcmatchingcenter.service.myProjectService.MyProjectService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class MyProjectController {
 
     private final MyProjectService myProjectService;
+    private final MyProjectQueryService myProjectQueryService;
 
     @GetMapping("")
     @Operation(summary = "내 프로젝트 관리 api")
@@ -85,13 +87,15 @@ public class MyProjectController {
     }
 
     @GetMapping("/landingpage/{landingPageId}")
-    @Operation(summary = "랜딩 페이지 수정 api")
+    @Operation(summary = "랜딩 페이지 조회 api")
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "MYPROJECT4003", description = "랜딩페이지가 존재하지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
 
     })
-    @PreAuthorize("hasRole('ROLE_PM')")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<MyProjectResponseDTO.LandingPageDetailsResponseDTO> getLandingPage(@PathVariable(name = "landingPageId") Long landingPageId) {
-        return ApiResponse.onSuccess(MyProjectConverter.toLandingPageDetailsResponseDTO(null));
+        return ApiResponse.onSuccess(myProjectQueryService.getLandingPage(landingPageId));
     }
 }

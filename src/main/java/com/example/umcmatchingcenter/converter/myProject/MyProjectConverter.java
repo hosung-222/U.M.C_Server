@@ -5,6 +5,7 @@ import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.dto.ProjectDTO.*;
 
 import java.util.List;
+import java.util.Map;
 
 public class MyProjectConverter {
 
@@ -38,8 +39,14 @@ public class MyProjectConverter {
                 .build();
     }
 
-    public static MyProjectResponseDTO.LandingPageDetailsResponseDTO toLandingPageDetailsResponseDTO(LandingPage landingPage){
+    public static MyProjectResponseDTO.LandingPageDetailsResponseDTO toLandingPageDetailsResponseDTO(LandingPage landingPage, Map<Long, String> images){
         return MyProjectResponseDTO.LandingPageDetailsResponseDTO.builder()
+                .profileImageId(landingPage.getProfileImage().getId())
+                .profileImageUrl(landingPage.getProfileImage().getS3ImageUrl())
+                .title(landingPage.getTitle())
+                .introduction(landingPage.getIntroduction())
+                .body(landingPage.getBody())
+                .Images(images)
                 .build();
     }
 }
