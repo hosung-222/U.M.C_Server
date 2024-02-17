@@ -8,6 +8,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationRequestDTO;
 import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationResponseDTO;
+import com.example.umcmatchingcenter.dto.evaluationDTO.MyEvaluationResponseDTO;
 import com.example.umcmatchingcenter.repository.EvaluationRepository;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +46,12 @@ public class EvaluationService {
                 .collect(Collectors.toList());
     }
 
+    public List<MyEvaluationResponseDTO> getMyEvaluations() {
+        return evaluationQueryService.getMyEvaluation().stream()
+                .map(evaluation -> new MyEvaluationResponseDTO(evaluation.getRate(), evaluation.getContent()))
+                .collect(Collectors.toList());
+    }
+
     public void saveEvaluation(EvaluationRequestDTO dto, Long memberId) {
 
         Member evaluator = memberQueryService.getCurrentLoginMember();
@@ -64,5 +72,6 @@ public class EvaluationService {
                 .rate(dto.getRate())
                 .build());
     }
+
 
 }
