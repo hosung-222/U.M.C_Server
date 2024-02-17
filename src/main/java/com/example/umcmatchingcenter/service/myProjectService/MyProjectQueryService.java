@@ -2,11 +2,16 @@ package com.example.umcmatchingcenter.service.myProjectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MyProjectHandler;
+import com.example.umcmatchingcenter.converter.myProject.MyProjectConverter;
+import com.example.umcmatchingcenter.domain.LandingPage;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.enums.*;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
+import com.example.umcmatchingcenter.dto.ProjectDTO.MyProjectResponseDTO;
+import com.example.umcmatchingcenter.repository.LandingPageRepository;
+import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.repository.ProjectRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -16,7 +21,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +33,6 @@ public class MyProjectQueryService {
 
     private final MemberQueryService memberQueryService;
     private final ProjectRepository projectRepository;
-    private final AlarmCommandService alarmCommandService;
 
     //현재 로그인된 PM 아이디에 해당하는 프로젝트 찾기
     public Project getProject() {
@@ -74,6 +80,20 @@ public class MyProjectQueryService {
                         member.addRound();
                     });
         }
+    }
+
+    public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(String memberName){
+       Member member = memberQueryService.findMemberByName(memberName);
+       LandingPage landingPage = member.getProject().getLandingPage();
+
+        Map<Long, String> images = landingPage.getImages().stream()
+                .filter(landingPageImage -> !landingPageImage.isProfile())
+                .collect(Collectors.toMap(
+                        landingPageImage -> landingPageImage.getImage().getId(),
+                        landingPageImage -> landingPageImage.getImage().getS3ImageUrl()
+                ));
+
+        return MyProjectConverter.toLandingPageDetailsResponseDTO(landingPage, images);
     }
 
 

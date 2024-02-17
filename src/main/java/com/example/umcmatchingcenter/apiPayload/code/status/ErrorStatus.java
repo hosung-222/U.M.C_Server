@@ -30,6 +30,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // 내 프로젝트 에러
     NO_SUCH_APPLICANT(BAD_REQUEST, "MYPROJECT4001", "해당 프로젝트의 지원자가 없습니다."),
     NO_MORE_APPLICANT(BAD_REQUEST, "MYPROJECT4002", "더 이상 지원자를 받을 수 없습니다."),
+    LANDINGPAGE_NOT_EXIST(NOT_FOUND, "MYPROJECT4003", "랜딩페이지가 존재하지 않습니다."),
 
     WRONG_AUTH_CODE(BAD_REQUEST, "EMAIL4002", "잘못된 인증 코드 입니다"),
     FAIL_CREATE_CODE(BAD_REQUEST, "EMAIL4003", "코드 생성에 실패했습니다"),

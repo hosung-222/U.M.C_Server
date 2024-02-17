@@ -31,8 +31,7 @@ public class LandingPage extends BaseEntity {
 
     private String body;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "projectId")
+    @OneToOne(mappedBy = "landingPage",fetch = FetchType.LAZY)
     private Project project;
 
     @OneToMany(mappedBy = "landingPage")
