@@ -21,7 +21,7 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
     @Override
     public MatchingSchedule postSchedule(MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch) {
         MatchingSchedule newSchedule = MatchingScheduleConverter.toSchedule(request, branch);
-
+        checkDateValidation(request);
         return matchingScheduleRepository.save(newSchedule);
     }
 
@@ -31,7 +31,7 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
 
             // 수정할 일정이 현재 관리자의 지부 내용 일정인지 확인
             MatchingSchedule findSchedule = checkIsAuthorized(scheduleId, branch);
-
+            checkDateValidation(request);
             // 업데이트 진행
             findSchedule.updateSchedule(request);
 
@@ -64,4 +64,15 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
 
         return findSchedule;
     }
+
+    @Override
+    public void checkDateValidation(MatchingScheduleRequestDTO.MatchingScheduleDTO request) {
+        // 시작일 < 종료일인지 확인
+        String startDate = MatchingSchedule.combineDate(request.getStartYear(), request.getStartMonth(), request.getStartDay());
+        String endDate = MatchingSchedule.combineDate(request.getEndYear(), request.getEndMonth(), request.getEndDay());
+        if (startDate.compareTo(endDate) > 0) { // start > end
+            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_DATE_NOT_VALIDATE);
+        }
+    }
+
 }

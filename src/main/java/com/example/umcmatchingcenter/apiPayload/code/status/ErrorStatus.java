@@ -55,6 +55,7 @@ public enum ErrorStatus implements BaseErrorCode {
     MATCHINGSCHEDULE_NOT_EXIST(BAD_REQUEST, "SCHEDULE4001", "매칭 일정이 없습니다."),
     MATCHINGSCHEDULE_UNAUTHORIZED(BAD_REQUEST, "SCHEDULE4002", "해당 매칭 일정에 대한 권한이 없습니다."),
     MATCHINGSCHEDULE_COLOR_NOT_EXIST(BAD_REQUEST, "SCHEDULE4003", "유효하지 않은 색상입니다."),
+    MATCHINGSCHEDULE_DATE_NOT_VALIDATE(BAD_REQUEST, "SCHEDULE4004", "종료일이 시작일보다 빠를 수 없습니다."),
 
     //공지사항
     NOTICE_NOT_EXIST(HttpStatus.BAD_REQUEST, "NOTICE4001", "공지사항이 없습니다."),
