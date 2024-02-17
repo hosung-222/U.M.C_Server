@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(final String username) {
-        return memberRepository.findByMemberName(username)
+        return memberRepository.findByMemberNameAndMemberStatus(username, MemberStatus.ACTIVE)
                 .map(member -> createUser(username,member))
                 .orElseThrow(() -> new MemberHandler(ErrorStatus.MEMBER_NOT_FOUND));
     }

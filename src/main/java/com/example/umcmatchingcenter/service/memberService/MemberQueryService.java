@@ -23,10 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.umcmatchingcenter.service.ProjectVolunteerQueryService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,11 +43,8 @@ public class MemberQueryService {
     }
 
     public Member findMemberByName(String name){
-        Optional<Member> member = memberRepository.findByMemberName(name);
-        if (member.isEmpty()){
-            throw new MemberHandler(MEMBER_NOT_FOUND);
-        }
-        return member.get();
+        return memberRepository.findByMemberNameAndMemberStatus(name, MemberStatus.ACTIVE)
+                .orElseThrow(() -> new MemberHandler(MEMBER_NOT_FOUND) );
     }
 
     public MyInfoDTO getMyInfo(String name) {
@@ -68,7 +62,7 @@ public class MemberQueryService {
 
     public Member getCurrentLoginMember() {
         String memberName = SecurityUtil.getCurrentMember();
-        Optional<Member> foundMember = memberRepository.findByMemberName(memberName);
+        Optional<Member> foundMember = memberRepository.findByMemberNameAndMemberStatus(memberName, MemberStatus.ACTIVE);
         if (foundMember.isPresent() && foundMember != null) {
             return foundMember.get();
         }

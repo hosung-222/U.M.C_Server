@@ -10,6 +10,7 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
+import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginRequestDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.LoginResponseDTO;
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberRequestDTO;
@@ -114,7 +115,7 @@ public class MemberCommandService {
     }
 
     public ApiResponse duplicationMemberName(String memberName){
-        if(memberRepository.findByMemberName(memberName).isPresent()){
+        if(memberRepository.findByMemberNameAndMemberStatus(memberName, MemberStatus.ACTIVE).isPresent()){
             throw new MemberHandler(ErrorStatus.MEMBER_ALREADY_EXIST);
         }
 
