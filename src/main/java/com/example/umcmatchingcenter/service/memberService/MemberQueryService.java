@@ -12,6 +12,7 @@ import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
+import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 
 import com.example.umcmatchingcenter.jwt.SecurityUtil;
@@ -92,5 +93,9 @@ public class MemberQueryService {
             throw new MemberHandler(MEMBER_NOT_FOUND);
         }
         return members;
+    }
+
+    public Member getManager(Member member){
+        return memberRepository.findByUniversityAndRole(member.getUniversity(),MemberRole.ROLE_ADMIN);
     }
 }
