@@ -22,12 +22,11 @@ public class AlarmResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class AlarmViewDTO{
-        String id;
-        String memberName;
-        String title;
-        String body;
-        Boolean isConfirmed;
-        String createdAt;
+        private Long id;
+        private String title;
+        private String body;
+        private Boolean isConfirmed;
+        private String createdAt;
     }
 
     @Builder
