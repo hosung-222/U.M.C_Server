@@ -85,6 +85,7 @@ public class MyProjectQueryService {
     public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(String memberName){
        Member member = memberQueryService.findMemberByName(memberName);
        LandingPage landingPage = member.getProject().getLandingPage();
+       List<Member> memberList = member.getProject().getMembers();
 
         Map<Long, String> images = landingPage.getImages().stream()
                 .filter(landingPageImage -> !landingPageImage.isProfile())
@@ -93,7 +94,7 @@ public class MyProjectQueryService {
                         landingPageImage -> landingPageImage.getImage().getS3ImageUrl()
                 ));
 
-        return MyProjectConverter.toLandingPageDetailsResponseDTO(landingPage, images);
+        return MyProjectConverter.toLandingPageDetailsResponseDTO(landingPage, images, memberList);
     }
 
 

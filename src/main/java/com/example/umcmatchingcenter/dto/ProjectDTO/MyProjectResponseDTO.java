@@ -1,5 +1,7 @@
 package com.example.umcmatchingcenter.dto.ProjectDTO;
 
+import com.example.umcmatchingcenter.domain.University;
+import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +38,25 @@ public class MyProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LandingPageDetailsResponseDTO {
+        private Long landingPageId;
         private String title;
         private Long profileImageId;
         private String profileImageUrl;
         private String introduction;
         private String body;
         private Map<Long, String> Images;
+        private List<MyProjectResponseDTO.LandingPageMemberListDTO> memberList;
+    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class LandingPageMemberListDTO{
+        private String profileImage;
+        private MemberPart memberPart;
+        private int generation;
+        private String university;
+        private String nameNickname;
     }
 
 }

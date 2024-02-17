@@ -79,8 +79,12 @@ public class MatchingCommandService {
 
         Project project = ProjectConverter.toProject(request, pm, pm.getUniversity().getBranch());
         matchingRepository.save(project);
+
+
         setProfileImage(request.getProfileImageId(), project);
         mappingProjectAndImage(request.getImageIdList(), project);
+
+        pm.setProject(project);
 
         List<Recruitment> recruitmentList = getRecruitmentList(request.getPartCounts(), project);
         recruitmentRepository.saveAll(recruitmentList);

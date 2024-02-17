@@ -175,6 +175,7 @@ public class MyProjectService {
         Project project = projectQueryService.getProject();
         LandingPage landingPage = MyProjectConverter.toLandingPage(request, project);
         landingPageRepository.save(landingPage);
+        project.setLandingPage(landingPage);
         setProfileImage(request.getProfileImageId(), landingPage);
         mappingLandingPageAndImage(request.getImageIdList(), landingPage);
         return landingPage;
