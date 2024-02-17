@@ -16,8 +16,4 @@ public interface MatchingScheduleCommandService {
 
     @Transactional
     public abstract void deleteSchedule(Long scheduleId, Branch branch);
-
-    public abstract MatchingSchedule checkIsAuthorized(Long scheduleId, Branch branch);
-
-    public abstract void checkDateValidation(MatchingScheduleRequestDTO.MatchingScheduleDTO request);
 }
