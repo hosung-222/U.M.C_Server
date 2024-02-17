@@ -65,7 +65,7 @@ public class NoticeCommandService {
 
         System.out.println(imageIdList);
 
-        if(!imageIdList.get(0).isEmpty()){
+        if(imageIdList!=null){
             List<NoticeImage> noticeImageList = getNoticeImageList(imageIdList, notice);
             noticeImageRepository.saveAll(noticeImageList);
         }
