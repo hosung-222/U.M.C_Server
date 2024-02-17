@@ -2,24 +2,21 @@ package com.example.umcmatchingcenter.service.memberService;
 
 
 import static com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus.*;
-import static com.example.umcmatchingcenter.domain.enums.MemberRole.*;
 
-import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MemberHandler;
+import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.converter.MemberConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ChallengerInfoDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.ApplyTeamDTO;
 
 import com.example.umcmatchingcenter.jwt.SecurityUtil;
 
 import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.MyInfoDTO;
-import com.example.umcmatchingcenter.dto.MemberDTO.MemberResponseDTO.SignUpRequestMemberDTO;
 
 import com.example.umcmatchingcenter.repository.MemberRepository;
 import java.util.Arrays;
@@ -89,7 +86,14 @@ public class MemberQueryService {
 
     public List<Member> getCurrentProjectMembers() {
         Member currentLoginMember = getCurrentLoginMember();
-        List<Member> members = currentLoginMember.getProject().getMembers();
+        Project project = currentLoginMember.getProject();
+
+        if (project == null) {
+            throw new ProjectHandler(PROJECT_NOT_EXIST);
+        }
+
+        List<Member> members = project.getMembers();
+
         if(members.isEmpty()){
             throw new MemberHandler(MEMBER_NOT_FOUND);
         }
