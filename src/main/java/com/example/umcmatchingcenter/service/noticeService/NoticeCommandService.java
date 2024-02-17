@@ -53,7 +53,7 @@ public class NoticeCommandService {
         noticeImageRepository.saveAll(noticeImageList);
 
         Branch branch = member.getUniversity().getBranch();
-        alarmCommandService.sendToBranch(branch, AlarmType.NOTICE, "새로운 공지사항이 등록되었습니다.");
+        alarmCommandService.sendToBranch(branch, AlarmType.NOTICE_NEW, AlarmType.NOTICE_NEW.getMessage());
 
         notice.setBranch(branch);
         return noticeRepository.save(notice);

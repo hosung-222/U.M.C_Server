@@ -63,7 +63,7 @@ public class MemberCommandService {
         Member newMember = MemberConverter.toMember(request, university.get());
 
         Member adminMember = memberRepository.findByUniversityAndRole(university.get(), MemberRole.ROLE_ADMIN);
-        alarmCommandService.send(adminMember, AlarmType.JOIN, "새로운 챌린저의 가입 신청이 등록되었습니다.");
+        alarmCommandService.send(adminMember, AlarmType.JOIN_NEW, AlarmType.JOIN_NEW.getMessage());
 
         return memberRepository.save(checkRole(request, newMember));
     }

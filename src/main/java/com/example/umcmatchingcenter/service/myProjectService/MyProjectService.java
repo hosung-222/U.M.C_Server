@@ -143,8 +143,8 @@ public class MyProjectService {
             }
 
             alarmCommandService.send(memberQueryService.getMember(memberId),
-                    AlarmType.MATCHING,
-                    projectQueryService.getProject().getName()+"팀과 매칭이 완료되었습니다.");
+                    AlarmType.MATCHING_APPLY_SUCCESS,
+                    projectQueryService.getProject().getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
 
             projectQueryService.isComplete();
 
