@@ -7,10 +7,12 @@ import com.example.umcmatchingcenter.converter.QnAConverter;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.QnA;
+import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.qnaDTO.QnARequestDTO;
 import com.example.umcmatchingcenter.repository.MatchingRepository;
 import com.example.umcmatchingcenter.repository.QnARepository;
+import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.matchingService.MatchingQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ public class QnACommandServiceImpl implements QnACommandService {
 
     private final MemberQueryService memberQueryService;
     private final MatchingQueryService matchingQueryService;
+    private final AlarmCommandService alarmCommandService;
 
     @Override
     public QnA postQuestion(QnARequestDTO.questionDTO request, Long projectId, String memberName) {
@@ -35,6 +38,7 @@ public class QnACommandServiceImpl implements QnACommandService {
         Project findProject = matchingQueryService.findProcedingProject(projectId);
 
         QnA newQnA = QnAConverter.toQuestion(request, findProject, inquirer);
+        alarmCommandService.send(findProject.getPm(), AlarmType.QNA_NEW,AlarmType.QNA_NEW.getMessage());
         return qnaRepository.save(newQnA);
     }
 
