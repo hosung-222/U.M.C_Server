@@ -11,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -67,12 +70,24 @@ public class MatchingScheduleCommandServiceImpl implements MatchingScheduleComma
 
     @Override
     public void checkDateValidation(MatchingScheduleRequestDTO.MatchingScheduleDTO request) {
-        // 시작일 < 종료일인지 확인
         String startDate = MatchingSchedule.combineDate(request.getStartYear(), request.getStartMonth(), request.getStartDay());
         String endDate = MatchingSchedule.combineDate(request.getEndYear(), request.getEndMonth(), request.getEndDay());
+        // 날짜 유효성 확인
+        validationDate(startDate);
+        validationDate(endDate);
+        // 시작일 < 종료일인지 확인
         if (startDate.compareTo(endDate) > 0) { // start > end
-            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_DATE_NOT_VALIDATE);
+            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_DATE_PERIOD_NOT_VALID);
         }
     }
 
+    public void validationDate(String  checkDate){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            dateFormat.setLenient(false);
+            dateFormat.parse(checkDate);
+        }catch (ParseException e) {
+            throw new MatchingHandler(ErrorStatus.MATCHINGSCHEDULE_DATE_NOT_VALID);
+        }
+    }
 }
