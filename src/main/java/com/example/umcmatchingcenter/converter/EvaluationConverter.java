@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationRequestDTO;
 import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationResponseDTO;
+import com.example.umcmatchingcenter.dto.evaluationDTO.MyEvaluationResponseDTO;
 
 public class EvaluationConverter {
 
@@ -21,5 +22,14 @@ public class EvaluationConverter {
                 .build();
 
     }
+
+    public static MyEvaluationResponseDTO toMyEvaluationResponseDTO(double rate, String content) {
+        return MyEvaluationResponseDTO.builder()
+                .rate(rate)
+                .content(content)
+                .build();
+    }
+
+
 
 }
