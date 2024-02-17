@@ -50,17 +50,16 @@ public class AdminService {
         Member admin = memberQueryService.findMemberByName(name);
         int currentMatchRound = admin.getUniversity().getBranch().getMatchRound();
 
-        Branch branch = admin.getUniversity().getBranch();
-        List<University> universityList = branch.getUniversities();
+        University adminUniversity = admin.getUniversity();
 
         Page<Member> members;
         if (memberMatchingStatus != null) {
             // 특정 MemberMatchingStatus가 주어진 경우 해당 조건으로 회원 조회
-            members = memberRepository.findByGenerationAndRoleAndMatchingStatusAndUniversityInAndMemberStatus(
-                    NOW_GENERATION, ROLE_CHALLENGER, memberMatchingStatus, PageRequest.of(page, PAGING_SIZE), universityList, MemberStatus.ACTIVE);
+            members = memberRepository.findByGenerationAndRoleAndMatchingStatusAndUniversityAndMemberStatus(
+                    NOW_GENERATION, ROLE_CHALLENGER, memberMatchingStatus, PageRequest.of(page, PAGING_SIZE),adminUniversity , MemberStatus.ACTIVE);
         } else {
             // MemberMatchingStatus가 주어지지 않은 경우 모든 회원 조회
-            members = memberRepository.findByGenerationAndRoleAndUniversityInAndMemberStatus(NOW_GENERATION, ROLE_CHALLENGER, PageRequest.of(page, PAGING_SIZE),universityList, MemberStatus.ACTIVE);
+            members = memberRepository.findByGenerationAndRoleAndUniversityAndMemberStatus(NOW_GENERATION, ROLE_CHALLENGER, PageRequest.of(page, PAGING_SIZE),adminUniversity, MemberStatus.ACTIVE);
         }
 
         return members.stream()
