@@ -82,4 +82,8 @@ public class Project extends BaseEntity {
         return projectImage.getImage();
     }
 
+    public void setLandingPage(LandingPage landingPage){
+        this.landingPage = landingPage;
+    }
+
 }
