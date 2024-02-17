@@ -78,7 +78,7 @@ public class NoticeController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NOTICE4001", description = "공지사항이 없습니다.",
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
-    @PatchMapping("/notices/{noticeId}")
+    @PatchMapping(value = "/notices/{noticeId}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @Parameters({
             @Parameter(name = "noticeId", description = "공지사항 아이디(PathVariable)")
     })
