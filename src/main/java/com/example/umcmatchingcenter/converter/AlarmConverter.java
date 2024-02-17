@@ -3,6 +3,7 @@ package com.example.umcmatchingcenter.converter;
 import com.example.umcmatchingcenter.domain.Alarm;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.enums.AlarmType;
+import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class AlarmConverter {
 
     public static List<Alarm> toAlarmList(List<Member> memberList, AlarmType alarmType, String content){
         List<Alarm> alarmList = memberList.stream()
+                .filter(member -> !member.getRole().equals(MemberRole.ROLE_ADMIN))
                 .map(member -> AlarmConverter.toAlarm(member, alarmType, content))
                 .collect(Collectors.toList());
 

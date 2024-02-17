@@ -26,7 +26,7 @@ public class AlarmController {
 
     private final AlarmCommandService alarmCommandService;
     private final AlarmQueryService alarmQueryService;
-
+    /*
     @Operation(summary = "실시간 알림 통신 연결",description = "특정 멤버의 실시간 알림 통신을 위한 연결 api")
     @GetMapping(value = "/alarms/subscribe", produces = "text/event-stream")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
@@ -34,7 +34,7 @@ public class AlarmController {
         response.setHeader("X-Accel-Buffering", "no");
         return alarmCommandService.subscribe(principal.getName());
     }
-
+    */
 
     @Operation(summary = "특정 멤버의 알림 목록 조회",description = "특정 멤버의 알림 목록 조회")
     @ApiResponses({
