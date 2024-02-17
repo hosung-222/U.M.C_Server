@@ -2,7 +2,7 @@ package com.example.umcmatchingcenter.domain.mapping;
 
 import com.example.umcmatchingcenter.domain.Image;
 import com.example.umcmatchingcenter.domain.LandingPage;
-import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.domain.Notice;
 import com.example.umcmatchingcenter.domain.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,13 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class LandingPageImage extends BaseEntity {
+public class NoticeImage extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +25,6 @@ public class LandingPageImage extends BaseEntity {
     private Image image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "landingPageId")
-    private LandingPage landingPage;
-
-    private boolean isProfile;
-
-    public void setProfile(){this.isProfile = true;}
+    @JoinColumn(name = "noticeId")
+    private Notice notice;
 }

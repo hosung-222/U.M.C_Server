@@ -35,7 +35,7 @@ public class S3UploadService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public Image saveFile(MultipartFile file) throws IOException {
+    public Image saveFile(MultipartFile file){
         String originalImage = file.getOriginalFilename();
         String s3Image = uploadFile(file);
         Image image = ImageConverter.toImage(originalImage, s3Image);

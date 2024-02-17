@@ -2,8 +2,10 @@ package com.example.umcmatchingcenter.converter;
 
 import com.example.umcmatchingcenter.domain.Image;
 import com.example.umcmatchingcenter.domain.LandingPage;
+import com.example.umcmatchingcenter.domain.Notice;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
+import com.example.umcmatchingcenter.domain.mapping.NoticeImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectImage;
 import com.example.umcmatchingcenter.dto.ImageDTO;
 
@@ -34,6 +36,13 @@ public class ImageConverter {
         return ImageDTO.UploadImageResponseDTO.builder()
                 .imageId(image.getId())
                 .s3Image(image.getS3ImageUrl())
+                .build();
+    }
+
+    public static NoticeImage toNoticeImage(Image image, Notice notice){
+        return NoticeImage.builder()
+                .image(image)
+                .notice(notice)
                 .build();
     }
 }

@@ -5,6 +5,7 @@ import com.example.umcmatchingcenter.dto.noticeDTO.NoticeRequestDTO;
 import com.example.umcmatchingcenter.dto.noticeDTO.NoticeResponseDTO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class NoticeConverter {
@@ -25,8 +26,19 @@ public class NoticeConverter {
                 .build();
     }
 
-    public static NoticeResponseDTO.NoticeDetailsDTO toNoticeDetailsDTO(Notice notice){
+    public static NoticeResponseDTO.NoticeDetailsDTO toNoticeDetailsDTO(Notice notice, Map<Long, String> images){
         return NoticeResponseDTO.NoticeDetailsDTO.builder()
+                .noticeId(notice.getId())
+                .title(notice.getTitle())
+                .body(notice.getBody())
+                .images(images)
+                .createdAt(notice.getCreatedAt())
+                .updatedAt(notice.getUpdatedAt())
+                .build();
+    }
+
+    public static NoticeResponseDTO.NoticeViewDTO toNoticeViewDTO(Notice notice){
+        return  NoticeResponseDTO.NoticeViewDTO.builder()
                 .noticeId(notice.getId())
                 .title(notice.getTitle())
                 .body(notice.getBody())
@@ -36,11 +48,11 @@ public class NoticeConverter {
     }
 
     public static NoticeResponseDTO.NoticeListDTO toNoticeListDTO(List<Notice> noticeList){
-        List<NoticeResponseDTO.NoticeDetailsDTO> noticeDetailsDTOList = noticeList.stream()
-                .map(NoticeConverter::toNoticeDetailsDTO).collect(Collectors.toList());
+        List<NoticeResponseDTO.NoticeViewDTO> noticeDetailsDTOList = noticeList.stream()
+                .map(NoticeConverter::toNoticeViewDTO).collect(Collectors.toList());
 
         return NoticeResponseDTO.NoticeListDTO.builder()
-                .alarmList(noticeDetailsDTOList)
+                .noticeList(noticeDetailsDTOList)
                 .listSize(noticeDetailsDTOList.size())
                 .build();
     }
