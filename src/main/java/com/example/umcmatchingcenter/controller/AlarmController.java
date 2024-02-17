@@ -43,7 +43,7 @@ public class AlarmController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @GetMapping("/alarms")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<AlarmResponseDTO.AlarmViewListDTO> getAlarmList(Principal principal){
         return ApiResponse.onSuccess(alarmQueryService.getAlarmList(principal.getName()));
     }
