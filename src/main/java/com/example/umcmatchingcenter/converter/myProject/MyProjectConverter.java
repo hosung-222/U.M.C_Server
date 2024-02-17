@@ -1,11 +1,13 @@
 package com.example.umcmatchingcenter.converter.myProject;
 
 import com.example.umcmatchingcenter.domain.LandingPage;
+import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 import com.example.umcmatchingcenter.dto.ProjectDTO.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MyProjectConverter {
 
@@ -39,7 +41,10 @@ public class MyProjectConverter {
                 .build();
     }
 
-    public static MyProjectResponseDTO.LandingPageDetailsResponseDTO toLandingPageDetailsResponseDTO(LandingPage landingPage, Map<Long, String> images){
+    public static MyProjectResponseDTO.LandingPageDetailsResponseDTO toLandingPageDetailsResponseDTO(LandingPage landingPage, Map<Long, String> images, List<Member> memberList){
+        List<MyProjectResponseDTO.LandingPageMemberListDTO> LandingPageMemberList = memberList.stream()
+                .map(MyProjectConverter::toLandingPageMemberListDTO).collect(Collectors.toList());
+
         return MyProjectResponseDTO.LandingPageDetailsResponseDTO.builder()
                 .profileImageId(landingPage.getProfileImage().getId())
                 .profileImageUrl(landingPage.getProfileImage().getS3ImageUrl())
@@ -47,6 +52,17 @@ public class MyProjectConverter {
                 .introduction(landingPage.getIntroduction())
                 .body(landingPage.getBody())
                 .Images(images)
+                .memberList(LandingPageMemberList)
+                .build();
+    }
+
+    public static MyProjectResponseDTO.LandingPageMemberListDTO toLandingPageMemberListDTO(Member member){
+        return MyProjectResponseDTO.LandingPageMemberListDTO.builder()
+                .profileImage(member.getProfileImage())
+                .nameNickname(member.getNameNickname())
+                .memberPart(member.getPart())
+                .university(member.getUniversity().getName())
+                .generation(member.getGeneration())
                 .build();
     }
 }
