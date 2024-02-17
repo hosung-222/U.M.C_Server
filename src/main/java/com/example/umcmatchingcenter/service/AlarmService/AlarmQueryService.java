@@ -5,6 +5,7 @@ import com.example.umcmatchingcenter.apiPayload.exception.handler.AlarmHandler;
 import com.example.umcmatchingcenter.converter.AlarmConverter;
 import com.example.umcmatchingcenter.domain.Alarm;
 import com.example.umcmatchingcenter.domain.Member;
+import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 import com.example.umcmatchingcenter.repository.AlarmRepository;
 import com.example.umcmatchingcenter.repository.MemberRepository;
@@ -25,7 +26,7 @@ public class AlarmQueryService {
 
     public AlarmResponseDTO.AlarmViewListDTO getAlarmList(String memberName) {
 
-        Member member = memberRepository.findByMemberName(memberName)
+        Member member = memberRepository.findByMemberNameAndMemberStatus(memberName, MemberStatus.ACTIVE)
                 .orElseThrow(()-> new AlarmHandler(ErrorStatus.MEMBER_NOT_FOUND));
 
         List<Alarm> alarmList = alarmRepository.findAllByMember(member);
