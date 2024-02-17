@@ -46,6 +46,7 @@ public class MyProjectConverter {
                 .map(MyProjectConverter::toLandingPageMemberListDTO).collect(Collectors.toList());
 
         return MyProjectResponseDTO.LandingPageDetailsResponseDTO.builder()
+                .landingPageId(landingPage.getId())
                 .profileImageId(landingPage.getProfileImage().getId())
                 .profileImageUrl(landingPage.getProfileImage().getS3ImageUrl())
                 .title(landingPage.getTitle())

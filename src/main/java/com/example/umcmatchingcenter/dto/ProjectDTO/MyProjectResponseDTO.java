@@ -38,6 +38,7 @@ public class MyProjectResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class LandingPageDetailsResponseDTO {
+        private Long landingPageId;
         private String title;
         private Long profileImageId;
         private String profileImageUrl;
