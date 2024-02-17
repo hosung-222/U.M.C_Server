@@ -21,7 +21,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     Member findByUniversityAndRole(University university, MemberRole role);
 
-    Page<Member> findByGenerationAndRoleAndMatchingStatusAndUniversityInAndMemberStatus(int nowGeneration, MemberRole memberRole, MemberMatchingStatus memberMatchingStatus, PageRequest of, List<University> universityList, MemberStatus memberStatus);
+    Page<Member> findByGenerationAndRoleAndMatchingStatusAndUniversityAndMemberStatus(int nowGeneration, MemberRole memberRole, MemberMatchingStatus memberMatchingStatus, PageRequest of, University adminUniversity, MemberStatus memberStatus);
 
     Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
 
@@ -29,7 +29,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByUniversityInAndMatchingStatusInAndPartAndMemberStatus(List<University> universities, List<MemberMatchingStatus> matchingStatuses, MemberPart part, MemberStatus memberStatus);
 
-    Page<Member> findByGenerationAndRoleAndUniversityInAndMemberStatus(int nowGeneration, MemberRole memberRole, PageRequest of, List<University> universityList, MemberStatus memberStatus);
+    Page<Member> findByGenerationAndRoleAndUniversityAndMemberStatus(int nowGeneration, MemberRole memberRole, PageRequest of, University adminUniversity, MemberStatus memberStatus);
 
 
 }
