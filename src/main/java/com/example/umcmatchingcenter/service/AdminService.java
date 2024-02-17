@@ -56,11 +56,11 @@ public class AdminService {
         Page<Member> members;
         if (memberMatchingStatus != null) {
             // 특정 MemberMatchingStatus가 주어진 경우 해당 조건으로 회원 조회
-            members = memberRepository.findByGenerationAndRoleAndMatchingStatusAndUniversityIn(
-                    NOW_GENERATION, ROLE_CHALLENGER, memberMatchingStatus, PageRequest.of(page, PAGING_SIZE), universityList);
+            members = memberRepository.findByGenerationAndRoleAndMatchingStatusAndUniversityInAndMemberStatus(
+                    NOW_GENERATION, ROLE_CHALLENGER, memberMatchingStatus, PageRequest.of(page, PAGING_SIZE), universityList, MemberStatus.ACTIVE);
         } else {
             // MemberMatchingStatus가 주어지지 않은 경우 모든 회원 조회
-            members = memberRepository.findByGenerationAndRoleAndUniversityIn(NOW_GENERATION, ROLE_CHALLENGER, PageRequest.of(page, PAGING_SIZE),universityList);
+            members = memberRepository.findByGenerationAndRoleAndUniversityInAndMemberStatus(NOW_GENERATION, ROLE_CHALLENGER, PageRequest.of(page, PAGING_SIZE),universityList, MemberStatus.ACTIVE);
         }
 
         return members.stream()

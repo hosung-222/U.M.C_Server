@@ -6,12 +6,10 @@ import com.example.umcmatchingcenter.domain.University;
 import com.example.umcmatchingcenter.domain.enums.MemberPart;
 import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberMatchingStatus;
-import com.example.umcmatchingcenter.domain.enums.MemberRole;
 import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +20,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByMemberName(String username);
     Member findByUniversityAndRole(University university, MemberRole role);
 
-    Page<Member> findByGenerationAndRoleAndMatchingStatusAndUniversityIn(int nowGeneration, MemberRole memberRole, MemberMatchingStatus memberMatchingStatus, PageRequest of, List<University> universityList);
+    Page<Member> findByGenerationAndRoleAndMatchingStatusAndUniversityInAndMemberStatus(int nowGeneration, MemberRole memberRole, MemberMatchingStatus memberMatchingStatus, PageRequest of, List<University> universityList, MemberStatus memberStatus);
 
     Page<Member> findAllByMemberStatus(MemberStatus memberStatus, PageRequest pageRequest);
 
@@ -30,7 +28,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     List<Member> findByUniversityInAndMatchingStatusInAndPartAndMemberStatus(List<University> universities, List<MemberMatchingStatus> matchingStatuses, MemberPart part, MemberStatus memberStatus);
 
-    Page<Member> findByGenerationAndRoleAndUniversityIn(int nowGeneration, MemberRole memberRole, PageRequest of, List<University> universityList);
+    Page<Member> findByGenerationAndRoleAndUniversityInAndMemberStatus(int nowGeneration, MemberRole memberRole, PageRequest of, List<University> universityList, MemberStatus memberStatus);
 
 
 }
