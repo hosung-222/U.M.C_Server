@@ -107,4 +107,9 @@ public class AlarmCommandService {
             return deletecout;
         }
     }
+
+    public void confirmedAlarm(Long id){
+        Alarm alarm = alarmRepository.findById(id).orElseThrow(()->new AlarmHandler(ErrorStatus.NO_ALARM_LIST));
+        alarm.setIsConfirmed();
+    }
 }

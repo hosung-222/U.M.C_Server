@@ -56,15 +56,23 @@ public class AlarmController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
     })
     @DeleteMapping("/alarms")
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_CHALLENGER')")
+    @PreAuthorize("isAuthenticated()")
     public ApiResponse<AlarmResponseDTO.DeleteAlarmDTO> deleteAlarms(Principal principal){
         int deleteCount = alarmCommandService.deleteAlarms(principal.getName());
         return ApiResponse.onSuccess(AlarmConverter.toDeleteAlarmDTO(principal.getName(), deleteCount));
     }
 
-
-
-
-
+    @Operation(summary = "특정 멤버의 알림 확인",description = "특정 멤버의 알림 상태 확인으로 변경")
+    @ApiResponses({
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200",description = "OK, 성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "NO_DELETE_ALARM", description = "삭제할 알림이 존재하지 않습니다.",
+                    content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class)))
+    })
+    @PatchMapping("/alarms/{alarmId}")
+    @PreAuthorize("isAuthenticated()")
+    public ApiResponse<String> confirmedAlarm(@PathVariable Long alarmId){
+        alarmCommandService.confirmedAlarm(alarmId);
+        return ApiResponse.onSuccess("알림 확인에 성공하였습니다");
+    }
 
 }
