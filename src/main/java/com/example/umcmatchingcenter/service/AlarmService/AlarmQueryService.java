@@ -9,6 +9,7 @@ import com.example.umcmatchingcenter.domain.enums.MemberStatus;
 import com.example.umcmatchingcenter.dto.AlarmDTO.AlarmResponseDTO;
 import com.example.umcmatchingcenter.repository.AlarmRepository;
 import com.example.umcmatchingcenter.repository.MemberRepository;
+import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,27 +21,17 @@ import java.util.List;
 @Transactional
 public class AlarmQueryService {
 
-    private final MemberRepository memberRepository;
+    private final MemberQueryService memberQueryService;
     private final AlarmRepository alarmRepository;
 
 
     public AlarmResponseDTO.AlarmViewListDTO getAlarmList(String memberName) {
 
-        Member member = memberRepository.findByMemberNameAndMemberStatus(memberName, MemberStatus.ACTIVE)
-                .orElseThrow(()-> new AlarmHandler(ErrorStatus.MEMBER_NOT_FOUND));
+        Member member = memberQueryService.findMemberByName(memberName);
 
         List<Alarm> alarmList = alarmRepository.findAllByMember(member);
 
-        if (alarmList == null || alarmList.isEmpty())
-            throw new AlarmHandler(ErrorStatus.NO_ALARM_LIST);
-
-        updateAlarmIsConfirmed(member);
         return AlarmConverter.toAlarmViewListDTO(alarmList);
     }
-
-    public void updateAlarmIsConfirmed(Member member){
-        alarmRepository.updateAlarmIsConfirmed(member);
-    }
-
 
 }

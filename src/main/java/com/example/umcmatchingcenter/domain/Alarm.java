@@ -41,4 +41,8 @@ public class Alarm extends BaseEntity {
     @Column
     private String title;
 
+    public void setIsConfirmed(){
+        this.isConfirmed = true;
+    }
+
 }

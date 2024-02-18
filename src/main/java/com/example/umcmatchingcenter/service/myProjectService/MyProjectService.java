@@ -22,6 +22,7 @@ import com.example.umcmatchingcenter.dto.ProjectDTO.*;
 import com.example.umcmatchingcenter.repository.ImageRepository;
 import com.example.umcmatchingcenter.repository.LandingPageImageRepository;
 import com.example.umcmatchingcenter.repository.LandingPageRepository;
+import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.ImageQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -130,21 +131,28 @@ public class MyProjectService {
         }
 
         if (projectVolunteerQueryService.getProjectVolunteer(memberId) != null && projectVolunteerQueryService.getProjectVolunteer(memberId).isPresent()) {
+            Member member = memberQueryService.getMember(memberId);
+            Project project = projectQueryService.getProject();
+            Member manager = memberQueryService.getManager(member);
 
-            memberQueryService.getMember(memberId).setProject(projectQueryService.getProject());
-            memberQueryService.getMember(memberId).setMatchingStatus(MemberMatchingStatus.MATCH);
+            member.setProject(projectQueryService.getProject());
+            member.setMatchingStatus(MemberMatchingStatus.MATCH);
             Recruitment recruitment = recruitmentQueryService.getRecruitment(
-                    memberQueryService.getMember(memberId).getPart(),
-                    projectQueryService.getProject());
+                    member.getPart(),
+                    project);
             int nowRecruitment = recruitment.getNowRecruitment();
             recruitment.setNowRecruitment(++nowRecruitment);
             if(projectQueryService.isFull(memberId)){
                 recruitment.setRecruitmentStatus(RecruitmentStatus.FULL);
             }
 
-            alarmCommandService.send(memberQueryService.getMember(memberId),
-                    AlarmType.MATCHING,
-                    projectQueryService.getProject().getName()+"팀과 매칭이 완료되었습니다.");
+            alarmCommandService.send(member,
+                    AlarmType.MATCHING_APPLY_SUCCESS,
+                    project.getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
+
+            alarmCommandService.send(manager,
+                    AlarmType.MATCHING_COMPLETE,
+                    member.getNameNickname()+AlarmType.MATCHING_COMPLETE.getMessage());
 
             projectQueryService.isComplete();
 
