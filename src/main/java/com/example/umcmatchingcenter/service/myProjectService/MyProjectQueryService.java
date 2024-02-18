@@ -97,5 +97,10 @@ public class MyProjectQueryService {
         return MyProjectConverter.toLandingPageDetailsResponseDTO(landingPage, images, memberList);
     }
 
+    public Project checkProjectIsPresent(String pmName){
+        Member pm = memberQueryService.findMemberByName(pmName);
+        return projectRepository.findByPm(pm).orElseThrow(()-> new MyProjectHandler(ErrorStatus.PROJECT_NOT_EXIST));
+    }
+
 
 }

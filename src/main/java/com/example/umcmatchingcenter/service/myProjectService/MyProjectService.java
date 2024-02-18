@@ -1,7 +1,6 @@
 package com.example.umcmatchingcenter.service.myProjectService;
 
 import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
-import com.example.umcmatchingcenter.apiPayload.exception.handler.MatchingHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.MyProjectHandler;
 import com.example.umcmatchingcenter.converter.ImageConverter;
 import com.example.umcmatchingcenter.converter.myProject.ApplicantsConverter;
@@ -19,10 +18,8 @@ import com.example.umcmatchingcenter.domain.mapping.LandingPageImage;
 import com.example.umcmatchingcenter.domain.mapping.ProjectVolunteer;
 import com.example.umcmatchingcenter.domain.mapping.Recruitment;
 import com.example.umcmatchingcenter.dto.ProjectDTO.*;
-import com.example.umcmatchingcenter.repository.ImageRepository;
 import com.example.umcmatchingcenter.repository.LandingPageImageRepository;
 import com.example.umcmatchingcenter.repository.LandingPageRepository;
-import com.example.umcmatchingcenter.repository.MemberRepository;
 import com.example.umcmatchingcenter.service.AlarmService.AlarmCommandService;
 import com.example.umcmatchingcenter.service.ImageQueryService;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
@@ -183,8 +180,8 @@ public class MyProjectService {
         return Math.ceil((double) totalApplicants / totalRecruitment * 100) / 100.0;
     }
 
-    public LandingPage AddLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request){
-        Project project = projectQueryService.getProject();
+    public LandingPage addLandingPage(MyProjectRequestDTO.AddLandingPageRequestDTO request, String pmName){
+        Project project = projectQueryService.checkProjectIsPresent(pmName);
         LandingPage landingPage = MyProjectConverter.toLandingPage(request, project);
         landingPageRepository.save(landingPage);
         project.setLandingPage(landingPage);
