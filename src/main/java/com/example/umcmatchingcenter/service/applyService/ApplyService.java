@@ -30,6 +30,7 @@ public class ApplyService {
 
         applyQueryService.isFull(projectId);
         applyQueryService.alreadyApply();
+        applyQueryService.isSameGeneration(projectId);
 
         member.setMatchingStatus(MemberMatchingStatus.APPLY);
         projectVolunteerRepository.save(ProjectVolunteerConverter.toProjectVolunteer(project, member));
