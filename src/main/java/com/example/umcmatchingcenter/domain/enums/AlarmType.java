@@ -17,7 +17,8 @@ public enum AlarmType {
     QNA_NEW("매칭","새로운 문의가 있습니다."),
     //PM아님
     MATCHING_APPLY_COMPLETE("매칭", "에 지원이 완료되었습니다."),
-    MATCHING_APPLY_SUCCESS("매칭", "팀과 매칭이 완료되었습니다.");
+    MATCHING_APPLY_SUCCESS("매칭", "팀과 매칭이 완료되었습니다."),
+    MATCHING_APPLY_FAIL("매칭", "팀과 매칭에 실패하였습니다.");
 
     private final String title;
     private final String message;

@@ -37,7 +37,7 @@ public class ApplyService {
 
         alarmCommandService.send(member,
                 AlarmType.MATCHING_APPLY_COMPLETE,
-                member.getNameNickname()+AlarmType.MATCHING_APPLY_COMPLETE.getMessage());
+                project.getId().toString()+"+"+member.getNameNickname()+AlarmType.MATCHING_APPLY_COMPLETE.getMessage());
 
         Member manager = memberQueryService.getManager(member);
         alarmCommandService.send(manager,
