@@ -33,7 +33,7 @@ public class MyProjectController {
     @ApiResponses({
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공")
     })
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<MyProjectResponseDTO> myProject() {
         return ApiResponse.onSuccess(myProjectService.myProject());
     }
@@ -46,7 +46,7 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<String> pass(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.pass(memberId));
     }
@@ -59,7 +59,7 @@ public class MyProjectController {
                     content = @Content(schema = @Schema(implementation = io.swagger.v3.oas.annotations.responses.ApiResponse.class))),
     })
     @ApiParam(value = "유저 아이디")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasRole('ROLE_PM')")
     public ApiResponse<String> fail(@PathVariable Long memberId) {
         return ApiResponse.onSuccess(myProjectService.fail(memberId));
     }
