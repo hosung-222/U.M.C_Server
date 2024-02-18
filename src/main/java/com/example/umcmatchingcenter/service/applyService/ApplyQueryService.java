@@ -27,6 +27,7 @@ public class ApplyQueryService {
     private final RecruitmentQueryService recruitmentQueryService;
     private final ProjectVolunteerRepository projectVolunteerRepository;
 
+
     public void isFull(Long projectId) {
         Member member = memberQueryService.getCurrentLoginMember();
         Project project = matchingQueryService.findProject(projectId);
@@ -42,6 +43,16 @@ public class ApplyQueryService {
 
         if (projectVolunteer.isPresent()) {
             throw new ApplyHandler(ErrorStatus.ALREADY_APPLY);
+        }
+    }
+
+    public void isSameGeneration(Long projectId) {
+        int memberGeneration = memberQueryService.getCurrentLoginMember().getGeneration();
+        Project project = matchingQueryService.findProject(projectId);
+        int projectGeneration = project.getBranch().getGeneration();
+
+        if (memberGeneration != projectGeneration) {
+            throw new ApplyHandler(ErrorStatus.PROJECT_NOT_PROCEEDING);
         }
     }
 }
