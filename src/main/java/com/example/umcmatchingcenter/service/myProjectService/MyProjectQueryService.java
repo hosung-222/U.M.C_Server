@@ -84,7 +84,7 @@ public class MyProjectQueryService {
 
     public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(String memberName){
        Member member = memberQueryService.findMemberByName(memberName);
-       LandingPage landingPage = member.getProject().getLandingPage();
+       LandingPage landingPage = checkProjectIsPresent(memberName).getLandingPage();
        List<Member> memberList = member.getProject().getMembers();
 
         Map<Long, String> images = landingPage.getImages().stream()
@@ -95,6 +95,11 @@ public class MyProjectQueryService {
                 ));
 
         return MyProjectConverter.toLandingPageDetailsResponseDTO(landingPage, images, memberList);
+    }
+
+    public Project checkProjectIsPresent(String pmName){
+        Member pm = memberQueryService.findMemberByName(pmName);
+        return projectRepository.findByPm(pm).orElseThrow(()-> new MyProjectHandler(ErrorStatus.PROJECT_NOT_EXIST));
     }
 
 

@@ -71,8 +71,8 @@ public class MyProjectController {
 
     })
     @PreAuthorize("hasRole('ROLE_PM')")
-    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request) {
-        LandingPage landingPage = myProjectService.AddLandingPage(request);
+    public ApiResponse<MyProjectResponseDTO.LandingPageResponseDTO> addLandingPage(@RequestBody MyProjectRequestDTO.AddLandingPageRequestDTO request, Principal principal) {
+        LandingPage landingPage = myProjectService.addLandingPage(request, principal.getName());
         return ApiResponse.onSuccess(MyProjectConverter.toAddLandingPageResponseDTO(landingPage));
     }
 
