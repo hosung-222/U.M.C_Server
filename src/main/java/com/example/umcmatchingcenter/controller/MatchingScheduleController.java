@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.apiPayload.ApiResponse;
 import com.example.umcmatchingcenter.converter.matching.MatchingScheduleConverter;
 import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.MatchingSchedule;
+import com.example.umcmatchingcenter.service.branchService.BranchQueryService;
 import com.example.umcmatchingcenter.service.matchingService.MatchingScheduleQueryService;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleResponseDTO;
@@ -51,7 +52,7 @@ public class MatchingScheduleController {
             @RequestBody @Valid MatchingScheduleRequestDTO.MatchingScheduleDTO request,
             @Valid @ExistMember Principal principal
     ){
-        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
+        Branch branch = getMemberBranch(principal);
         MatchingSchedule schedule = matchingScheduleCommandService.postSchedule(request, branch);
 
         return ApiResponse.onSuccess(MatchingScheduleConverter.toPostScheduleResultDTO(schedule));
@@ -77,7 +78,7 @@ public class MatchingScheduleController {
             @RequestBody @Valid MatchingScheduleRequestDTO.MatchingScheduleDTO request,
             @Valid @ExistMember Principal principal
     ) {
-        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
+        Branch branch = getMemberBranch(principal);
         matchingScheduleCommandService.updateSchedule(scheduleId, request, branch);
 
         return ApiResponse.onSuccess(scheduleId + "번 일정 수정에 성공했습니다.");
@@ -102,7 +103,7 @@ public class MatchingScheduleController {
             @PathVariable(name = "scheduleId") Long scheduleId,
             @Valid @ExistMember Principal principal
     ) {
-        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
+        Branch branch = getMemberBranch(principal);
         matchingScheduleCommandService.deleteSchedule(scheduleId, branch);
 
         return ApiResponse.onSuccess(scheduleId + "번 일정 삭제에 성공했습니다.");
@@ -123,9 +124,13 @@ public class MatchingScheduleController {
     public ApiResponse<MatchingScheduleResponseDTO.MatchingScheduleListDTO> getMatchingScheduleList (
             @Valid @ExistMember Principal principal
     ) {
-        Branch branch = memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
+        Branch branch = getMemberBranch(principal);
         List<MatchingSchedule> scheduleList = matchingScheduleQueryService.getScheduleList(branch);
 
         return ApiResponse.onSuccess(MatchingScheduleConverter.toSchedulePreViewListDTO(scheduleList));
+    }
+
+    private Branch getMemberBranch(Principal principal) {
+        return memberQueryService.findMemberByName(principal.getName()).getUniversity().getBranch();
     }
 }

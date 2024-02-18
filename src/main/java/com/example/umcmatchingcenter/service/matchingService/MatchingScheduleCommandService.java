@@ -5,6 +5,8 @@ import com.example.umcmatchingcenter.domain.MatchingSchedule;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingScheduleRequestDTO;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+
 public interface MatchingScheduleCommandService {
     @Transactional
     public abstract MatchingSchedule postSchedule(MatchingScheduleRequestDTO.MatchingScheduleDTO request, Branch branch);
@@ -14,6 +16,4 @@ public interface MatchingScheduleCommandService {
 
     @Transactional
     public abstract void deleteSchedule(Long scheduleId, Branch branch);
-
-    public abstract MatchingSchedule checkIsAuthorized(Long scheduleId, Branch branch);
 }
