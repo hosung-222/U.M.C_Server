@@ -23,7 +23,7 @@ public class AlarmConverter {
     public static AlarmResponseDTO.AlarmViewDTO toAlarmViewDTO(Alarm alarm){
         return AlarmResponseDTO.AlarmViewDTO.builder()
                 .id(alarm.getId())
-                .title(alarm.getAlarmType().getTitle())
+                .alarmType(alarm.getAlarmType())
                 .body(alarm.getBody())
                 .isConfirmed(alarm.getIsConfirmed())
                 .createdAt(alarm.getCreatedAt().toString())

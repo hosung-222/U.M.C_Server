@@ -42,7 +42,7 @@ public class ProjectResponseDTO {
         private String introduction;
         private String body;
         private List<ProjectMemberDTO> members;
-        private LocalDateTime createAt;
+        private String createAt;
     }
 
     // 프로젝트 참여 멤버
@@ -55,5 +55,7 @@ public class ProjectResponseDTO {
         private String nameNickname;
         private String profileImage;
         private String part;
+        private Integer generation;
+        private String university;
     }
 }

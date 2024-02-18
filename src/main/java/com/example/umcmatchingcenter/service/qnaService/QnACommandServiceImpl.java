@@ -38,7 +38,7 @@ public class QnACommandServiceImpl implements QnACommandService {
         Project findProject = matchingQueryService.findProcedingProject(projectId);
 
         QnA newQnA = QnAConverter.toQuestion(request, findProject, inquirer);
-        alarmCommandService.send(findProject.getPm(), AlarmType.QNA_NEW,AlarmType.QNA_NEW.getMessage());
+        alarmCommandService.send(findProject.getPm(), AlarmType.QNA_NEW,findProject.getId().toString()+"+"+AlarmType.QNA_NEW.getMessage());
         return qnaRepository.save(newQnA);
     }
 

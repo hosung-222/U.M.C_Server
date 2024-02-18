@@ -48,7 +48,7 @@ public enum ErrorStatus implements BaseErrorCode {
     NO_ALARM_LIST(BAD_REQUEST, "ALARM4002", "알림이 존재하지 않습니다."),
 
     // 프로젝트 관련 에러
-    PROJECT_NOT_EXIST(BAD_REQUEST, "PROJECT4001", "프로젝트가 존재하지 않습니다."),
+    PROJECT_NOT_EXIST(NOT_FOUND, "PROJECT4001", "프로젝트가 존재하지 않습니다."),
     PROJECT_NOT_COMPLETE(BAD_REQUEST, "PROJECT4002", "완료된 프로젝트가 아닙니다."),
     PROJECT_NOT_PROCEEDING(BAD_REQUEST, "PROJECT4003", "현재 매칭 중인 프로젝트가 아닙니다."),
 

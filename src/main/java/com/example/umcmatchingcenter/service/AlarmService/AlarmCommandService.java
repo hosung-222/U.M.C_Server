@@ -93,7 +93,7 @@ public class AlarmCommandService {
     }
 
     public void send(Member receiver, AlarmType alarmType, String content) {
-        Alarm alarm = alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content));
+        alarmRepository.save(AlarmConverter.toAlarm(receiver, alarmType, content));
 
     }
 
