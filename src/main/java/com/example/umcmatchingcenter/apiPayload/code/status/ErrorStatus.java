@@ -21,7 +21,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
 
     // 멤버 관려 에러
-    MEMBER_NOT_FOUND(BAD_REQUEST, "MEMBER4001", "존재하지 않는 사용자입니다."),
+    MEMBER_NOT_FOUND(BAD_REQUEST, "MEMBER4001", "존재하지 않거나 승인되지 않은 사용자입니다."),
     MEMBER_WRONG_PASSWORD(BAD_REQUEST, "MEMBER4002", "잘못된 비밀번호 입니다"),
     NICKNAME_NOT_EXIST(BAD_REQUEST, "MEMBER4003", "닉네임은 필수 입니다."),
     MEMBER_ALREADY_EXIST(BAD_REQUEST, "MEMBER4004", "이미 등록된 사용자 입니다."),
