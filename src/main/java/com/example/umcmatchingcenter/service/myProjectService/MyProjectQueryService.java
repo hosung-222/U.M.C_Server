@@ -84,7 +84,7 @@ public class MyProjectQueryService {
 
     public MyProjectResponseDTO.LandingPageDetailsResponseDTO getLandingPage(String memberName){
        Member member = memberQueryService.findMemberByName(memberName);
-       LandingPage landingPage = member.getProject().getLandingPage();
+       LandingPage landingPage = checkProjectIsPresent(memberName).getLandingPage();
        List<Member> memberList = member.getProject().getMembers();
 
         Map<Long, String> images = landingPage.getImages().stream()
