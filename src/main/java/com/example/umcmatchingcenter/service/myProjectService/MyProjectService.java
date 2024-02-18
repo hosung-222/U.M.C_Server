@@ -148,7 +148,7 @@ public class MyProjectService {
 
             alarmCommandService.send(member,
                     AlarmType.MATCHING_APPLY_SUCCESS,
-                    "projectId :"+project.getId()+project.getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
+                    "projectId :"+project.getId().toString()+project.getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
 
             alarmCommandService.send(manager,
                     AlarmType.MATCHING_COMPLETE,
