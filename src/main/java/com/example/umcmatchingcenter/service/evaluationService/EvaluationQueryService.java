@@ -1,10 +1,12 @@
 package com.example.umcmatchingcenter.service.evaluationService;
 
+import com.example.umcmatchingcenter.apiPayload.code.status.ErrorStatus;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.EvaluationHandler;
 import com.example.umcmatchingcenter.apiPayload.exception.handler.ProjectHandler;
 import com.example.umcmatchingcenter.domain.Evaluation;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
+import com.example.umcmatchingcenter.dto.evaluationDTO.EvaluationRequestDTO;
 import com.example.umcmatchingcenter.repository.EvaluationRepository;
 import com.example.umcmatchingcenter.service.memberService.MemberQueryService;
 import com.example.umcmatchingcenter.service.projectService.ProjectQueryService;
@@ -64,6 +66,12 @@ public class EvaluationQueryService {
         }
 
         return evaluations;
+    }
+
+    public void isNull(EvaluationRequestDTO dto) {
+        if (dto.getContent() == null) {
+            throw new EvaluationHandler(NOT_BLANK);
+        }
     }
 
 

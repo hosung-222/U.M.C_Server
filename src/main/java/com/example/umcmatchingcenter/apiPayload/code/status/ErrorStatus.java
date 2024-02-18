@@ -67,6 +67,7 @@ public enum ErrorStatus implements BaseErrorCode {
     EVALUATION_NOT_FOUND(BAD_REQUEST, "EVALUATION4001", "평가가 존재하지 않습니다."),
     TEAMMATE_NOT_FOUND(BAD_REQUEST, "EVALUATION4002", "해당 프로젝트의 멤버가 아닙니다."),
     ALREADY_EVALUATED_MEMBER(BAD_REQUEST, "EVALUATION4003", "이미 평가가 완료된 멤버입니다."),
+    NOT_BLANK(BAD_REQUEST,"EVALUATION4004", "모든 평가 항목은 필수 입력값입니다."),
 
     // 지부 관련 에러
     BRANCH_NOT_FOUND(BAD_REQUEST, "BRANCH4001", "지부가 존재하지 않습니다."),

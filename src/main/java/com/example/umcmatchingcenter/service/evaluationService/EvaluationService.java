@@ -63,6 +63,7 @@ public class EvaluationService {
             evaluationRepository.delete(evaluation);
         }
         evaluationQueryService.contains(project, evaluatee);
+        evaluationQueryService.isNull(dto);
 
         evaluationRepository.save(Evaluation.builder()
                 .project(project)
