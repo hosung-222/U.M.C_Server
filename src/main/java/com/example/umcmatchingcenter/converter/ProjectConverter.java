@@ -8,6 +8,7 @@ import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,8 @@ public class  ProjectConverter {
                         .nameNickname(member.getNameNickname())
                         .profileImage(member.getProfileImage())
                         .part(String.valueOf(member.getPart()))
+                        .generation(member.getGeneration())
+                        .university(member.getUniversity().getName())
                         .build())
                 .collect(Collectors.toList());
 
@@ -62,7 +65,7 @@ public class  ProjectConverter {
                 .introduction(project.getIntroduction())
                 .body(project.getBody())
                 .members(memberDTOs)
-                .createAt(project.getCreatedAt())
+                .createAt(project.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build();
     }
 }
