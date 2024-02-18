@@ -31,6 +31,7 @@ public class EvaluationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4001", description = "평가가 존재하지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4002", description = "해당 프로젝트의 멤버가 아닙니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4003", description = "이미 평가가 완료된 멤버입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4004", description = "모든 평가 항목은 필수 입력값입니다."),
     })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<List<EvaluationResponseDTO>> getEvaluations() {
@@ -43,7 +44,8 @@ public class EvaluationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4001", description = "평가가 존재하지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4002", description = "해당 프로젝트의 멤버가 아닙니다."),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4003", description = "이미 평가가 완료된 멤버입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4003", description = "모든 평가 항목은 필수 입력값입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4004", description = "모든 평가 항목은 필수 입력값입니다."),
     })
     @Parameters({
             @Parameter(name = "memberId", description = "피평가자 아이디")
@@ -62,6 +64,7 @@ public class EvaluationController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4001", description = "평가가 존재하지 않습니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4002", description = "해당 프로젝트의 멤버가 아닙니다."),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4003", description = "이미 평가가 완료된 멤버입니다."),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "EVALUATION4004", description = "모든 평가 항목은 필수 입력값입니다."),
     })
     @PreAuthorize("isAuthenticated()")
     public ApiResponse<List<MyEvaluationResponseDTO>> getMyEvaluation() {
