@@ -8,7 +8,7 @@ spring:
   mail:
     host: smtp.gmail.com
     port: ${EMAIL_PORT}
-    username: umc.catholic@gmail.com
+    username: umc.matching.center.05@gmail.com
     password: ${EMAIL_PASSWORD}
     properties:
       mail:
