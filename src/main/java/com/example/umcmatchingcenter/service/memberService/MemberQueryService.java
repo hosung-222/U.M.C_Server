@@ -61,8 +61,7 @@ public class MemberQueryService {
     }
 
     public Member getCurrentLoginMember() {
-        String memberName = SecurityUtil.getCurrentMember();
-        return findMemberByName(memberName);
+        return findMemberByName(SecurityUtil.getCurrentMember());
     }
 
     public List<Member> getNonMatchingMember(Branch branch, MemberPart part) {
