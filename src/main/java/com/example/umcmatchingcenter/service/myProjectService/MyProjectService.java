@@ -148,7 +148,7 @@ public class MyProjectService {
 
             alarmCommandService.send(member,
                     AlarmType.MATCHING_APPLY_SUCCESS,
-                    "projectId :"+project.getId().toString()+project.getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
+                    project.getName()+AlarmType.MATCHING_APPLY_SUCCESS.getMessage());
 
             alarmCommandService.send(manager,
                     AlarmType.MATCHING_COMPLETE,
@@ -168,8 +168,12 @@ public class MyProjectService {
 
         if (foundApplication != null && foundApplication.isPresent()) {
             Member member = memberQueryService.getMember(memberId);
+            Project project = projectQueryService.getProject();
             member.setMatchingStatus(MemberMatchingStatus.NON);
             member.addRound();
+            alarmCommandService.send(member,
+                    AlarmType.MATCHING_APPLY_FAIL,
+                    project.getName()+AlarmType.MATCHING_APPLY_FAIL.getMessage());
             return memberQueryService.getMember(memberId).getNameNickname();
         }
         throw new MyProjectHandler(ErrorStatus.NO_SUCH_APPLICANT);
