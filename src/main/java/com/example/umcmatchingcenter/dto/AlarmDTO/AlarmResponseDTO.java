@@ -1,5 +1,6 @@
 package com.example.umcmatchingcenter.dto.AlarmDTO;
 
+import com.example.umcmatchingcenter.domain.enums.AlarmType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +24,7 @@ public class AlarmResponseDTO {
     @AllArgsConstructor
     public static class AlarmViewDTO{
         private Long id;
-        private String title;
+        private AlarmType alarmType        ;
         private String body;
         private Boolean isConfirmed;
         private String createdAt;
