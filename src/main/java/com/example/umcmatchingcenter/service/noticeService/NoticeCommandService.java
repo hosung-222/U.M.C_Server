@@ -47,10 +47,10 @@ public class NoticeCommandService {
         Notice notice = NoticeConverter.toNotice(request);
 
         Member member = memberQueryService.findMemberByName(memberName);
-
-        List<NoticeImage> noticeImageList = getNoticeImageList(imageIdList, notice);
-
-        noticeImageRepository.saveAll(noticeImageList);
+        if(imageIdList!=null){
+            List<NoticeImage> noticeImageList = getNoticeImageList(imageIdList, notice);
+            noticeImageRepository.saveAll(noticeImageList);
+        }
 
         Branch branch = member.getUniversity().getBranch();
         alarmCommandService.sendToBranch(branch, AlarmType.NOTICE_NEW, AlarmType.NOTICE_NEW.getMessage());
