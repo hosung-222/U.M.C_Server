@@ -4,6 +4,7 @@ import com.example.umcmatchingcenter.domain.Branch;
 import com.example.umcmatchingcenter.domain.Member;
 import com.example.umcmatchingcenter.domain.Project;
 
+import com.example.umcmatchingcenter.domain.enums.ProjectStatus;
 import com.example.umcmatchingcenter.dto.MatchingDTO.MatchingRequestDTO;
 import com.example.umcmatchingcenter.dto.ProjectDTO.ProjectResponseDTO;
 
@@ -21,6 +22,7 @@ public class  ProjectConverter {
                 .introduction(request.getIntroduction())
                 .pm(pm)
                 .branch(branch)
+                .status(ProjectStatus.PROCEEDING)
                 .build();
     }
     // 프로젝트 전체 조회
