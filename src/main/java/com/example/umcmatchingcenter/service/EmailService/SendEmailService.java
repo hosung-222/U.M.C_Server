@@ -40,13 +40,11 @@ public class SendEmailService {
         message.setSubject(title);
         String msgg="";
         msgg += "<div style='margin:100px; text-align: center;'>";
-        msgg += "<h1>안녕하세요 Umc-Matching-Center입니다</h1>";
+        msgg += "<h1>Umc-Matching-Center</h1>";
         msgg += "<br>";
         msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
         msgg += "<h2 style='color:black;'>회원가입 인증 코드입니다.</h2>";
         msgg += "<div style='font-size:130%'>";
-        msgg += "<p style='text-align: center;'>감사합니다</p>";
-        msgg += "CODE : <strong>";
         msgg += text+"</strong><div><br/> ";
         msgg += "</div>";
         message.setText(msgg, "utf-8", "html");//내용
