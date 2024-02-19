@@ -7,6 +7,11 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
+
 @Service
 @RequiredArgsConstructor
 public class SendEmailService {
@@ -15,24 +20,35 @@ public class SendEmailService {
     //email 전송
     public void sendEmail(String toEmail,
                           String title,
-                          String text) {
-        SimpleMailMessage emailForm = createEmailForm(toEmail, title, text);
+                          String text){
         try {
-            emailSender.send(emailForm);
-        } catch (RuntimeException e) {
+            MimeMessage message = createEmailForm(toEmail, title, text);
+            emailSender.send(message);
+        } catch (MessagingException e) {
+            throw new MemberHandler(ErrorStatus.FAIL_CREATE_EMAIL);
+        }catch (UnsupportedEncodingException e){
             throw new MemberHandler(ErrorStatus.FAIL_CREATE_EMAIL);
         }
     }
 
     // 발신할 이메일 데이터 세팅
-    private SimpleMailMessage createEmailForm(String toEmail,
+    private MimeMessage createEmailForm(String toEmail,
                                               String title,
-                                              String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(toEmail);
+                                              String text) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage  message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
         message.setSubject(title);
-        message.setText(text);
-
+        String msgg="";
+        msgg += "<div style='margin:100px; text-align: center;'>";
+        msgg += "<h1>Umc-Matching-Center</h1>";
+        msgg += "<br>";
+        msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgg += "<h2 style='color:black;'>회원가입 인증 코드입니다.</h2>";
+        msgg += "<div style='font-size:130%'>";
+        msgg += text+"</strong><div><br/> ";
+        msgg += "</div>";
+        message.setText(msgg, "utf-8", "html");//내용
+        message.setFrom(new InternetAddress("umc.matching.center.05@gmail.com","umcmatchingcenter"));//보내는 사람
         return message;
     }
 
