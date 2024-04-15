@@ -6,6 +6,9 @@ UMC Matching Center Server (Spring Boot)
 ## 📄 프로젝트 소개
 UMC(University MakeUs Challenge) 동아리 매칭 서비스 구축 프로젝트 백엔드입니다.
 
+## 기간
+2023.12 ~2024.02
+
 ### 👥 맴버구성
 <table>
  <tr>
